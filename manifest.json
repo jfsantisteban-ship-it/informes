@@ -1,0 +1,16 @@
+[
+  {
+    "carpeta": "cripto",
+    "fecha": "2026-09-05",
+    "titulo": "Informe Cripto Diario",
+    "url_artefacto": "https://claude.ai/code/artifact/b07b7062-e06c-4241-9b71-0e1ecfb1adc3",
+    "publicado_en": "2026-09-05T21:14:00-06:00"
+  },
+  {
+    "carpeta": "ia",
+    "fecha": "2026-09-05",
+    "titulo": "Informe Semanal IA · 5 sep 2026",
+    "url_artefacto": "https://claude.ai/code/artifact/99ce2931-2078-408f-93ed-e816ac36f790",
+    "publicado_en": "2026-09-05T21:14:00-06:00"
+  }
+]

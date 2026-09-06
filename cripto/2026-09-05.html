@@ -1,0 +1,559 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Informe Cripto Diario</title>
+<style>
+  :root{
+    --surface:#fcfcfb; --surface-2:#f5f5f1; --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#7a7975;
+    --grid:#e1e0d9; --blue:#2a78d6; --red:#d03b3b; --green:#0ca30c; --amber:#fab219;
+    --amber-ink:#8a6206; --neutral:#9a9994;
+  }
+  :root:not([data-theme="light"]){ }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --surface:#1a1a19; --surface-2:#232322; --ink:#ffffff; --ink-2:#c3c2b7; --ink-3:#8e8d85;
+      --grid:#2c2c2a; --blue:#3987e5; --red:#e05252; --green:#22b822; --amber:#fab219;
+      --amber-ink:#fab219; --neutral:#6e6d68;
+    }
+  }
+  :root[data-theme="dark"]{
+    --surface:#1a1a19; --surface-2:#232322; --ink:#ffffff; --ink-2:#c3c2b7; --ink-3:#8e8d85;
+    --grid:#2c2c2a; --blue:#3987e5; --red:#e05252; --green:#22b822; --amber:#fab219;
+    --amber-ink:#fab219; --neutral:#6e6d68;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--surface); color:var(--ink); font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       line-height:1.55; margin:0; padding:32px 20px 64px;}
+  .wrap{max-width:960px;margin:0 auto}
+  .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 10px}
+  h1{font-size:clamp(26px,4.2vw,40px);line-height:1.15;letter-spacing:-.02em;margin:0 0 12px;font-weight:680}
+  .dek{font-size:16px;color:var(--ink-2);margin:0 0 6px;max-width:62ch}
+  .meta{font-size:12.5px;color:var(--ink-3);margin:14px 0 0;font-variant-numeric:tabular-nums}
+  hr.rule{border:0;border-top:1px solid var(--grid);margin:28px 0}
+  h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:0 0 16px}
+  .note{background:var(--surface-2);border:1px solid var(--grid);border-left:3px solid var(--amber);
+        border-radius:6px;padding:11px 14px;font-size:13px;color:var(--ink-2);margin:22px 0 0}
+  .note b{color:var(--ink)}
+
+  /* stat tiles */
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+  .tile{border:1px solid var(--grid);border-radius:8px;padding:16px 18px;background:var(--surface-2)}
+  .tile .lab{font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:8px}
+  .tile .val{font-size:32px;font-weight:660;letter-spacing:-.02em;line-height:1.1}
+  .tile .sub{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+  .up{color:var(--green)} .down{color:var(--red)}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+  th,td{text-align:right;padding:9px 10px;border-bottom:1px solid var(--grid);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  table td:last-child,table th:last-child{white-space:normal}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:600}
+  td.asset{font-weight:600}
+  td .tick{color:var(--ink-3);font-weight:400;font-size:12.5px;margin-left:6px}
+  .scroll{overflow-x:auto}
+
+  /* charts */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:720px){.cards{grid-template-columns:1fr}}
+  .card{border:1px solid var(--grid);border-radius:8px;padding:18px 18px 14px;background:var(--surface)}
+  .card h3{font-size:15px;margin:0 0 4px;font-weight:640;letter-spacing:-.01em}
+  .card .cap{font-size:12px;color:var(--ink-3);margin:0 0 16px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);margin:12px 0 0}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+  /* divergent bars */
+  .dv{display:grid;grid-template-columns:52px 1fr;gap:4px 10px;align-items:center;font-size:13px}
+  .dv .name{font-weight:600;font-size:13px}
+  .dv .track{position:relative;height:26px}
+  .dv .zero{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--grid)}
+  .dv .bar{position:absolute;top:4px;height:18px;border-radius:0}
+  .dv .bar.pos{border-radius:0 4px 4px 0}
+  .dv .bar.neg{border-radius:4px 0 0 4px}
+  .dv .vlab{position:absolute;top:4px;height:18px;display:flex;align-items:center;font-size:12px;
+            font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
+
+  /* grouped bars */
+  .gb{display:flex;align-items:flex-end;gap:26px;height:180px;padding:0 4px;border-bottom:1px solid var(--grid)}
+  .grp{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:6px;height:100%}
+  .gbar{width:30px;border-radius:4px 4px 0 0;position:relative}
+  .gbar .n{position:absolute;top:-19px;left:50%;transform:translateX(-50%);font-size:11.5px;
+           font-variant-numeric:tabular-nums;color:var(--ink)}
+  .gx{display:flex;gap:26px;margin-top:8px;padding:0 4px}
+  .gx div{flex:1;text-align:center;font-size:11.5px;color:var(--ink-2)}
+
+  /* mini series */
+  .ms{display:flex;align-items:center;gap:14px;height:150px;padding-top:16px}
+  .msc{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end}
+
+  /* news */
+  .news{border-top:1px solid var(--grid);padding:22px 0 6px}
+  .news:first-of-type{border-top:0}
+  .nhead{display:flex;gap:14px;align-items:baseline}
+  .num{font-size:13px;font-weight:680;color:var(--ink-3);font-variant-numeric:tabular-nums;flex:0 0 24px}
+  .ntitle{font-size:19px;font-weight:640;letter-spacing:-.015em;margin:0 0 10px;line-height:1.3}
+  .tags{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 10px}
+  .tag{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;font-weight:650;
+       padding:3px 8px;border-radius:99px;border:1px solid var(--grid);color:var(--ink-2)}
+  .tag.bear{color:var(--red);border-color:var(--red)}
+  .tag.bull{color:var(--green);border-color:var(--green)}
+  .tag.mix{color:var(--amber-ink);border-color:var(--amber)}
+  .nbody{font-size:14.5px;color:var(--ink-2);margin:0 0 14px;max-width:70ch}
+  .nbody b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:720px){.facts{grid-template-columns:repeat(2,1fr)}}
+  .fact{border:1px solid var(--grid);border-radius:6px;padding:10px 11px;background:var(--surface-2)}
+  .fact .fv{font-size:19px;font-weight:660;letter-spacing:-.01em;font-variant-numeric:tabular-nums;line-height:1.2}
+  .fact .fl{font-size:11px;color:var(--ink-3);margin-top:4px;line-height:1.35}
+  .nl{margin-left:38px}
+  @media(max-width:560px){.nl{margin-left:0}}
+
+  /* radar + calendar */
+  ul.radar{list-style:none;padding:0;margin:0}
+  ul.radar li{border-bottom:1px solid var(--grid);padding:11px 0;font-size:14px;color:var(--ink-2)}
+  ul.radar li b{color:var(--ink);font-weight:640}
+  .cal{display:grid;grid-template-columns:96px 1fr;gap:0}
+  .cal .d{font-size:12.5px;font-weight:650;font-variant-numeric:tabular-nums;padding:11px 10px 11px 0;
+          border-bottom:1px solid var(--grid);color:var(--ink)}
+  .cal .e{font-size:13.5px;color:var(--ink-2);padding:11px 0;border-bottom:1px solid var(--grid)}
+  .cal .e em{font-style:normal;color:var(--ink-3);font-size:12px;display:block;margin-top:2px}
+
+  details{margin-top:14px}
+  summary{font-size:12px;color:var(--ink-3);cursor:pointer}
+  details table{margin-top:10px;font-size:12.5px}
+  footer{margin-top:34px;padding-top:20px;border-top:1px solid var(--grid);font-size:12px;color:var(--ink-3)}
+  footer a{color:var(--ink-2)}
+  .disc{margin-top:12px;font-size:11.5px;color:var(--ink-3);font-style:italic}
+</style>
+
+<div class="wrap">
+
+  <p class="eyebrow">Informe Cripto Diario · Julio</p>
+  <h1>El mercado digiere unas nóminas demasiado buenas: BTC recupera los $80.000 con la Fed apuntando a <em style="font-style:normal;color:var(--red)">subir</em> tipos</h1>
+  <p class="dek">Las 162.000 nóminas de agosto —casi el triple de lo esperado— devolvieron el miedo a un alza de tipos el 16 de septiembre y frenaron en seco a un bitcoin que venía de su mejor día de entradas en ETF en nueve meses. El fin de semana llega con recuperación técnica, sentimiento en «Codicia» y dos citas de alto voltaje el mismo 15 de septiembre.</p>
+  <p class="meta">Corte de datos: <strong>sábado 5 de septiembre de 2026, 15:13 h (America/Guatemala, UTC−6)</strong> · Precios: CoinDesk · Flujos ETF: CoinGlass / SoSoValue vía prensa · Sentimiento: Alternative.me vía BitDegree</p>
+
+  <div class="note"><b>Nota de método:</b> la API pública de Coinbase y la API de Alternative.me no pudieron consultarse en esta ejecución automática (requerían una aprobación manual que nadie pudo dar, al no haber nadie presente). Los precios proceden de las páginas de precio de CoinDesk y el índice Fear &amp; Greed de dos rastreadores independientes (74 y 73). Todas las demás cifras están contrastadas en dos o más fuentes; las que no, van marcadas como <em>preliminar</em>.</div>
+
+  <hr class="rule">
+
+  <h2>Los tres números del día</h2>
+  <div class="tiles">
+    <div class="tile">
+      <div class="lab">Bitcoin</div>
+      <div class="val">$79.934</div>
+      <div class="sub"><span class="up">▲ 0,33 %</span> en 24 h · rebota tras tocar $79.300 el viernes</div>
+    </div>
+    <div class="tile">
+      <div class="lab">Entradas ETF BTC · 3 sep</div>
+      <div class="val">$731 M</div>
+      <div class="sub">Mejor día en 9 meses · activos netos <strong>$103.340 M</strong></div>
+    </div>
+    <div class="tile">
+      <div class="lab">Prob. de <em style="font-style:normal">subida</em> · FOMC 16 sep</div>
+      <div class="val">57,6 %</div>
+      <div class="sub">CME FedWatch · probabilidad de recorte: <strong>0,0 %</strong></div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <h2>Precios al contado</h2>
+  <div class="scroll">
+  <table>
+    <thead>
+      <tr><th>Activo</th><th>Precio (USD)</th><th>Var. 24 h</th><th>Cap. mercado</th><th>Nota</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="asset">Bitcoin <span class="tick">BTC</span></td><td>79.933,52</td><td class="up">+0,33 %</td><td>~$1,60 B</td><td style="text-align:left;color:var(--ink-2);font-size:13px">Dominancia 57,4 %</td></tr>
+      <tr><td class="asset">Ethereum <span class="tick">ETH</span></td><td>2.488,58</td><td class="up">+1,42 %</td><td>—</td><td style="text-align:left;color:var(--ink-2);font-size:13px">10,8 % del volumen</td></tr>
+      <tr><td class="asset">Solana <span class="tick">SOL</span></td><td>103,95</td><td class="up">+2,23 %</td><td>$60,06 M M</td><td style="text-align:left;color:var(--ink-2);font-size:13px">Mejor de los grandes</td></tr>
+      <tr><td class="asset">XRP <span class="tick">XRP</span></td><td>1,42</td><td class="up">+1,70 %</td><td>$89,08 M M</td><td style="text-align:left;color:var(--ink-2);font-size:13px">#5 por capitalización</td></tr>
+      <tr><td class="asset">Zcash <span class="tick">ZEC</span></td><td>~1.000</td><td class="up">+16,5 %</td><td>$16,80 M M</td><td style="text-align:left;color:var(--ink-2);font-size:13px">Pico $1.023 el 4 sep · #10</td></tr>
+      <tr><td class="asset">Dash <span class="tick">DASH</span></td><td>~50</td><td class="up">+17 %</td><td>—</td><td style="text-align:left;color:var(--ink-2);font-size:13px">Arrastre de privacidad</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="meta">Capitalización total del mercado: <strong>$2,79 billones</strong> (+0,8 % en 24 h). Variación 24 h según CoinDesk al corte; en ZEC y DASH corresponde a la sesión del 4 de septiembre.</p>
+
+  <hr class="rule">
+
+  <h2>Flujos, tipos y sentimiento</h2>
+  <div class="cards">
+
+    <div class="card">
+      <h3>Flujos netos de ETF al contado por activo</h3>
+      <p class="cap">Sesión del viernes 4 de septiembre de 2026, en millones de USD · <em>preliminar, fuente única (CoinGlass)</em></p>
+      <div class="dv">
+        <div class="name">BTC</div>
+        <div class="track"><div class="zero" style="left:22%"></div>
+          <div class="bar pos" style="left:22%;width:70%;background:var(--blue)" title="BTC: +174,60 M USD"></div>
+          <div class="vlab" style="left:calc(22% + 70% + 8px)">+174,60</div></div>
+        <div class="name">ETH</div>
+        <div class="track"><div class="zero" style="left:22%"></div>
+          <div class="bar pos" style="left:22%;width:10.6%;background:var(--blue)" title="ETH: +26,46 M USD"></div>
+          <div class="vlab" style="left:calc(22% + 10.6% + 8px)">+26,46</div></div>
+        <div class="name">SOL</div>
+        <div class="track"><div class="zero" style="left:22%"></div>
+          <div class="bar neg" style="left:19.9%;width:2.1%;background:var(--red)" title="SOL: −5,21 M USD"></div>
+          <div class="vlab" style="right:80.8%">−5,21</div></div>
+        <div class="name">XRP</div>
+        <div class="track"><div class="zero" style="left:22%"></div>
+          <div class="vlab" style="left:calc(22% + 8px);color:var(--ink-3)">0,00 · sin movimiento</div></div>
+      </div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--blue)"></i> Entradas netas</span>
+        <span><i class="sw" style="background:var(--red)"></i> Salidas netas</span>
+      </div>
+      <details><summary>Ver los datos en tabla</summary>
+        <table><thead><tr><th>Activo</th><th>Flujo neto 4 sep (M USD)</th></tr></thead>
+        <tbody><tr><td>BTC</td><td>+174,60</td></tr><tr><td>ETH</td><td>+26,46</td></tr>
+        <tr><td>SOL</td><td>−5,21</td></tr><tr><td>XRP</td><td>0,00</td></tr></tbody></table>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Índice Fear &amp; Greed</h3>
+      <p class="cap">5 de septiembre de 2026 · escala 0–100</p>
+      <div style="display:flex;justify-content:center">
+      <svg viewBox="0 0 300 242" width="100%" style="max-width:320px" role="img" aria-label="Medidor Fear and Greed en 74, Codicia">
+        <g fill="none" stroke-linecap="butt" stroke-width="20">
+          <path d="M 40 150 A 110 110 0 0 1 260 150" stroke="var(--red)"     stroke-dasharray="84.4 400" stroke-dashoffset="0"/>
+          <path d="M 40 150 A 110 110 0 0 1 260 150" stroke="var(--amber)"  stroke-dasharray="67.1 400" stroke-dashoffset="-86.4"/>
+          <path d="M 40 150 A 110 110 0 0 1 260 150" stroke="var(--neutral)" stroke-dasharray="32.6 400" stroke-dashoffset="-155.5"/>
+          <path d="M 40 150 A 110 110 0 0 1 260 150" stroke="#5fa83a"       stroke-dasharray="67.1 400" stroke-dashoffset="-190.1"/>
+          <path d="M 40 150 A 110 110 0 0 1 260 150" stroke="var(--green)"  stroke-dasharray="84.4 400" stroke-dashoffset="-259.2"/>
+        </g>
+        <line x1="150" y1="150" x2="218.5" y2="77.1" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="150" cy="150" r="6" fill="var(--ink)"/>
+        <text x="34"  y="175" text-anchor="start" font-size="10.5" fill="var(--ink-3)" font-family="system-ui,sans-serif">0 · Miedo extremo</text>
+        <text x="266" y="175" text-anchor="end"   font-size="10.5" fill="var(--ink-3)" font-family="system-ui,sans-serif">Codicia extrema · 100</text>
+        <text x="150" y="215" text-anchor="middle" font-size="44" font-weight="660" fill="var(--ink)" font-family="system-ui,sans-serif">74</text>
+        <text x="150" y="236" text-anchor="middle" font-size="13" font-weight="640" letter-spacing="1.4" fill="var(--green)" font-family="system-ui,sans-serif">CODICIA</text>
+      </svg>
+      </div>
+      <div class="legend" style="justify-content:center">
+        <span>Ayer <strong style="color:var(--ink)">74</strong></span>
+        <span>3 sep <strong style="color:var(--ink)">65</strong></span>
+        <span>1 sep <strong style="color:var(--ink)">69</strong></span>
+        <span>31 ago <strong style="color:var(--ink)">62</strong></span>
+      </div>
+      <p class="cap" style="margin:14px 0 0">Un rastreador alternativo marca <strong style="color:var(--ink)">73</strong>. <strong style="color:var(--ink)">Cuidado con la comparación</strong>: otros índices con metodología propia (KuCoin, CoinMarketCap) venían marcando entre <strong style="color:var(--ink)">65</strong> y <strong style="color:var(--ink)">76</strong> ayer para el mismo mercado. No son el mismo indicador; aquí se usa la serie de Alternative.me.</p>
+    </div>
+
+    <div class="card">
+      <h3>Próxima decisión de la Fed · 15–16 sep</h3>
+      <p class="cap">Probabilidad implícita de <strong>subir</strong> vs. <strong>mantener</strong>, por plataforma</p>
+      <div class="gb">
+        <div class="grp">
+          <div class="gbar" style="height:57.6%;background:var(--blue)"><span class="n">57,6</span></div>
+          <div class="gbar" style="height:42.4%;background:var(--neutral)"><span class="n">42,4</span></div>
+        </div>
+        <div class="grp">
+          <div class="gbar" style="height:50.5%;background:var(--blue)"><span class="n">50,5</span></div>
+          <div class="gbar" style="height:48.5%;background:var(--neutral)"><span class="n">48,5</span></div>
+        </div>
+        <div class="grp">
+          <div class="gbar" style="height:49.5%;background:var(--blue)"><span class="n">49,5</span></div>
+          <div class="gbar" style="height:49.5%;background:var(--neutral)"><span class="n">49,5</span></div>
+        </div>
+      </div>
+      <div class="gx"><div>CME FedWatch<br><span style="color:var(--ink-3)">4 sep</span></div><div>Polymarket<br><span style="color:var(--ink-3)">5 sep</span></div><div>Kalshi<br><span style="color:var(--ink-3)">5 sep</span></div></div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--blue)"></i> Subida de 25 pb</span>
+        <span><i class="sw" style="background:var(--neutral)"></i> Mantener</span>
+      </div>
+      <p class="cap" style="margin:12px 0 0">Ningún mercado asigna probabilidad a un recorte. El agregado de mercados de predicción añade un <strong style="color:var(--ink)">4,5 %</strong> a una subida de 50 pb o más. Tipo efectivo actual: <strong style="color:var(--ink)">3,63 %</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h3>Flujo diario de ETF de bitcoin</h3>
+      <p class="cap">Últimas cinco sesiones, en millones de USD</p>
+      <div class="ms">
+        <div class="msc"><div style="flex:1;display:flex;align-items:flex-end"><div style="width:34px;height:30px;background:var(--blue);border-radius:4px 4px 0 0" title="31 ago: +216,7 M"></div></div></div>
+        <div class="msc"><div style="flex:1;display:flex;align-items:flex-end"><div style="width:34px;height:32px;background:var(--red);border-radius:4px 4px 0 0" title="1 sep: −236,5 M"></div></div></div>
+        <div class="msc"><div style="flex:1;display:flex;align-items:flex-end"><div style="width:34px;height:14px;background:var(--blue);border-radius:4px 4px 0 0" title="2 sep: +101,2 M"></div></div></div>
+        <div class="msc"><div style="flex:1;display:flex;align-items:flex-end"><div style="width:34px;height:100px;background:var(--blue);border-radius:4px 4px 0 0" title="3 sep: +730,9 M"></div></div></div>
+        <div class="msc"><div style="flex:1;display:flex;align-items:flex-end"><div style="width:34px;height:24px;background:var(--blue);border-radius:4px 4px 0 0" title="4 sep: +174,6 M"></div></div></div>
+      </div>
+      <div style="display:flex;gap:14px;border-top:1px solid var(--grid);padding-top:8px;font-size:11.5px;
+                  font-variant-numeric:tabular-nums;color:var(--ink-2);text-align:center">
+        <div style="flex:1">+216,7<br><span style="color:var(--ink-3)">31 ago</span></div>
+        <div style="flex:1;color:var(--red)">−236,5<br><span style="color:var(--ink-3)">1 sep</span></div>
+        <div style="flex:1">+101,2<br><span style="color:var(--ink-3)">2 sep</span></div>
+        <div style="flex:1;font-weight:660;color:var(--ink)">+730,9<br><span style="color:var(--ink-3);font-weight:400">3 sep</span></div>
+        <div style="flex:1">+174,6<br><span style="color:var(--ink-3)">4 sep</span></div>
+      </div>
+      <p class="cap" style="margin:12px 0 0">La barra roja del 1 de septiembre fue una salida de $236,5 M concentrada en IBIT (−$201,2 M). Dos días después, IBIT sola aportó $454 M.</p>
+    </div>
+
+  </div>
+
+  <hr class="rule">
+
+<h2>Rotación de tu universo · 17 activos</h2>
+<p class="cap" style="margin:-8px 0 16px">Variación de 24 h y volumen en perpetuos de BingX. El mapa con el que llegas a la clasificación de las 18:00 — no es una señal, es el terreno.</p>
+<div class="card"><div class="dv" style="grid-template-columns:56px 1fr 92px 96px">
+<div class="name" style="font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)">Activo</div><div style="font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)">Variación 24 h</div><div style="font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);text-align:right">Volumen 24 h</div><div style="font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);text-align:right">i+v · % de R</div>
+<div class="name">ADA</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar pos" style="left:50%;width:46.0%;background:var(--blue)" title="ADA: +5.47%"></div><div class="vlab" style="left:calc(50% + 46.0% + 8px)">+5.47 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$6.3 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)"><strong style='color:var(--amber-ink)'>4.5 %</strong></div>
+<div class="name">BNB</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar pos" style="left:50%;width:29.93784277879342%;background:var(--blue)" title="BNB: +3.56%"></div><div class="vlab" style="left:calc(50% + 29.93784277879342% + 8px)">+3.56 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$30.0 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">0.1 %</div>
+<div class="name">LTC</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar pos" style="left:50%;width:28.676416819012797%;background:var(--blue)" title="LTC: +3.41%"></div><div class="vlab" style="left:calc(50% + 28.676416819012797% + 8px)">+3.41 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$15.2 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">1.8 %</div>
+<div class="name">ALGO</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar pos" style="left:50%;width:23.96709323583181%;background:var(--blue)" title="ALGO: +2.85%"></div><div class="vlab" style="left:calc(50% + 23.96709323583181% + 8px)">+2.85 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$2.6 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">3.2 %</div>
+<div class="name">DOT</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar pos" style="left:50%;width:19.762340036563074%;background:var(--blue)" title="DOT: +2.35%"></div><div class="vlab" style="left:calc(50% + 19.762340036563074% + 8px)">+2.35 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$3.8 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">1.1 %</div>
+<div class="name">TRX</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar pos" style="left:50%;width:5.802559414990859%;background:var(--blue)" title="TRX: +0.69%"></div><div class="vlab" style="left:calc(50% + 5.802559414990859% + 8px)">+0.69 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$3.5 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">0.2 %</div>
+<div class="name">AVAX</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar pos" style="left:50%;width:1.0932358318098723%;background:var(--blue)" title="AVAX: +0.13%"></div><div class="vlab" style="left:calc(50% + 1.0932358318098723% + 8px)">+0.13 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$15.2 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">1.3 %</div>
+<div class="name">UNI</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:40.749542961608775%;width:9.250457038391225%;background:var(--red)" title="UNI: -1.10%"></div><div class="vlab" style="right:60.750457038391225%">-1.10 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$29.7 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">1.8 %</div>
+<div class="name">CRV</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:40.3290676416819%;width:9.6709323583181%;background:var(--red)" title="CRV: -1.15%"></div><div class="vlab" style="right:61.1709323583181%">-1.15 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$2.6 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">3.1 %</div>
+<div class="name">FIL <span title="lectura obsoleta en esta ronda" style="color:var(--amber-ink)">⚠</span></div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:37.63802559414991%;width:12.361974405850091%;background:var(--red)" title="FIL: -1.47%"></div><div class="vlab" style="right:63.86197440585009%">-1.47 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$4.3 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">0.8 %</div>
+<div class="name">SOL</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:36.54478976234004%;width:13.455210237659964%;background:var(--red)" title="SOL: -1.60%"></div><div class="vlab" style="right:64.95521023765997%">-1.60 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$227.6 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">0.3 %</div>
+<div class="name">BTC</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:33.937842778793424%;width:16.06215722120658%;background:var(--red)" title="BTC: -1.91%"></div><div class="vlab" style="right:67.56215722120658%">-1.91 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$809.7 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">—</div>
+<div class="name">DOGE <span title="lectura obsoleta en esta ronda" style="color:var(--amber-ink)">⚠</span></div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:30.321755027422306%;width:19.678244972577694%;background:var(--red)" title="DOGE: -2.34%"></div><div class="vlab" style="right:71.17824497257769%">-2.34 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$35.1 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">0.7 %</div>
+<div class="name">LINK</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:27.714808043875685%;width:22.285191956124315%;background:var(--red)" title="LINK: -2.65%"></div><div class="vlab" style="right:73.78519195612432%">-2.65 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$8.7 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">0.8 %</div>
+<div class="name">ETH</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:26.95795246800731%;width:23.04204753199269%;background:var(--red)" title="ETH: -2.74%"></div><div class="vlab" style="right:74.5420475319927%">-2.74 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$367.2 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">0.1 %</div>
+<div class="name">XRP</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:22.585009140767827%;width:27.414990859232173%;background:var(--red)" title="XRP: -3.26%"></div><div class="vlab" style="right:78.91499085923218%">-3.26 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$40.5 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">0.7 %</div>
+<div class="name">AAVE</div>
+<div class="track"><div class="zero" style="left:50%"></div><div class="bar neg" style="left:17.37111517367459%;width:32.62888482632541%;background:var(--red)" title="AAVE: -3.88%"></div><div class="vlab" style="right:84.12888482632542%">-3.88 %</div></div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">$33.7 M</div>
+<div style="text-align:right;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2)">1.0 %</div>
+</div>
+<p class="cap" style="margin:16px 0 0">⚠ = el proveedor devolvió una lectura con sello antiguo; la celda no está verificada. <strong>BTC</strong> queda fuera de la tabla: su libro llegó obsoleto en los cuatro intentos. Última columna: coste de ida y vuelta a $5.000 de notional, en % de un R de $150.</p>
+</div>
+
+  <hr class="rule">
+
+<h2>Auditoría de capacidad · admisión y holgura</h2>
+<p class="cap" style="margin:-8px 0 16px">Notional al que el deslizamiento de ida y vuelta consume el <strong>15 % de un R de $150</strong> ($22,50), calculado nivel por nivel sobre el libro vivo. Umbral de holgura: <strong>$15.000</strong> = 3× tu notional máximo actual.</p>
+<div class="cards"><div class="card"><h3>Los ocho con menos holgura</h3><p class="cap">Escala hasta $36.000 · la línea ámbar es el umbral</p>
+<div class="dv" style="grid-template-columns:52px 1fr">
+<div class="name">ALGO</div>
+<div class="track"><div class="zero" style="left:30.00%;background:var(--amber);width:2px"></div><div class="bar pos" style="left:0;width:25.59%;background:var(--amber)" title="ALGO: $12,793"></div><div class="vlab" style="left:calc(25.59% + 8px)">$12,793</div></div>
+<div class="name">CRV</div>
+<div class="track"><div class="zero" style="left:30.00%;background:var(--amber);width:2px"></div><div class="bar pos" style="left:0;width:28.65%;background:var(--amber)" title="CRV: $14,327"></div><div class="vlab" style="left:calc(28.65% + 8px)">$14,327</div></div>
+<div class="name">ADA</div>
+<div class="track"><div class="zero" style="left:30.00%;background:var(--amber);width:2px"></div><div class="bar pos" style="left:0;width:33.17%;background:var(--blue)" title="ADA: $16,586"></div><div class="vlab" style="left:calc(33.17% + 8px)">$16,586</div></div>
+<div class="name">UNI</div>
+<div class="track"><div class="zero" style="left:30.00%;background:var(--amber);width:2px"></div><div class="bar pos" style="left:0;width:64.09%;background:var(--blue)" title="UNI: $32,045"></div><div class="vlab" style="left:calc(64.09% + 8px)">$32,045</div></div>
+<div class="name">DOT</div>
+<div class="track"><div class="zero" style="left:30.00%;background:var(--amber);width:2px"></div><div class="bar pos" style="left:0;width:66.16%;background:var(--blue)" title="DOT: $33,081"></div><div class="vlab" style="left:calc(66.16% + 8px)">$33,081</div></div>
+<div class="name">FIL</div>
+<div class="track"><div class="zero" style="left:30.00%;background:var(--amber);width:2px"></div><div class="bar pos" style="left:0;width:72.00%;background:var(--blue)" title="FIL: $39,352"></div><div class="vlab" style="left:calc(72.00% + 8px)">$39,352</div></div>
+<div class="name">LTC</div>
+<div class="track"><div class="zero" style="left:30.00%;background:var(--amber);width:2px"></div><div class="bar pos" style="left:0;width:72.00%;background:var(--blue)" title="LTC: $41,111"></div><div class="vlab" style="left:calc(72.00% + 8px)">$41,111</div></div>
+<div class="name">AAVE</div>
+<div class="track"><div class="zero" style="left:30.00%;background:var(--amber);width:2px"></div><div class="bar pos" style="left:0;width:72.00%;background:var(--blue)" title="AAVE: $43,362"></div><div class="vlab" style="left:calc(72.00% + 8px)">$43,362</div></div>
+</div>
+<div class="legend"><span><i class="sw" style="background:var(--blue)"></i> Con holgura</span><span><i class="sw" style="background:var(--amber)"></i> Sin holgura para escalar</span></div>
+<p class="cap" style="margin:12px 0 0">Etiquetados, no expulsados: hoy los operas sin coste real. Lo que dicen es que <strong>no aguantan que dupliques tamaño</strong>.</p></div>
+<div class="card"><h3>Coste real por operación completa</h3><p class="cap">Ida y vuelta a $5.000 de notional, en % de un R de $150</p>
+<div class="dv" style="grid-template-columns:52px 1fr">
+<div class="name">ADA</div>
+<div class="track"><div class="bar pos" style="left:0;width:66.00%;background:var(--amber);border-radius:0 4px 4px 0" title="ADA: 4.52% de R"></div><div class="vlab" style="left:calc(66.00% + 8px)">4.5 % · $6.78</div></div>
+<div class="name">ALGO</div>
+<div class="track"><div class="bar pos" style="left:0;width:47.39%;background:var(--blue);border-radius:0 4px 4px 0" title="ALGO: 3.25% de R"></div><div class="vlab" style="left:calc(47.39% + 8px)">3.2 % · $4.87</div></div>
+<div class="name">CRV</div>
+<div class="track"><div class="bar pos" style="left:0;width:45.27%;background:var(--blue);border-radius:0 4px 4px 0" title="CRV: 3.10% de R"></div><div class="vlab" style="left:calc(45.27% + 8px)">3.1 % · $4.65</div></div>
+<div class="name">LTC</div>
+<div class="track"><div class="bar pos" style="left:0;width:26.63%;background:var(--blue);border-radius:0 4px 4px 0" title="LTC: 1.82% de R"></div><div class="vlab" style="left:calc(26.63% + 8px)">1.8 % · $2.74</div></div>
+<div class="name">UNI</div>
+<div class="track"><div class="bar pos" style="left:0;width:26.25%;background:var(--blue);border-radius:0 4px 4px 0" title="UNI: 1.80% de R"></div><div class="vlab" style="left:calc(26.25% + 8px)">1.8 % · $2.70</div></div>
+<div class="name">AVAX</div>
+<div class="track"><div class="bar pos" style="left:0;width:18.96%;background:var(--blue);border-radius:0 4px 4px 0" title="AVAX: 1.30% de R"></div><div class="vlab" style="left:calc(18.96% + 8px)">1.3 % · $1.95</div></div>
+<div class="name">DOT</div>
+<div class="track"><div class="bar pos" style="left:0;width:16.19%;background:var(--blue);border-radius:0 4px 4px 0" title="DOT: 1.11% de R"></div><div class="vlab" style="left:calc(16.19% + 8px)">1.1 % · $1.66</div></div>
+<div class="name">AAVE</div>
+<div class="track"><div class="bar pos" style="left:0;width:13.98%;background:var(--blue);border-radius:0 4px 4px 0" title="AAVE: 0.96% de R"></div><div class="vlab" style="left:calc(13.98% + 8px)">1.0 % · $1.44</div></div>
+</div>
+<p class="cap" style="margin:12px 0 0"><strong>ADA es el más caro de tu universo</strong> pese a tener el mayor fondo ($9,6 M): spread de 13,6 pb y tick de 4,52 pb, el peor de los 16. Una sola foto no basta para condenarlo — pero merece re-muestreo antes de la próxima clasificación.</p></div></div>
+<div class="scroll" style="margin-top:18px"><table><thead><tr><th>Activo</th><th>Spread</th><th>Tick</th><th>Fondo (20 niveles)</th><th>i+v a $5k</th><th>% de R</th><th>Capacidad 15 %</th><th style="text-align:left">Estado</th></tr></thead><tbody>
+<tr><td class="asset">ETH</td><td>0.1 pb</td><td>0.08 pb</td><td>$8,128,599</td><td>$0.21</td><td>0.1 %</td><td>$309,923</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">BNB</td><td>0.4 pb</td><td>0.13 pb</td><td>$520,870</td><td>$0.20</td><td>0.1 %</td><td>$183,079</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">TRX</td><td>0.6 pb</td><td>0.30 pb</td><td>$581,355</td><td>$0.30</td><td>0.2 %</td><td>$133,751</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">SOL</td><td>1.0 pb</td><td>0.19 pb</td><td>$857,646</td><td>$0.48</td><td>0.3 %</td><td>$109,933</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">XRP</td><td>2.1 pb</td><td>0.71 pb</td><td>$5,553,150</td><td>$1.06</td><td>0.7 %</td><td>$106,279</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">AVAX</td><td>3.9 pb</td><td>1.30 pb</td><td>$4,989,840</td><td>$1.95</td><td>1.3 %</td><td>$57,724</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">LINK</td><td>2.5 pb</td><td>0.82 pb</td><td>$412,774</td><td>$1.23</td><td>0.8 %</td><td>$50,001</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">DOGE</td><td>2.2 pb</td><td>1.10 pb</td><td>$2,513,277</td><td>$1.10</td><td>0.7 %</td><td>$45,257</td><td style="text-align:left;font-size:12.5px">con holgura · <span style="color:var(--amber-ink)">revisar (10.4 % de divergencia)</span></td></tr>
+<tr><td class="asset">AAVE</td><td>2.9 pb</td><td>1.44 pb</td><td>$2,895,743</td><td>$1.44</td><td>1.0 %</td><td>$43,362</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">LTC</td><td>5.5 pb</td><td>1.82 pb</td><td>$3,966,626</td><td>$2.74</td><td>1.8 %</td><td>$41,111</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">FIL</td><td>2.5 pb</td><td>1.23 pb</td><td>$723,116</td><td>$1.23</td><td>0.8 %</td><td>$39,352</td><td style="text-align:left;font-size:12.5px">con holgura · <span style="color:var(--amber-ink)">revisar (6.3 % de divergencia)</span></td></tr>
+<tr><td class="asset">DOT</td><td>2.2 pb</td><td>1.08 pb</td><td>$825,835</td><td>$1.66</td><td>1.1 %</td><td>$33,081</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">UNI</td><td>5.4 pb</td><td>1.35 pb</td><td>$1,461,101</td><td>$2.70</td><td>1.8 %</td><td>$32,045</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">ADA</td><td>13.6 pb</td><td>4.52 pb</td><td>$9,603,834</td><td>$6.78</td><td>4.5 %</td><td>$16,586</td><td style="text-align:left;font-size:12.5px">con holgura</td></tr>
+<tr><td class="asset">CRV</td><td>7.7 pb</td><td>2.57 pb</td><td>$417,403</td><td>$4.65</td><td>3.1 %</td><td>$14,327</td><td style="text-align:left;font-size:12.5px"><span style="color:var(--amber-ink)">sin holgura</span></td></tr>
+<tr><td class="asset">ALGO</td><td>2.1 pb</td><td>1.05 pb</td><td>$70,454</td><td>$4.87</td><td>3.2 %</td><td>$12,793</td><td style="text-align:left;font-size:12.5px"><span style="color:var(--amber-ink)">sin holgura</span></td></tr>
+<tr><td class="asset">BTC</td><td colspan="7" style="text-align:left;font-size:12.5px;color:var(--ink-2)">No medido: el proveedor devolvió libros con sello de 23 a 52 días en los cuatro intentos. Su profundidad no está en duda.</td></tr>
+</tbody></table></div>
+<p class="cap" style="margin:14px 0 0"><strong>Aparcamiento de candidatos:</strong> vacío. El primer escaneo de admisión corre el 1 de octubre; los candidatos que pasen el umbral entran aquí con contador de 30 días y solo entonces se auditan para audición a mitad de riesgo.</p>
+  <hr class="rule">
+
+  <h2>Las 5 noticias que mueven el precio</h2>
+
+  <div class="news">
+    <div class="nhead"><span class="num">01</span><div style="flex:1">
+      <div class="tags"><span class="tag bear">Bajista</span><span class="tag">Macro EE. UU.</span></div>
+      <p class="ntitle">Las nóminas de agosto arrasan las previsiones y devuelven a la mesa la subida de tipos</p>
+    </div></div>
+    <div class="nl">
+      <p class="nbody">La economía estadounidense creó <b>162.000</b> empleos en agosto frente a un consenso de apenas <b>56.000</b>, con la tasa de paro en <b>4,1 %</b> y una revisión al alza de julio desde <b>−23.000</b> hasta <b>+21.000</b>. Bitcoin, que cotizaba cerca de <b>$81.000</b> antes del dato, cayó casi un <b>3 %</b> hasta rozar los <b>$79.300</b> en la sesión del viernes. El bono a 10 años saltó a <b>4,80 %</b> (+3,3 pb) y el de 2 años sumó <b>7 pb</b> hasta <b>4,40 %</b>: el mercado de tipos leyó el dato como munición para que la Fed endurezca, no relaje. Las acciones ligadas al sector lo pagaron peor que el propio bitcoin —Coinbase <b>−3,8 %</b> y Strategy <b>−1,9 %</b>—, mientras el VIX se quedaba en <b>~14</b>, su nivel más bajo desde enero.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">162.000</div><div class="fl">Nóminas no agrícolas de agosto (est. 56.000)</div></div>
+        <div class="fact"><div class="fv">4,1 %</div><div class="fl">Tasa de paro, en línea con lo esperado</div></div>
+        <div class="fact"><div class="fv">4,80 %</div><div class="fl">Rendimiento del bono a 10 años de EE. UU.</div></div>
+        <div class="fact"><div class="fv">−3 %</div><div class="fl">Caída de BTC desde $81.000 tras el dato</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><span class="num">02</span><div style="flex:1">
+      <div class="tags"><span class="tag bull">Alcista</span><span class="tag">Flujos ETF</span></div>
+      <p class="ntitle">Los ETF de bitcoin firman su mejor día en nueve meses y superan los $103.000 M en activos</p>
+    </div></div>
+    <div class="nl">
+      <p class="nbody">El jueves 3 de septiembre los ETF de bitcoin al contado de EE. UU. captaron <b>$730,87 M</b> netos, la mayor entrada en un solo día desde el <b>14 de enero</b> ($843,6 M). El reparto fue muy concentrado: <b>IBIT</b> de BlackRock aportó <b>$454 M</b> —el <b>62 %</b> del total—, seguida de <b>ARKB</b> con <b>$137,7 M</b> y <b>FBTC</b> con <b>$74,5 M</b>; en el lado contrario, <b>HODL</b> de VanEck perdió <b>$19,6 M</b> y <b>BTCW</b> otros <b>$5,2 M</b>. Con ello, los activos netos combinados alcanzan <b>$103.340 M</b>, equivalentes al <b>6 %</b> de toda la capitalización de bitcoin, y el acumulado desde enero de 2024 sube a <b>$55.440 M</b>. Es la prueba de que la demanda institucional sigue viva pese al ruido macro: el viernes, ya con el dato de empleo encima, los fondos aún sumaron <b>$174,6 M</b>.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">$730,9 M</div><div class="fl">Entrada neta del 3 de septiembre</div></div>
+        <div class="fact"><div class="fv">$454 M</div><div class="fl">Aportación de IBIT (62 % del total)</div></div>
+        <div class="fact"><div class="fv">$103.340 M</div><div class="fl">Activos netos = 6 % de la cap. de BTC</div></div>
+        <div class="fact"><div class="fv">$55.440 M</div><div class="fl">Acumulado neto desde enero de 2024</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><span class="num">03</span><div style="flex:1">
+      <div class="tags"><span class="tag bull">Alcista</span><span class="tag">Activo específico</span></div>
+      <p class="ntitle">Zcash rompe los $1.000 por primera vez en una década arrastrado por su ETF al contado</p>
+    </div></div>
+    <div class="nl">
+      <p class="nbody">ZEC subió un <b>20 %</b> el 4 de septiembre hasta un máximo de <b>$1.023</b>, su primera lectura de cuatro cifras en diez años: acumula <b>+94 %</b> en 30 días y cerca de <b>+2.300 %</b> interanual desde los ~$42 de septiembre de 2025. El detonante es <b>ZCSH</b>, el primer ETF al contado sobre una moneda de privacidad cotizado en EE. UU., que Grayscale listó en NYSE Arca el <b>25 de agosto</b> con <b>$304 M</b> y que en diez días ya gestiona <b>$414 M</b>. El movimiento se retroalimentó con un cierre forzado de cortos: <b>$34,5 M</b> en apuestas bajistas liquidadas en una sola sesión, incluido un trader que perdió <b>$18,5 M</b> en una posición corta de <b>32.760</b> monedas. ZEC desplaza así a Dogecoin como décima criptomoneda por capitalización, con <b>$16.800 M</b>, y arrastra al resto del sector: Dash <b>+17 %</b> hasta $50.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">$1.023</div><div class="fl">Máximo de ZEC el 4 de septiembre</div></div>
+        <div class="fact"><div class="fv">$414 M</div><div class="fl">AUM de ZCSH a 10 días de su estreno</div></div>
+        <div class="fact"><div class="fv">$34,5 M</div><div class="fl">Cortos liquidados en una sesión</div></div>
+        <div class="fact"><div class="fv">$16.800 M</div><div class="fl">Capitalización: ya es la #10, por delante de DOGE</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><span class="num">04</span><div style="flex:1">
+      <div class="tags"><span class="tag mix">Mixta</span><span class="tag">Tipos de interés</span></div>
+      <p class="ntitle">La reunión del 15–16 de septiembre es una moneda al aire y los mercados no se ponen de acuerdo</p>
+    </div></div>
+    <div class="nl">
+      <p class="nbody">La dispersión entre plataformas es el dato más incómodo de la semana. <b>CME FedWatch</b> daba el 4 de septiembre un <b>57,6 %</b> a una subida de 25 pb frente a <b>42,4 %</b> de mantener; los mercados de predicción son mucho más tibios, con <b>Polymarket</b> en <b>50,5 %</b> y <b>Kalshi</b> en <b>49,5 %</b>, y un agregado ponderado por volumen de <b>50,3 %</b> subida / <b>48,8 %</b> mantener más un <b>4,5 %</b> a un alza de <b>50 pb o más</b>. Antes del dato de empleo la probabilidad rondaba el <b>55 %</b> y llegó a tocar el <b>70 %</b> en futuros de tipos justo después. La probabilidad de recorte es <b>0 %</b> en todas ellas. Traducción para cripto: no hay escenario de liquidez fácil a la vista, y el activo entra en la reunión con un riesgo de sorpresa simétrico —lo que suele significar volatilidad, no dirección.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">57,6 %</div><div class="fl">Prob. de subida según CME FedWatch (4 sep)</div></div>
+        <div class="fact"><div class="fv">50,5 %</div><div class="fl">Prob. de subida en Polymarket (5 sep)</div></div>
+        <div class="fact"><div class="fv">0,0 %</div><div class="fl">Probabilidad de recorte en septiembre</div></div>
+        <div class="fact"><div class="fv">3,63 %</div><div class="fl">Tipo de los fondos federales, efectivo</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><span class="num">05</span><div style="flex:1">
+      <div class="tags"><span class="tag mix">Mixta</span><span class="tag">Regulación EE. UU.</span></div>
+      <p class="ntitle">La Ley CLARITY pierde a un opositor clave justo antes de su votación en el Senado</p>
+    </div></div>
+    <div class="nl">
+      <p class="nbody">La <b>Asociación Nacional de Sheriffs</b> pasó de oponerse a declararse neutral sobre la <b>Digital Asset Market Clarity Act</b> (H.R. 3633), retirando una de las objeciones de las fuerzas del orden que más pesaban entre los legisladores demócratas indecisos. El Senado tiene fijada la votación de cierre (<em>cloture</em>) sobre la moción de proceder para el <b>15 de septiembre a las 14:15 h ET</b>, y hacen falta <b>60 votos</b>: con <b>53</b> escaños republicanos, los partidarios necesitan al menos <b>7</b> demócratas o independientes. El listón sigue siendo alto —<b>Galaxy Research</b> estima en torno a un <b>10 %</b> la probabilidad de que la ley se apruebe definitivamente en 2026— y el 15 de septiembre no es la votación final, sino el permiso para debatir y enmendar. Si falla, la regulación integral se desplaza a 2027 y el peso vuelve a la SEC y la CFTC.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">15 sep</div><div class="fl">Votación de cierre en el Senado, 14:15 h ET</div></div>
+        <div class="fact"><div class="fv">60</div><div class="fl">Votos necesarios para superar el <em>cloture</em></div></div>
+        <div class="fact"><div class="fv">7</div><div class="fl">Votos demócratas mínimos que faltan</div></div>
+        <div class="fact"><div class="fv">~10 %</div><div class="fl">Prob. de que sea ley en 2026 (Galaxy Research)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <h2>También en el radar</h2>
+  <ul class="radar">
+    <li><b>Strategy vuelve a comprar tras diez semanas de pausa:</b> <b>4.603 BTC</b> por <b>$369,7 M</b> entre el 24 y el 30 de agosto, a unos <b>$80.385</b> por moneda. Su tesorería llega a <b>845.050 BTC</b> (~<b>$68.500 M</b>), por encima de su propia capitalización bursátil de <b>$47.300 M</b>. Entre marzo y agosto había <em>vendido</em> ~7.000 BTC para cubrir dividendos de preferentes: el giro es de señal, no de continuidad.</li>
+    <li><b>La SEC define «digital commodity».</b> La orden <b>34-106268</b> del 4 de septiembre aprueba por vía acelerada la enmienda de la regla <b>5711(d)</b> de Nasdaq Texas, habilita ETF cripto de <b>gestión activa</b> y permite hasta un <b>15 % del NAV</b> en activos no elegibles de entrada. Designa expresamente a <b>BTC, ETH, SOL y XRP</b> como elegibles.</li>
+    <li><b>Liquidaciones contenidas.</b> <b>$117,48 M</b> liquidados en 24 h entre <b>56.624</b> traders: <b>$49,96 M</b> en largos y <b>$67,50 M</b> en cortos. Mercado ordenado, sin la cascada típica de un giro macro.</li>
+    <li><b>Coinbase pide luz verde a la SEC</b> para lanzar perpetuos sobre acciones con negociación 24/7, un paso más en la fusión entre mercados cripto y bursátiles.</li>
+    <li><b>Brecha en Trezor:</b> el fabricante de carteras confirma que la filtración de un socio logístico afecta a <b>67.000 registros</b> adicionales de clientes. Riesgo de <em>phishing</em> dirigido.</li>
+    <li><b>El FMI confirma que El Salvador no compra bitcoin con fondos públicos desde junio de 2025</b>, y Corea del Sur fija <b>febrero de 2027</b> para su mercado tokenizado de valores con liquidación en stablecoins on-chain.</li>
+  </ul>
+
+  <hr class="rule">
+
+  <h2>Qué vigilar</h2>
+  <div class="cal">
+    <div class="d">6 sep</div><div class="e">Desbloqueo de <strong>HYPE</strong> (Hyperliquid)<em>≈ 9,92 M de tokens (~$797 M) para colaboradores principales. Presión de oferta inmediata</em></div>
+    <div class="d">9 sep</div><div class="e">Actualización <strong>Transaction v1</strong> de Solana<em>Riesgo técnico y catalizador de narrativa para SOL</em></div>
+    <div class="d">11 sep</div><div class="e"><strong>IPC de agosto</strong> · Oficina de Estadísticas Laborales<em>El último dato de inflación antes del FOMC: la pieza que decide si el 57 % de probabilidad de subida se convierte en 90 % o en 20 %. Evento de mayor riesgo de la semana</em></div>
+    <div class="d">15 sep · 14:15 ET</div><div class="e">Votación de cierre del Senado sobre la <strong>Ley CLARITY</strong> (H.R. 3633)<em>Se necesitan 60 votos; con 53 republicanos faltan al menos 7 demócratas</em></div>
+    <div class="d">15 sep</div><div class="e">Actualización <strong>Protocolo 27</strong> de Pi Network</div>
+    <div class="d">15–16 sep</div><div class="e">Reunión del <strong>FOMC</strong> y decisión de tipos (16 sep, 14:00 ET)<em>La cita del trimestre para cripto: subir tipos sería el primer endurecimiento con los ETF ya consolidados</em></div>
+    <div class="d">18 sep</div><div class="e">Vencimiento mensual de opciones<em><em>Max pain</em> estimado en <strong>$78.000</strong> según DWF Labs: imán de precio si el mercado llega flojo</em></div>
+    <div class="d">Cada día hábil</div><div class="e">Flujos de ETF al contado (BTC, ETH, SOL, XRP)<em>Publicación con un día de retraso vía SoSoValue y CoinGlass</em></div>
+  </div>
+
+  <footer>
+    <strong style="color:var(--ink-2)">Fuentes:</strong>
+    CoinDesk (precios, cobertura en directo del 4 de septiembre y flujos de ETF) ·
+    CNBC y Fox Business (informe de empleo de agosto) ·
+    Yahoo Finance / Decrypt (mejor día de ETF en nueve meses) ·
+    crypto.news y The Coin Republic (Zcash y ZCSH) ·
+    CryptoBriefing, FinanceFeeds, CryptoDnes y The Crypto Times (flujos por activo) ·
+    centralbank.watch y DeFi Rate (probabilidades de la Fed: CME FedWatch, Polymarket, Kalshi) ·
+    BitDegree y FearGreedMeter (índice Fear &amp; Greed, datos de Alternative.me) ·
+    The Block y CoinGabbar (titulares, liquidaciones de CoinGlass) ·
+    Bitget Academy (calendario de la Ley CLARITY).
+    <p class="disc">Informe generado automáticamente. La API de Coinbase y la de Alternative.me no fueron accesibles en esta ejecución; los precios y el índice proceden de las fuentes citadas. Las cifras marcadas como preliminares proceden de una sola fuente. Esto no es asesoría financiera ni una recomendación de compra o venta: es un resumen informativo y los precios de los criptoactivos son extremadamente volátiles.</p>
+  </footer>
+</div>
+
+</body></html>
