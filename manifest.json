@@ -12,5 +12,26 @@
     "titulo": "Informe Semanal IA · 5 sep 2026",
     "url_artefacto": "https://claude.ai/code/artifact/99ce2931-2078-408f-93ed-e816ac36f790",
     "publicado_en": "2026-09-05T21:14:00-06:00"
+  },
+  {
+    "carpeta": "harinas",
+    "fecha": "2026-09-06",
+    "titulo": "Informe Normativo Harinas",
+    "url_artefacto": "https://claude.ai/code/artifact/f93903c6-19a1-4d79-bf07-f458d2e26ddd",
+    "publicado_en": "2026-09-08T06:28:03-06:00"
+  },
+  {
+    "carpeta": "harinas",
+    "fecha": "2026-09-07",
+    "titulo": "Informe Normativo Harinas · 7 sep 2026",
+    "url_artefacto": "https://claude.ai/code/artifact/419e2133-070a-4ec5-9c3f-b1ac91ca7159",
+    "publicado_en": "2026-09-08T06:28:03-06:00"
+  },
+  {
+    "carpeta": "cripto",
+    "fecha": "2026-09-07",
+    "titulo": "Informe Cripto Diario",
+    "url_artefacto": "https://claude.ai/code/artifact/b07b7062-e06c-4241-9b71-0e1ecfb1adc3",
+    "publicado_en": "2026-09-08T06:28:03-06:00"
   }
 ]
