@@ -1,0 +1,568 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Informe Semanal IA · 12 sep 2026</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f6f3ec;          /* papel/harina */
+  --surface:#fdfbf7;
+  --surface-2:#efeadf;
+  --ink:#1d1a15;
+  --ink-2:#55504a;
+  --muted:#8a847a;
+  --line:#dcd6c8;
+  --line-2:#c8c1b0;
+  --accent:#8f6412;      /* ocre trigo */
+  --accent-soft:#f1e5c6;
+  --accent-ink:#5f4108;
+  --industrial:#1f5f7a;  /* azul acero para sección industrial */
+  --industrial-soft:#dbeaf1;
+  --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+  --up:#006300; --down:#b3261e;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948;
+  --grid:#e1ddd2; --axis:#c3bdae;
+  --shadow:0 1px 2px rgba(29,26,21,.06),0 8px 24px rgba(29,26,21,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#15161a; --surface:#1d1f24; --surface-2:#24272d;
+    --ink:#f2efe8; --ink-2:#c4bfb4; --muted:#8e897f;
+    --line:#33363d; --line-2:#454851;
+    --accent:#e0b04a; --accent-soft:#3a2f12; --accent-ink:#f0cf7d;
+    --industrial:#6fb6d6; --industrial-soft:#1b2f3a;
+    --up:#3ec03e; --down:#ff7b72;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+    --grid:#2c2e34; --axis:#3f424a;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#15161a; --surface:#1d1f24; --surface-2:#24272d;
+  --ink:#f2efe8; --ink-2:#c4bfb4; --muted:#8e897f;
+  --line:#33363d; --line-2:#454851;
+  --accent:#e0b04a; --accent-soft:#3a2f12; --accent-ink:#f0cf7d;
+  --industrial:#6fb6d6; --industrial-soft:#1b2f3a;
+  --up:#3ec03e; --down:#ff7b72;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+  --grid:#2c2e34; --axis:#3f424a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15.5px;line-height:1.55;padding-inline:clamp(16px,4vw,40px);padding-block:0 64px}
+a{color:var(--accent-ink);text-decoration-color:var(--line-2);text-underline-offset:2px}
+a:hover{text-decoration-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-family:"Bricolage Grotesque","IBM Plex Sans",system-ui,sans-serif;text-wrap:balance;line-height:1.12;margin:0}
+h1{font-size:clamp(30px,4.6vw,48px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(22px,2.8vw,30px);font-weight:700}
+h3{font-size:17px;font-weight:700}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.num{font-variant-numeric:tabular-nums}
+p{margin:0}
+.lede{max-width:66ch;color:var(--ink-2);font-size:16.5px}
+
+/* header */
+header{padding-block:36px 20px;border-bottom:1px solid var(--line);display:grid;gap:14px}
+.masthead{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:baseline;justify-content:space-between}
+.stamp{display:flex;gap:8px;flex-wrap:wrap}
+.stamp span{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;padding:4px 9px;border:1px solid var(--line-2);border-radius:999px;color:var(--ink-2);background:var(--surface)}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px 14px;padding-block:14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
+nav.toc a{font-size:13px;color:var(--ink-2);text-decoration:none;padding:3px 0;border-bottom:2px solid transparent}
+nav.toc a:hover{border-color:var(--accent);color:var(--ink)}
+
+section{padding-block:40px 8px;scroll-margin-top:60px}
+.sec-head{display:grid;gap:6px;margin-bottom:20px}
+.sec-head .sub{color:var(--ink-2);max-width:70ch}
+.sec-num{display:inline-flex;align-items:center;gap:10px}
+.sec-num i{font-style:normal;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:1px 6px}
+
+/* resumen ejecutivo */
+.exec{display:grid;gap:10px;counter-reset:pt}
+.exec li{list-style:none;display:grid;grid-template-columns:auto 1fr;gap:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+.exec li:first-child{border-color:var(--accent);background:linear-gradient(90deg,var(--accent-soft),var(--surface) 60%)}
+.exec li::before{counter-increment:pt;content:counter(pt);font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:22px;color:var(--accent);line-height:1;padding-top:2px;min-width:1.2em}
+.exec b{font-weight:600}
+.exec .src{color:var(--muted);font-size:12.5px}
+.kpi{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;color:var(--accent-ink)}
+
+/* timeline */
+.tl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px}
+.tl-wrap svg{display:block;min-width:1100px;width:100%;height:auto}
+.tl-wrap text{font-family:"IBM Plex Sans",system-ui,sans-serif;fill:var(--ink)}
+.tl-wrap .day{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;fill:var(--muted);letter-spacing:.08em}
+.tl-wrap .co{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:13px}
+.tl-wrap .desc{font-size:11.5px;fill:var(--ink-2)}
+
+/* tablas */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--surface-2);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;padding:2px 7px;border-radius:4px;border:1px solid var(--line-2);color:var(--ink-2);white-space:nowrap}
+.co{font-weight:600}
+.up{color:var(--up);font-weight:600}.down{color:var(--down);font-weight:600}.flat{color:var(--muted);font-weight:600}
+
+/* scoreboard */
+.score-grid{display:grid;grid-template-columns:1fr;gap:18px}
+.chart-card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:grid;gap:8px}
+.chart-card h3{font-size:15px}
+.chart-card .cap{font-size:12.5px;color:var(--muted)}
+.chart-card svg{width:100%;height:auto;display:block}
+.chart-card text{font-family:"IBM Plex Sans",system-ui,sans-serif;fill:var(--ink)}
+.chart-card .tick{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;fill:var(--muted)}
+.chart-card .lbl{font-size:12.5px;fill:var(--ink)}
+.chart-card .val{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;fill:var(--ink-2)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.method{font-size:13px;color:var(--ink-2);border-left:3px solid var(--accent);padding:8px 14px;background:var(--surface);border-radius:0 6px 6px 0}
+
+/* industrial */
+#industria .sec-num i{color:var(--industrial);border-color:var(--industrial)}
+.ind-list{display:grid;gap:12px}
+.ind-list li{list-style:none;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--industrial);border-radius:6px;display:grid;gap:4px}
+.ind-list .src{color:var(--muted);font-size:12.5px}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;align-items:stretch;margin-top:8px}
+.flow .node{background:var(--industrial-soft);border:1px solid var(--industrial);border-radius:6px;padding:10px 12px;font-size:12.5px;display:grid;gap:3px;position:relative}
+.flow .node b{font-family:"Bricolage Grotesque",sans-serif;font-size:13px}
+.flow .node+.node::before{content:"→";position:absolute;left:-14px;top:50%;transform:translateY(-50%);color:var(--industrial);font-weight:700;background:var(--surface);padding:0 2px}
+.flow{column-gap:20px}
+@media (max-width:820px){.flow{grid-template-columns:1fr 1fr}.flow .node+.node::before{display:none}}
+@media (max-width:480px){.flow{grid-template-columns:1fr}}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+@media (max-width:820px){.cards{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;display:grid;gap:12px;box-shadow:var(--shadow)}
+.card header{padding:0;border:0;display:flex;gap:10px;align-items:center}
+.card .ico{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:var(--industrial-soft);color:var(--industrial);font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:13px;flex:none}
+.card dl{margin:0;display:grid;gap:9px}
+.card dt{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.card dd{margin:0;font-size:14px}
+.card .hard{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;color:var(--industrial)}
+.none{border-style:dashed}
+.none .ico{background:var(--surface-2);color:var(--muted)}
+.action{background:var(--surface-2);border-radius:6px;padding:10px 12px;font-size:13.5px}
+.action code{font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:var(--surface);padding:1px 5px;border-radius:3px;border:1px solid var(--line)}
+
+/* regulación */
+.reg{display:grid;gap:10px}
+.reg li{list-style:none;display:grid;grid-template-columns:110px 1fr;gap:14px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+.reg .when{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--accent-ink)}
+@media (max-width:560px){.reg li{grid-template-columns:1fr}}
+
+/* agenda */
+.agenda td:first-child{white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0;background:var(--industrial)}
+.dot.gen{background:var(--muted)}
+.horizon{margin-top:14px;font-size:13.5px;color:var(--ink-2)}
+
+/* fuentes */
+.sources{columns:2;column-gap:32px;font-size:13px}
+@media (max-width:820px){.sources{columns:1}}
+.sources h3{break-after:avoid;margin:14px 0 6px;font-size:13px;font-family:"IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.sources ul{margin:0;padding-left:18px}
+.sources li{break-inside:avoid;margin-bottom:4px}
+.sources a{word-break:break-word}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.card{transition:transform .15s ease}.card:hover{transform:translateY(-2px)}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Informe semanal · Inteligencia Artificial · Guatemala (UTC−6)</div>
+      <h1>Informe Semanal IA · 12 sep 2026</h1>
+    </div>
+    <div class="stamp"><span>Semana 5 → 12 sep 2026</span><span>Para: Julio Santisteban · Control de Calidad</span><span>Búsquedas: 40+ · fuentes: 60+</span></div>
+  </div>
+  <p class="lede">OpenAI puso GPT‑6 Astra en manos de todos los planes pagos y lanzó su Agents API; DeepSeek respondió con un V4.1‑Flash de 552 B parámetros a 1,4 % del costo; Cognition y Sakana atacaron la frontera precio/rendimiento en código. En lo industrial, la semana fue de capital y herramientas más que de papers: sin novedad datada en molinería, pero con dos acciones concretas para Excel y para dashboards.</p>
+</header>
+
+<nav class="toc" aria-label="Secciones">
+  <a href="#resumen">1 Resumen</a><a href="#linea">2 Línea de tiempo</a><a href="#productos">3 Productos</a><a href="#delantera">4 ¿Quién va adelante?</a><a href="#industria">5 Industria y laboratorio</a><a href="#regulacion">6 Regulación y negocios</a><a href="#agenda">7 Agenda</a><a href="#fuentes">8 Fuentes</a>
+</nav>
+
+<!-- 1 RESUMEN -->
+<section id="resumen">
+  <div class="sec-head"><div class="sec-num"><i>01</i><h2>Resumen ejecutivo</h2></div><p class="sub">Siete hechos con cifra. El primero es el que mueve el tablero.</p></div>
+  <ol class="exec">
+    <li><div><b>GPT‑6 Astra llegó a ChatGPT Work, Codex y la API (10 sep) a <span class="kpi">$10 / $50</span> por millón de tokens</b> — 2,5× el precio de GPT‑5.6 Sol. Artificial Analysis (9 sep) lo empata con Claude Fable 5.1 en su Índice de Inteligencia (53 vs 53) y en el Índice de Agentes de Código (62 vs 62); en Terminal‑Bench 4.0 gana 59 % vs 52 %. Su técnica de "recurrencia opaca" oculta parte de la cadena de razonamiento y sigue inquietando a los equipos de seguridad. <span class="src">Fuentes: OpenAI Release Notes, Artificial Analysis, TechCrunch.</span></div></li>
+    <li><div><b>DeepSeek‑V4.1‑Flash (10 sep, licencia MIT): 552 B parámetros MoE, 1 M de contexto y entrada cacheada a <span class="kpi">$0,003</span>/M en horario valle</b> ($0,15 sin caché, $0,60 salida). Reporta DeepSWE v1.1 = 74,2 (Opus 5: 74,0; Sol: 73,0) pero Terminal‑Bench 3.0 = 30,0 (Opus 5: 43,3). Un tercero midió "98 % de la calidad de Astra a 1,4 % de su costo" en tareas de diseño. <span class="src">VentureBeat, Dataconomy.</span></div></li>
+    <li><div><b>Cognition SWE‑2 (12 sep): 50,0 % en FrontierCode 1.1 Main, a 1 punto de Fable 5.1 con <span class="kpi">64 %</span> menos costo</b>; post‑entrenado sobre Kimi K3 (2,8 T parámetros) con RL y penalización de costo. Solo dentro de Devin; gratis para planes pagos hasta el 10 oct. <span class="src">MarkTechPost, TechTimes.</span></div></li>
+    <li><div><b>OpenAI abrió la Agents API (beta pública) y GPT‑Live‑1 (voz full‑duplex, <span class="kpi">$0,05/min</span>) el 10 sep</b>; además el plugin "Data" para dashboards en ChatGPT Work quedó en disponibilidad general. <span class="src">OpenAI Release Notes.</span></div></li>
+    <li><div><b>Oracle (10 sep): ingresos trimestrales <span class="kpi">$19,3 mil M</span> (+30 %), infraestructura cloud +121 % a $7,4 mil M y cartera contratada (RPO) de $664 mil M</b>, con $30 mil M en contratos nuevos de IA en el trimestre y flujo de caja libre de −$5 mil M. Adobe, el mismo día: $6,76 mil M (+13 %), ARR "AI‑first" > $650 M (+150 %). <span class="src">Oracle IR, BigGo Finance.</span></div></li>
+    <li><div><b>Sakana AI (11 sep) lanzó Fugu Max a <span class="kpi">$2 / $6</span> por M tokens</b> —orquestación de modelos abiertos— y Fugu Ultra v2 con 48,3 en Chartography (lectura de gráficos) vs 27,3 de Opus 5. <span class="src">Sakana AI.</span></div></li>
+    <li><div><b>Cohere negocia $2–3 mil M a valoración de <span class="kpi">$20 mil M</span> (Bloomberg, 11 sep; reportado, no cerrado)</b>, casi 3× los $7 mil M de sep 2025; sería la mayor ronda privada de Canadá. Apple presentó el A20 Pro (2 nm, aceleradores neuronales) y Siri AI en beta desde el 14 sep. <span class="src">PYMNTS/Bloomberg, MacRumors.</span></div></li>
+  </ol>
+</section>
+
+<!-- 2 LÍNEA DE TIEMPO -->
+<section id="linea">
+  <div class="sec-head"><div class="sec-num"><i>02</i><h2>Línea de tiempo de la semana</h2></div><p class="sub">Un hito por día, sábado a sábado. Fechas en hora de EE. UU./anuncio oficial.</p></div>
+  <div class="tl-wrap">
+  <svg viewBox="0 0 1400 300" role="img" aria-label="Línea de tiempo 5 a 12 de septiembre de 2026">
+<line x1="40" y1="150" x2="1360" y2="150" stroke="var(--axis)" stroke-width="2"/>
+<g transform="translate(110,0)">
+<circle cx="0" cy="150" r="7" fill="var(--s8)" stroke="var(--surface)" stroke-width="2"/>
+<line x1="0" y1="136" x2="0" y2="120" stroke="var(--line-2)" stroke-width="1"/>
+<text class="day" x="0" y="114" text-anchor="middle">SÁB 5</text>
+<text class="co" x="0" y="70" text-anchor="middle">OpenAI · Anthropic · xAI</text>
+<text class="desc" x="0" y="88" text-anchor="middle">Caídas simultáneas de</text>
+<text class="desc" x="0" y="103" text-anchor="middle">ChatGPT, Claude y Grok</text>
+</g>
+<g transform="translate(280,0)">
+<circle cx="0" cy="150" r="7" fill="var(--s7)" stroke="var(--surface)" stroke-width="2"/>
+<line x1="0" y1="164" x2="0" y2="180" stroke="var(--line-2)" stroke-width="1"/>
+<text class="day" x="0" y="196" text-anchor="middle">DOM 6</text>
+<text class="co" x="0" y="216" text-anchor="middle">Anthropic</text>
+<text class="desc" x="0" y="234" text-anchor="middle">Claude Code 2.1.263:</text>
+<text class="desc" x="0" y="249" text-anchor="middle">correcciones de fiabilidad</text>
+</g>
+<g transform="translate(450,0)">
+<circle cx="0" cy="150" r="7" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"/>
+<line x1="0" y1="136" x2="0" y2="120" stroke="var(--line-2)" stroke-width="1"/>
+<text class="day" x="0" y="114" text-anchor="middle">LUN 7</text>
+<text class="co" x="0" y="54" text-anchor="middle">GitHub / Microsoft</text>
+<text class="desc" x="0" y="72" text-anchor="middle">Copilot: enrutador HydraFusion;</text>
+<text class="desc" x="0" y="87" text-anchor="middle">tareas de agente recurrentes</text>
+<text class="desc" x="0" y="102" text-anchor="middle">en VS Code 1.137</text>
+</g>
+<g transform="translate(620,0)">
+<circle cx="0" cy="150" r="8" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"/>
+<line x1="0" y1="164" x2="0" y2="180" stroke="var(--line-2)" stroke-width="1"/>
+<text class="day" x="0" y="196" text-anchor="middle">MAR 8</text>
+<text class="co" x="0" y="216" text-anchor="middle">OpenAI</text>
+<text class="desc" x="0" y="234" text-anchor="middle">GPT Image 2.5 (Flare/Sunburst);</text>
+<text class="desc" x="0" y="249" text-anchor="middle">prueba Navier–Stokes en Lean</text>
+<text class="desc" x="0" y="264" text-anchor="middle">(disputada)</text>
+</g>
+<g transform="translate(790,0)">
+<circle cx="0" cy="150" r="7" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"/>
+<line x1="0" y1="136" x2="0" y2="120" stroke="var(--line-2)" stroke-width="1"/>
+<text class="day" x="0" y="114" text-anchor="middle">MIÉ 9</text>
+<text class="co" x="0" y="70" text-anchor="middle">Apple</text>
+<text class="desc" x="0" y="88" text-anchor="middle">iPhone 18 Pro con A20 Pro (2 nm);</text>
+<text class="desc" x="0" y="103" text-anchor="middle">Siri AI en beta el 14 sep</text>
+</g>
+<g transform="translate(960,0)">
+<circle cx="0" cy="150" r="10" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"/>
+<line x1="0" y1="164" x2="0" y2="180" stroke="var(--line-2)" stroke-width="1"/>
+<text class="day" x="0" y="196" text-anchor="middle">JUE 10</text>
+<text class="co" x="0" y="216" text-anchor="middle">OpenAI · DeepSeek · Oracle</text>
+<text class="desc" x="0" y="234" text-anchor="middle">Astra en API; Agents API;</text>
+<text class="desc" x="0" y="249" text-anchor="middle">GPT‑Live‑1 $0,05/min; DeepSeek</text>
+<text class="desc" x="0" y="264" text-anchor="middle">V4.1‑Flash; Oracle $19,3 mil M</text>
+</g>
+<g transform="translate(1130,0)">
+<circle cx="0" cy="150" r="9" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"/>
+<line x1="0" y1="136" x2="0" y2="120" stroke="var(--line-2)" stroke-width="1"/>
+<text class="day" x="0" y="114" text-anchor="middle">VIE 11</text>
+<text class="co" x="0" y="54" text-anchor="middle">Sakana · Cohere · Google</text>
+<text class="desc" x="0" y="72" text-anchor="middle">Fugu Max $2/$6; Cohere busca</text>
+<text class="desc" x="0" y="87" text-anchor="middle">$20 mil M; Sheets 20 M celdas;</text>
+<text class="desc" x="0" y="102" text-anchor="middle">Claude Code plugin eval</text>
+</g>
+<g transform="translate(1300,0)">
+<circle cx="0" cy="150" r="7" fill="var(--s5)" stroke="var(--surface)" stroke-width="2"/>
+<line x1="0" y1="164" x2="0" y2="180" stroke="var(--line-2)" stroke-width="1"/>
+<text class="day" x="0" y="196" text-anchor="middle">SÁB 12</text>
+<text class="co" x="0" y="216" text-anchor="middle">Cognition</text>
+<text class="desc" x="0" y="234" text-anchor="middle">SWE‑2: 50,0 % FrontierCode,</text>
+<text class="desc" x="0" y="249" text-anchor="middle">−64 % de costo vs Fable 5.1</text>
+</g>
+<text class="day" x="40" y="272" text-anchor="start">CONTEXTO PREVIO (1–4 SEP): Fable 5.1 y Mythos 5.1 (1 sep) · Gemini 3.8 Flash y Muse Spark 1.3 (2 sep) · GPT‑6 Astra anunciado y NVIDIA–Hugging Face $12,93 mil M (3 sep) · Radio del punto ∝ n.º de hitos del día</text>
+</svg>
+  </div>
+</section>
+
+<!-- 3 PRODUCTOS -->
+<section id="productos">
+  <div class="sec-head"><div class="sec-num"><i>03</i><h2>Nuevos productos y modelos</h2></div><p class="sub">Solo lanzamientos con fecha dentro de la semana (5–12 sep). Precios en USD por millón de tokens (entrada / salida) salvo indicación.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Empresa</th><th>Producto</th><th>Tipo</th><th>Fecha</th><th>Dato clave</th><th>Disponibilidad</th><th>Fuente</th></tr></thead>
+    <tbody>
+      <tr><td class="co">OpenAI</td><td>GPT‑6 Astra (despliegue amplio)</td><td><span class="tag">LLM frontera</span></td><td class="mono">10 sep</td><td>$10 / $50; caché −90 %; modo Fast 2× precio; 1 M contexto; OSWorld 2.0 72,6 %, ARC‑AGI‑3 99,9 % (auto‑reportado)</td><td>ChatGPT Work, Codex, API, Azure, Bedrock</td><td><a href="https://releasebot.io/updates/openai">Releasebot</a> · <a href="https://openai.com/index/gpt-6-astra/">OpenAI</a></td></tr>
+      <tr><td class="co">OpenAI</td><td>Agents API</td><td><span class="tag">Agentes</span></td><td class="mono">10 sep</td><td>Harness Codex gestionado, sandboxes, subagentes paralelos; sin cargo extra sobre tokens/herramientas</td><td>Beta pública</td><td><a href="https://openai.com/products/release-notes/">OpenAI Release Notes</a></td></tr>
+      <tr><td class="co">OpenAI</td><td>GPT‑Live‑1</td><td><span class="tag">Voz</span></td><td class="mono">10 sep</td><td>$0,05 / minuto; full‑duplex; 12 voces; soporte SIP/telefonía</td><td>GA en API</td><td><a href="https://openai.com/index/introducing-gpt-live-1-in-the-api/">OpenAI</a></td></tr>
+      <tr><td class="co">OpenAI</td><td>GPT Image 2.5 (Flare / Sunburst)</td><td><span class="tag">Imagen</span></td><td class="mono">8 sep</td><td>Dos variantes: Flare (velocidad) y Sunburst (precisión); edición multi‑turno, salida 4K</td><td>ChatGPT, Work, Codex, API</td><td><a href="https://llmgateway.io/timeline">LLM Gateway</a> · <a href="https://fal.ai/gpt-image-2.5">fal.ai</a></td></tr>
+      <tr><td class="co">DeepSeek</td><td>DeepSeek‑V4.1‑Flash</td><td><span class="tag">LLM abierto</span></td><td class="mono">10 sep</td><td>552 B MoE (8 B activos entrada / 16 B salida); $0,15 / $0,60 valle, $0,30 / $1,20 pico; caché $0,003; DeepSWE 74,2</td><td>Pesos MIT + API</td><td><a href="https://venturebeat.com/technology/deepseek-v4-1-flash-debuts-with-0-003-1m-off-peak-cached-input-rate-and-benchmarks-eclipsing-gpt-5-6-sol-claude-opus-5">VentureBeat</a></td></tr>
+      <tr><td class="co">Sakana AI</td><td>Fugu Max · Fugu Ultra v2</td><td><span class="tag">Orquestador</span></td><td class="mono">11 sep</td><td>Fugu Max $2 / $6 (salida 40–60 % más barata que Sonnet 5 / GPT‑5.6 Terra); Ultra v2: Chartography 48,3, DeepSWE 74,3</td><td>API compatible OpenAI</td><td><a href="https://sakana.ai/fugu-max-release/">Sakana AI</a></td></tr>
+      <tr><td class="co">Cognition</td><td>SWE‑2</td><td><span class="tag">Modelo de código</span></td><td class="mono">12 sep</td><td>FrontierCode 1.1 = 50,0 %; DeepSWE 73,0; Terminal‑Bench 4 = 27,3 %; −64 % costo vs Fable 5.1</td><td>Solo Devin (sin pesos ni API)</td><td><a href="https://www.marktechpost.com/2026/09/12/cognition-releases-swe-2-a-kimi-k3-post-trained-coding-model-that-matches-fable-5-1-on-frontiercode-at-64-lower-cost/">MarkTechPost</a></td></tr>
+      <tr><td class="co">Anthropic</td><td>Claude Code 2.1.261 → 2.1.270</td><td><span class="tag">Herramienta dev</span></td><td class="mono">5–12 sep</td><td><code class="mono">claude plugin eval</code> (suite de evaluación con reporte JSON/HTML), <code class="mono">maxEffortLevel</code>, <code class="mono">/output-style</code>, hasta 256 agentes concurrentes en workflows</td><td>GA (npm)</td><td><a href="https://code.claude.com/docs/en/changelog">Changelog</a></td></tr>
+      <tr><td class="co">Anthropic</td><td>Claude Enterprise "smart reports"; auto‑permisos en Managed Agents</td><td><span class="tag">Empresa</span></td><td class="mono">10 sep</td><td>Reportes de uso, costo y fricción de sesiones por equipo</td><td>Beta</td><td><a href="https://releasebot.io/updates/anthropic">Releasebot</a></td></tr>
+      <tr><td class="co">GitHub</td><td>Copilot: HydraFusion (CLI), tareas recurrentes, Jira canvas</td><td><span class="tag">Herramienta dev</span></td><td class="mono">7–11 sep</td><td>Enrutado semántico local/nube; tareas de agente por hora/día/semana en VS Code 1.137; MAI‑Code‑1‑Flash retirado (10 sep)</td><td>Experimental / preview</td><td><a href="https://github.blog/changelog/2026-09-10-github-copilot-weekly-releases-september-7/">GitHub Changelog</a></td></tr>
+      <tr><td class="co">OpenAI</td><td>Codex 0.154.0 + app de escritorio</td><td><span class="tag">Herramienta dev</span></td><td class="mono">11 sep</td><td>Niveles de esfuerzo <em>max</em> y <em>ultra</em>; ExternalMessage; modo replace de Vim</td><td>GA</td><td><a href="https://releasebot.io/updates/openai">Releasebot</a></td></tr>
+      <tr><td class="co">Google</td><td>Gemini app para Windows; Sheets 20 M celdas; editor de campos calculados en tablas dinámicas</td><td><span class="tag">Productividad</span></td><td class="mono">11 sep</td><td>Límite de celdas 10 M → 20 M; atajo Alt+Espacio en Windows 10/11</td><td>GA Workspace</td><td><a href="https://workspaceupdates.googleblog.com/2026/09/weekly-recap-09-11-2026.html">Google Workspace</a></td></tr>
+      <tr><td class="co">Apple</td><td>A20 Pro · iPhone 18 Pro · Siri AI (beta)</td><td><span class="tag">Hardware</span></td><td class="mono">9 sep</td><td>Proceso 2 nm; CPU 6 núcleos con aceleradores neuronales; GPU +40 %; desde $1.199; Siri AI beta 14 sep (no en UE/China)</td><td>Preventa 12 sep · venta 18 sep</td><td><a href="https://www.macrumors.com/2026/08/26/apple-iphone-event-2026/">MacRumors</a> · <a href="https://blakecrosley.com/blog/apple-event-september-2026">Crosley</a></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 4 QUIÉN VA A LA DELANTERA -->
+<section id="delantera">
+  <div class="sec-head"><div class="sec-num"><i>04</i><h2>¿Quién va a la delantera?</h2></div><p class="sub">Criterio de orden: Índice de Inteligencia de Artificial Analysis v4.3 (independiente) cuando AA lo publicó esta semana; para el resto, DeepSWE v1.1 auto‑reportado; las empresas sin ninguna de las dos métricas van al final. Flechas = movimiento respecto a la semana del 29 ago–4 sep.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>#</th><th>Empresa</th><th>Modelo de referencia</th><th class="num">AA Índice</th><th class="num">AA Código</th><th class="num">DeepSWE 1.1</th><th>Precio $/M (in/out)</th><th>Movimiento de la semana</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td class="co">OpenAI</td><td>GPT‑6 Astra (max)</td><td class="num">53</td><td class="num">62</td><td class="num">74,1</td><td class="mono">10 / 50</td><td><span class="up">▲</span> Despliegue a API, Codex, Azure y Bedrock; Agents API; +6 pts de índice sobre GPT‑5.6 Sol (47)</td></tr>
+      <tr><td class="mono">2</td><td class="co">Anthropic</td><td>Claude Fable 5.1 (max)</td><td class="num">53</td><td class="num">62</td><td class="num">n/d</td><td class="mono">10 / 50 (caché 0,25)</td><td><span class="flat">▬</span> Empate técnico con Astra; Terminal‑Bench 4.0: 52 % vs 59 %; sin modelo nuevo esta semana</td></tr>
+      <tr><td class="mono">3</td><td class="co">Sakana AI</td><td>Fugu Ultra v2 / Fugu Max</td><td class="num">n/d</td><td class="num">n/d</td><td class="num">74,3*</td><td class="mono">2 / 6 (Max)</td><td><span class="up">▲</span> Lanzamiento 11 sep; orquesta modelos abiertos; Chartography 48,3 vs 27,3 (Opus 5)</td></tr>
+      <tr><td class="mono">4</td><td class="co">DeepSeek</td><td>V4.1‑Flash</td><td class="num">n/d</td><td class="num">n/d</td><td class="num">74,2*</td><td class="mono">0,15 / 0,60 (valle)</td><td><span class="up">▲</span> Lanzamiento 10 sep, MIT, 1 M contexto; débil en Terminal‑Bench 3.0 (30,0)</td></tr>
+      <tr><td class="mono">5</td><td class="co">Cognition (sobre Moonshot Kimi K3)</td><td>SWE‑2</td><td class="num">n/d</td><td class="num">n/d</td><td class="num">73,0*</td><td class="mono">solo Devin</td><td><span class="up">▲</span> Lanzamiento 12 sep; FrontierCode 50,0 % a −64 % de costo</td></tr>
+      <tr><td class="mono">6</td><td class="co">Google DeepMind</td><td>Gemini 3.8 Flash</td><td class="num">n/d†</td><td class="num">n/d</td><td class="num">n/d</td><td class="mono">0,75 / 3,75 (hasta 31 dic)</td><td><span class="flat">▬</span> Sin modelo nuevo (3.8 Flash fue el 2 sep); semana de Workspace: Sheets, Gemini para Windows</td></tr>
+      <tr><td class="mono">7</td><td class="co">Meta</td><td>Muse Spark 1.3</td><td class="num">n/d†</td><td class="num">n/d</td><td class="num">n/d</td><td class="mono">1,25 / 4,25</td><td><span class="flat">▬</span> Sin lanzamiento esta semana; Muse Voice Transcribe (80 ms) reportado sin fecha firme</td></tr>
+      <tr><td class="mono">8</td><td class="co">xAI</td><td>Grok 4.6</td><td class="num">n/d</td><td class="num">n/d</td><td class="num">n/d</td><td class="mono">n/d</td><td><span class="flat">▬</span> Aparece en AutomationBench‑AA (67 % vs 69 % de Astra); sin anuncio propio esta semana</td></tr>
+    </tbody>
+  </table></div>
+  <p class="method" style="margin-top:14px">* DeepSWE v1.1 auto‑reportado por cada laboratorio (no comparable con rigor entre casas). † El tracker de Digital Applied publica índices AA de 59 (Gemini 3.8 Flash) y 61 (Muse Spark 1.3), pero corresponden a otra versión del índice y no son comparables con los 53/53/47 del artículo de AA del 9 sep; se omiten. LMArena: el snapshot público consultado (swfte.com) aún no incluye Astra ni Fable 5.1 (top: Claude Mythos 5, 1531 Elo), por lo que no se usa como criterio esta semana.</p>
+
+  <div class="two" style="margin-top:18px">
+    <div class="chart-card">
+      <h3>Índice de Agentes de Código · Artificial Analysis (9 sep 2026)</h3>
+      <p class="cap">Métrica independiente. Barras desde cero. Solo los cuatro modelos que AA reportó en su artículo.</p>
+      <svg id="barchart" viewBox="0 0 520 210" role="img" aria-label="Barras: Astra 62, Fable 5.1 62, Opus 5 60, Sol 55"></svg>
+      <div class="legend"><span style="--c:var(--s1)">OpenAI</span><span style="--c:var(--s2)">Anthropic</span></div>
+    </div>
+    <div class="chart-card">
+      <h3>DeepSWE v1.1 · auto‑reportado por cada laboratorio</h3>
+      <p class="cap">Gráfico de puntos con eje recortado (72–75) para ver diferencias de décimas. No es una comparación controlada.</p>
+      <svg id="dotchart" viewBox="0 0 520 210" role="img" aria-label="Puntos: Fugu Ultra v2 74,3; DeepSeek V4.1 Flash 74,2; GPT-6 Astra 74,1; Claude Opus 5 74,0; GPT-5.6 Sol 73,0; SWE-2 73,0"></svg>
+      <div class="legend"><span style="--c:var(--s1)">OpenAI</span><span style="--c:var(--s2)">Anthropic</span><span style="--c:var(--s3)">Sakana</span><span style="--c:var(--s4)">DeepSeek</span><span style="--c:var(--s5)">Cognition</span></div>
+    </div>
+  </div>
+  <p class="method" style="margin-top:14px"><b>Metodología.</b> Índices AA tomados de "Benchmarking GPT‑6 Astra" (Artificial Analysis, 9 sep 2026; consultado 12 sep). DeepSWE: OpenAI (Astra 74,1), DeepSeek (74,2; cita Opus 5 = 74,0 y Sol = 73,0), Sakana (74,3) y Cognition (73,0). Precios: páginas oficiales de cada proveedor o tracker de Digital Applied (Google, Meta). Sin dato = "n/d"; no se estimó ningún valor.</p>
+</section>
+
+<!-- 5 INDUSTRIA -->
+<section id="industria">
+  <div class="sec-head"><div class="sec-num"><i>05</i><h2>IA aplicada a industria y laboratorios</h2></div><p class="sub">Semana de capital y herramientas más que de papers de planta. Se buscó explícitamente molinería, NIR/quimiometría, SPC con ML, gemelos digitales, self‑driving labs, inocuidad y granos.</p></div>
+
+  <h3 style="margin-bottom:12px">5a · Panorama industrial / laboratorio</h3>
+  <ul class="ind-list">
+    <li><b>CloudNC levantó $20 M (8–9 sep) para su CAM Assist</b>, software que genera automáticamente estrategias de mecanizado CNC y lanza un agente de cotización. Es el caso de "IA que programa la máquina", el equivalente en metalmecánica a que un modelo proponga el diagrama de molienda. <span class="src">TechCrunch (8 sep), Tech.eu (9 sep).</span></li>
+    <li><b>Revisión en <i>Molecules</i> 31(17):3067 (31 ago 2026): NIR + quimiometría para adulterantes y contaminantes</b>, con cereales entre las matrices. Métodos dominantes: PLSR, SVM, Random Forest y CNN; detección a nivel ppm con equipos portátiles y sin solventes. Es el marco metodológico exacto de un laboratorio de harinas. <span class="src">Pellicorio, Colombo &amp; Papetti, MDPI.</span></li>
+    <li><b>Agentes científicos aún fallan en flujos completos: FrontierChallenge reporta solo 20,6 % de tareas de laboratorio completadas de punta a punta</b> (paper destacado en Last Week in AI #343, 7 sep). Lección para "self‑driving labs": hoy sirven como copilotos de pasos, no como reemplazo del analista. <span class="src">Last Week in AI.</span></li>
+    <li><b>GPT‑6 Astra reporta 95,9 % en BenchCAD y 88,0 % en SRE‑Bench</b> (auto‑reportado, OpenAI): lectura de planos/CAD y operación de sistemas. Para planta: revisión de P&amp;ID y diagramas de flujo por agente empieza a ser viable. <span class="src">OpenAI.</span></li>
+    <li><b>Sakana Fugu Ultra v2: 48,3 en Chartography vs 27,3 de Claude Opus 5</b> — lectura e interpretación de gráficos. Un modelo que "lee" cartas de control o histogramas de un dashboard con casi el doble de acierto. <span class="src">Sakana AI (11 sep).</span></li>
+    <li><b>OpenAI "Data plugin" en GA (10 sep)</b>: ChatGPT Work y Codex se conectan a datos de negocio y generan dashboards interactivos; Library integra Box, Dropbox y SharePoint. <span class="src">OpenAI Release Notes.</span></li>
+    <li><b>Anthropic, informe de amenazas (10 sep, dic 2025–ago 2026)</b>: 7 categorías de mal uso, 20+ organizaciones atacadas en una campaña y 1,8 M de APK analizados por un pipeline de robo de credenciales. Relevante para OT/IT de planta: los ataques ya corren sobre marcos de agentes y "la clave de API es el botín". <span class="src">Anthropic.</span></li>
+    <li><b>Sin novedad datada esta semana</b> en gemelos digitales, mantenimiento predictivo con anuncio de planta, ni self‑driving labs con paper nuevo (la referencia más reciente sigue siendo "Self‑driving laboratory 2.0", <i>Materials Horizons</i> 2026). <span class="src">Búsquedas realizadas, sin resultado fechado 5–12 sep.</span></li>
+  </ul>
+
+  <h3 style="margin:22px 0 4px">Esquema: cómo funciona NIR + quimiometría en control de harinas</h3>
+  <p class="cap" style="color:var(--muted);font-size:12.5px">Flujo típico según la revisión de <i>Molecules</i>; los valores de referencia son los que usaría un molino.</p>
+  <div class="flow">
+    <div class="node"><b>Entrada</b><span>Espectro NIR 900–1700 nm de harina o grano (10–20 s, sin preparación)</span></div>
+    <div class="node"><b>Preprocesado</b><span>SNV / MSC, 1.ª–2.ª derivada Savitzky–Golay, centrado</span></div>
+    <div class="node"><b>Modelo</b><span>PLSR (calibración vs Kjeldahl/Dumas) o CNN 1‑D; validación cruzada</span></div>
+    <div class="node"><b>Salida</b><span>Proteína, humedad, cenizas, gluten húmedo ± RMSEP; alerta de adulterante (ppm)</span></div>
+    <div class="node"><b>Decisión</b><span>Ajuste de mezcla de trigos / liberación de lote; carta de control X̄‑R del error de predicción</span></div>
+  </div>
+
+  <h3 style="margin:28px 0 12px">5b · Doble click</h3>
+  <div class="cards">
+    <article class="card none">
+      <header><div class="ico">🌾</div><h3>Cereales · molinería · trigo</h3></header>
+      <dl>
+        <dt>Qué pasó</dt><dd><b>Sin novedad datada en la semana 5–12 sep</b> sobre IA en molinería, clasificación de trigo, proteína/gluten, falling number o reología. Lo más cercano: la revisión <i>Molecules</i> (31 ago) sobre NIR + quimiometría con cereales como matriz.</dd>
+        <dt>Dato duro</dt><dd><span class="hard">ppm</span> — nivel de adulterantes detectable con NIR portátil + PLSR/SVM/CNN según la revisión. Un estudio previo (Foods 14:2393, 2025) predice calidad de gluten con NIRS miniaturizado.</dd>
+        <dt>Por qué le importa</dt><dd>Confirma que la pila PLSR → CNN sigue siendo el estándar de publicación; no hay un "modelo fundacional de harinas" que obligue a cambiar de enfoque.</dd>
+      </dl>
+      <div class="action"><b>Acción:</b> re‑ajustar la calibración NIR de proteína con <code>sklearn.cross_decomposition.PLSRegression</code> y reportar RPD (SD/RMSEP): RPD ≥ 3 es apto para control de lotes.</div>
+    </article>
+    <article class="card">
+      <header><div class="ico">&lt;/&gt;</div><h3>Programación asistida por IA</h3></header>
+      <dl>
+        <dt>Qué pasó</dt><dd>Cognition SWE‑2 (12 sep), Claude Code 2.1.269 con <code class="mono">claude plugin eval</code> y <code class="mono">maxEffortLevel</code> (9–11 sep), Codex 0.154.0 con esfuerzo <em>ultra</em> (11 sep), Copilot con tareas de agente recurrentes en VS Code 1.137 (7 sep) y OpenAI Agents API en beta (10 sep).</dd>
+        <dt>Dato duro</dt><dd><span class="hard">50,0 %</span> FrontierCode 1.1 para SWE‑2 con 64 % menos costo que Fable 5.1; Terminal‑Bench 4.0: Astra 59 % vs Fable 5.1 52 % (Artificial Analysis).</dd>
+        <dt>Por qué le importa</dt><dd>El costo por tarea de código cae más rápido que la capacidad sube: scripts de ETL de LIMS y dashboards en Python/JS se vuelven baratos de mantener por agente.</dd>
+      </dl>
+      <div class="action"><b>Acción:</b> crear una tarea recurrente semanal en VS Code 1.137 (o un workflow de Claude Code) que regenere el dashboard de calidad a partir del export del LIMS y abra un PR con el diff.</div>
+    </article>
+    <article class="card">
+      <header><div class="ico">σ</div><h3>Estadística · ciencia de datos</h3></header>
+      <dl>
+        <dt>Qué pasó</dt><dd>Sin releases de statsmodels/scikit-learn/PyMC detectados esta semana. Noticias de método: OpenAI afirma (8 sep) una prueba en Lean de que Navier–Stokes admite velocidades infinitas — disputada por Buckmaster y Alpöge por presunta apropiación del método de "forcing"; Artificial Analysis mide la tasa de alucinación de Astra (AA‑Omniscience) en 51 % con esfuerzo máximo (desde 92 %).</dd>
+        <dt>Dato duro</dt><dd><span class="hard">51 %</span> de alucinación aun en el mejor modelo: cualquier cifra que un LLM entregue para un informe de calidad sigue requiriendo verificación contra el dato fuente.</dd>
+        <dt>Por qué le importa</dt><dd>Un modelo que "lee gráficos" al 48 % (Chartography) y alucina al 51 % no sustituye un análisis de capacidad (Cp/Cpk) hecho con datos; sí sirve para redactar la interpretación.</dd>
+      </dl>
+      <div class="action"><b>Acción:</b> usar el modelo como redactor y no como calculadora: generar Cp/Cpk y cartas X̄‑R con <code>numpy</code>/<code>scipy</code>, y pedir al LLM solo la interpretación con las cifras ya calculadas en el prompt.</div>
+    </article>
+    <article class="card">
+      <header><div class="ico">XL</div><h3>Excel · Microsoft 365 · Sheets</h3></header>
+      <dl>
+        <dt>Qué pasó</dt><dd>Microsoft <b>retira la función =COPILOT() de Excel el 14 sep</b> (anunciado 17 ago); las notas de M365 Copilot no traen ítems de septiembre (última: 25 ago). Google Sheets (11 sep): límite de <b>10 M → 20 M de celdas</b>, editor de campos calculados en tablas dinámicas y fuentes web en gráficos; Gemini app para Windows.</dd>
+        <dt>Dato duro</dt><dd><span class="hard">14 sep</span> — fecha en que cualquier libro con =COPILOT() dejará de calcular; 20 M de celdas = espacio para ~5 años de datos horarios de 450 variables.</dd>
+        <dt>Por qué le importa</dt><dd>Si algún tablero de calidad usa =COPILOT() para clasificar comentarios de no conformidad, se romperá el lunes.</dd>
+      </dl>
+      <div class="action"><b>Acción:</b> antes del 14 sep, buscar en los libros del área (Inicio → Buscar → "COPILOT(") y sustituir por el panel lateral de Copilot o por Python en Excel (<code>=PY()</code>) para clasificación de texto.</div>
+    </article>
+  </div>
+</section>
+
+<!-- 6 REGULACIÓN -->
+<section id="regulacion">
+  <div class="sec-head"><div class="sec-num"><i>06</i><h2>Regulación, negocios e investigación</h2></div></div>
+  <ul class="reg">
+    <li><span class="when">10 sep</span><div><b>Oracle Q1 FY27:</b> ingresos $19,3 mil M (+30 %), OCI $7,4 mil M (+121 %), RPO $664 mil M (+$209 mil M interanual), $30 mil M en contratos IA nuevos, FCF −$5 mil M, oferta de acciones de $20 mil M completada; guía FY27 ≥ $90 mil M. <a href="https://www.oracle.com/news/announcement/q1fy27-earnings-release-2026-09-10/">Oracle</a></div></li>
+    <li><span class="when">10 sep</span><div><b>Adobe Q3 FY26:</b> $6,76 mil M (+13 %), ARR AI‑first > $650 M (+150 %), 1.000 M de usuarios activos mensuales; Anil Chakravarthy será CEO el 1 dic 2026 (Narayen pasa a presidente ejecutivo). <a href="https://finance.biggo.com/news/US_ADBE_2026-09-10">BigGo Finance</a></div></li>
+    <li><span class="when">11 sep</span><div><b>Cohere</b> negocia $2–3 mil M a $20 mil M de valoración (vs $7 mil M en sep 2025); cierre "tan pronto como la próxima semana". Reportado por Bloomberg; no confirmado por la empresa. <a href="https://www.pymnts.com/startups/2026/ai-startup-cohere-targets-20-billion-dollar-valuation-funding-round">PYMNTS</a></div></li>
+    <li><span class="when">10 sep</span><div><b>Clay</b> levanta $115 M Serie D a $7,1 mil M; <b>Arlequin AI</b> €28 M para redes neuronales topológicas; <b>TAR</b> $120 M (11 sep) para energía fuera de red para centros de datos. <a href="https://justainews.com/category/industries/industrials-and-manufacturing/">Just AI News</a></div></li>
+    <li><span class="when">8 sep</span><div><b>OpenAI reclama solución al problema del Milenio de Navier–Stokes</b> (prueba certificada en Lean); Tristan Buckmaster acusa apropiación de su método; Sébastien Bubeck lo niega. La comunidad matemática pide tiempo para evaluar dos pruebas rivales. <a href="https://www.scientificamerican.com/article/openai-claims-blockbuster-math-breakthrough-amid-swirl-of-controversy/">Scientific American</a></div></li>
+    <li><span class="when">3 sep (ctx)</span><div><b>NVIDIA–Hugging Face:</b> acuerdo definitivo por $12,93 mil M (~$11,9 mil M efectivo + hasta $1 mil M en retención); revisión HSR ante FTC/DOJ y UE. Huang: "NVIDIA compute will not be required". <a href="https://finance.yahoo.com/technology/ai/articles/nvidia-12-93b-hugging-face-075456869.html">Yahoo Finance</a></div></li>
+    <li><span class="when">Regulación</span><div><b>Sin hito regulatorio datado en la semana.</b> Contexto vigente: el "Digital Omnibus" de la UE difiere las obligaciones de alto riesgo del AI Act (acordado; fechas nuevas en Gibson Dunn/DLA Piper); la sentencia de la jueza Rita Lin contra la designación de Anthropic como "riesgo de cadena de suministro" fue el 28 ago. Se descartaron por no verificables los "plazos" del 15–17 sep publicados por agregadores. <a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/">Gibson Dunn</a> · <a href="https://www.cnbc.com/2026/08/28/judge-blocks-pentagon-blacklist--anthropic-.html">CNBC</a></div></li>
+  </ul>
+</section>
+
+<!-- 7 AGENDA -->
+<section id="agenda">
+  <div class="sec-head"><div class="sec-num"><i>07</i><h2>Agenda de la próxima semana · 13–19 sep</h2></div><p class="sub">Horas convertidas a Guatemala (UTC−6, sin horario de verano). <span class="dot"></span>= evento industrial / estadística / M365. <span class="dot gen"></span>= IA general.</p></div>
+  <div class="tbl"><table class="agenda">
+    <thead><tr><th>Día</th><th>Evento</th><th>Quién</th><th>Hora GT</th><th>Por qué importa</th></tr></thead>
+    <tbody>
+      <tr><td>Dom 13</td><td><span class="dot gen"></span>Sin eventos programados</td><td>—</td><td>—</td><td>Semana arranca el lunes con dos cambios que afectan escritorios.</td></tr>
+      <tr><td>Lun 14</td><td><span class="dot"></span><b>Retiro de la función =COPILOT() en Excel</b></td><td>Microsoft</td><td>Durante el día</td><td>Libros que la usen dejarán de calcular; migrar al panel lateral o =PY().</td></tr>
+      <tr><td>Lun 14</td><td><span class="dot gen"></span>iOS 27 y Siri AI (beta, inglés)</td><td>Apple</td><td>~11:00 (10:00 PT)</td><td>Primer Siri con modelo generativo; español en octubre; no disponible en UE.</td></tr>
+      <tr><td>Lun 14–Mar 16</td><td><span class="dot"></span>Machine Learning in Quantitative Finance 2026</td><td>Nueva York</td><td>Todo el día (ET = GT+2)</td><td>Métodos de forecasting y series de tiempo con ML aplicables a demanda y precios de trigo.</td></tr>
+      <tr><td>Mar 15–Jue 17</td><td><span class="dot gen"></span>AI Infra Summit 2026 (Santa Clara, CA)</td><td>400 ponentes; NVIDIA, Microsoft, Meta, Oracle, AWS, Google</td><td>09:00–17:00 (08:00 PT)</td><td>Pistas de hardware, Physical AI y centros de datos; señales de precio de cómputo.</td></tr>
+      <tr><td>Mar 15–Mié 16</td><td><span class="dot"></span>Development, Implementation &amp; Management of AI/ML Models 2026</td><td>Nueva York</td><td>Todo el día</td><td>Casos de validación y gobierno de modelos en producción (aplicable a modelos NIR/SPC).</td></tr>
+      <tr><td>Mar 15</td><td><span class="dot gen"></span>Agentic Automation in Finance / Agentic Commerce Summit</td><td>Estocolmo</td><td>01:00–09:00 (CEST = GT+8)</td><td>Casos reales de agentes en procesos administrativos.</td></tr>
+      <tr><td>Mié 16</td><td><span class="dot gen"></span><b>Decisión de tasas FOMC</b> (reunión 15–16 sep)</td><td>Reserva Federal</td><td>12:00 (14:00 ET)</td><td>Mueve valoraciones de IA/chips y el costo del capital de las rondas en curso (Cohere).</td></tr>
+      <tr><td>Mié 16–Vie 18</td><td><span class="dot gen"></span>CLAIR – Leadership &amp; AI in Research</td><td>Copenhague</td><td>01:00–09:00</td><td>Gobernanza de IA en laboratorios y centros de investigación.</td></tr>
+      <tr><td>Vie 18</td><td><span class="dot gen"></span>iPhone 18 Pro en tiendas (A20 Pro, 2 nm)</td><td>Apple</td><td>Durante el día</td><td>Primer chip de consumo a 2 nm con aceleradores neuronales por núcleo.</td></tr>
+      <tr><td>Sáb 19</td><td><span class="dot gen"></span>Sin eventos programados</td><td>—</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <p class="horizon"><b>En el horizonte:</b> Meta Connect 23–24 sep · OpenAI DevDay 29 sep (San Francisco) · plazo de California para el Frontier AI Safety Models Act, 30 sep (según agregador; verificar) · Cohere podría cerrar su ronda "la próxima semana" (Bloomberg). No se encontraron eventos de molinería/cereales datados en 13–19 sep (IBIE es trienal: próxima edición 2028).</p>
+</section>
+
+<!-- 8 FUENTES -->
+<section id="fuentes">
+  <div class="sec-head"><div class="sec-num"><i>08</i><h2>Fuentes</h2></div><p class="sub">Consultadas el 12 sep 2026. Agregadores marcados como tales; cifras auto‑reportadas indicadas en el texto.</p></div>
+  <div class="sources">
+    <h3>Resumen y productos</h3>
+    <ul>
+      <li><a href="https://openai.com/index/gpt-6-astra/">OpenAI — GPT‑6 Astra: A new generation of intelligence</a></li>
+      <li><a href="https://releasebot.io/updates/openai">Releasebot — OpenAI updates, sep 2026 (agregador)</a></li>
+      <li><a href="https://openai.com/products/release-notes/">OpenAI — Release Notes (Agents API, GPT‑Live‑1, Data plugin)</a></li>
+      <li><a href="https://openai.com/index/introducing-gpt-live-1-in-the-api/">OpenAI — GPT‑Live‑1 in the API</a></li>
+      <li><a href="https://techcrunch.com/2026/09/03/openai-launches-astra-its-powerful-and-controversial-new-model/">TechCrunch — OpenAI launches Astra</a></li>
+      <li><a href="https://en.wikipedia.org/wiki/GPT-6_Astra">Wikipedia — GPT‑6 Astra (cronología)</a></li>
+      <li><a href="https://venturebeat.com/technology/deepseek-v4-1-flash-debuts-with-0-003-1m-off-peak-cached-input-rate-and-benchmarks-eclipsing-gpt-5-6-sol-claude-opus-5">VentureBeat — DeepSeek‑V4.1‑Flash</a></li>
+      <li><a href="https://dataconomy.com/2026/09/11/deepseek-v4-1-flash-ultralow-token-pricing/">Dataconomy — DeepSeek V4.1‑Flash</a></li>
+      <li><a href="https://sakana.ai/fugu-max-release/">Sakana AI — Fugu Max y Fugu Ultra v2</a></li>
+      <li><a href="https://www.marktechpost.com/2026/09/12/cognition-releases-swe-2-a-kimi-k3-post-trained-coding-model-that-matches-fable-5-1-on-frontiercode-at-64-lower-cost/">MarkTechPost — Cognition SWE‑2</a></li>
+      <li><a href="https://malpass.co/top-ai-stories-2026-09-12/">Malpass — Top AI Stories 12 sep (agregador)</a></li>
+      <li><a href="https://llmgateway.io/timeline">LLM Gateway — Timeline sep 2026 (agregador)</a></li>
+      <li><a href="https://www.digitalapplied.com/blog/ai-model-releases-september-2026-tracker">Digital Applied — Tracker sep 2026 (agregador; precios Google/Meta)</a></li>
+      <li><a href="https://fal.ai/gpt-image-2.5">fal.ai — GPT Image 2.5</a></li>
+      <li><a href="https://code.claude.com/docs/en/changelog">Anthropic — Claude Code changelog</a></li>
+      <li><a href="https://releasebot.io/updates/anthropic">Releasebot — Anthropic updates (agregador)</a></li>
+      <li><a href="https://github.blog/changelog/2026-09-10-github-copilot-weekly-releases-september-7/">GitHub Changelog — Copilot weekly, 7 sep</a></li>
+      <li><a href="https://www.macrumors.com/2026/08/26/apple-iphone-event-2026/">MacRumors — Apple event 9 sep</a></li>
+      <li><a href="https://blakecrosley.com/blog/apple-event-september-2026">Crosley — Apple event verificado contra páginas de Apple</a></li>
+      <li><a href="https://lastweekin.ai/p/last-week-in-ai-343-gpt-6-openais">Last Week in AI #343 (7 sep)</a></li>
+    </ul>
+    <h3>Benchmarks y scoreboard</h3>
+    <ul>
+      <li><a href="https://artificialanalysis.ai/articles/benchmarking-gpt-6-astra">Artificial Analysis — Benchmarking GPT‑6 Astra (9 sep)</a></li>
+      <li><a href="https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index">Artificial Analysis — Intelligence Index v4.3</a></li>
+      <li><a href="https://www.swfte.com/lmarena">swfte — snapshot LMArena sep 2026 (agregador, desactualizado)</a></li>
+      <li><a href="https://benchlm.ai/benchmarks/artificialanalysis">BenchLM — AA leaderboard (agregador; no usado por inconsistencia)</a></li>
+    </ul>
+    <h3>Industria y laboratorio</h3>
+    <ul>
+      <li><a href="https://techcrunch.com/2026/09/08/cloudnc-raises-20m-to-automate-manufacturings-most-pressing-bottlenecks/">TechCrunch — CloudNC $20 M</a></li>
+      <li><a href="https://tech.eu/2026/09/09/cloudnc-lands-20m-to-expand-its-ai-software-for-precision-manufacturing">Tech.eu — CloudNC</a></li>
+      <li><a href="https://www.mdpi.com/1420-3049/31/17/3067">Molecules 31(17):3067 — NIR + quimiometría, adulterantes (31 ago 2026)</a></li>
+      <li><a href="https://pubs.rsc.org/en/content/articlelanding/2026/mh/d5mh01984b">Materials Horizons — Self‑driving laboratory 2.0 (2026)</a></li>
+      <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12248474/">Foods 14:2393 — NIRS miniaturizado para gluten (2025)</a></li>
+      <li><a href="https://www.anthropic.com/threat-intelligence-report-september-2026">Anthropic — Countering misuse of AI, sep 2026</a></li>
+      <li><a href="https://justainews.com/category/industries/industrials-and-manufacturing/">Just AI News — Industrials (Arlequin, Clay, TAR)</a></li>
+      <li><a href="https://www.theregister.com/ai-and-ml/2026/08/17/excels-copilot-function-is-headed-for-the-recycle-bin/5288327">The Register — Excel retira =COPILOT() el 14 sep</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/release-notes">Microsoft Learn — M365 Copilot release notes (última 25 ago)</a></li>
+      <li><a href="https://workspaceupdates.googleblog.com/2026/09/weekly-recap-09-11-2026.html">Google Workspace — Weekly recap 11 sep</a></li>
+      <li><a href="https://github.com/statsmodels/statsmodels/releases">statsmodels — Releases (sin novedad)</a></li>
+      <li><a href="https://www.scientificamerican.com/article/openai-claims-blockbuster-math-breakthrough-amid-swirl-of-controversy/">Scientific American — Navier–Stokes (8 sep)</a></li>
+    </ul>
+    <h3>Regulación y negocios</h3>
+    <ul>
+      <li><a href="https://www.oracle.com/news/announcement/q1fy27-earnings-release-2026-09-10/">Oracle — Q1 FY27 (10 sep)</a></li>
+      <li><a href="https://finance.biggo.com/news/US_ADBE_2026-09-10">BigGo Finance — Adobe Q3 FY26</a></li>
+      <li><a href="https://www.pymnts.com/startups/2026/ai-startup-cohere-targets-20-billion-dollar-valuation-funding-round">PYMNTS — Cohere $20 mil M (vía Bloomberg)</a></li>
+      <li><a href="https://finance.yahoo.com/technology/ai/articles/nvidia-12-93b-hugging-face-075456869.html">Yahoo Finance — NVIDIA–Hugging Face definitivo</a></li>
+      <li><a href="https://www.gibsondunn.com/eu-ai-act-omnibus-agreement-postponed-high-risk-deadlines-and-other-key-changes/">Gibson Dunn — EU AI Act Omnibus</a></li>
+      <li><a href="https://www.cnbc.com/2026/08/28/judge-blocks-pentagon-blacklist--anthropic-.html">CNBC — Fallo Rita Lin (28 ago)</a></li>
+    </ul>
+    <h3>Agenda</h3>
+    <ul>
+      <li><a href="https://www.upcomingevents.com/san-jose/events/santa-clara-convention-center/ai-infra-summit-2026-567803">AI Infra Summit 2026 — 15–17 sep, Santa Clara</a></li>
+      <li><a href="https://aiml.events/">aiml.events — calendario 13–19 sep</a></li>
+      <li><a href="https://fedratecalc.com/fomc-meeting-schedule/september-2026/">FOMC — 15–16 sep 2026</a></li>
+      <li><a href="https://openai.com/index/devday-2026/">OpenAI DevDay — 29 sep</a></li>
+      <li><a href="https://www.meta.com/blog/connect-2026-save-the-date/">Meta Connect — 23–24 sep</a></li>
+      <li><a href="https://cubbbix.com/blog/ai-regulation-september-2026-global-update">Cubbbix — regulación sep 2026 (agregador; plazos no verificados)</a></li>
+    </ul>
+  </div>
+  <footer>Elaborado el sábado 12 sep 2026, 20:00 GT. Cifras de benchmarks marcadas como "auto‑reportado" provienen del laboratorio que las publica. Donde no se halló dato se indica "n/d"; no se estimó ningún valor.</footer>
+</section>
+</div>
+
+<script>
+(function(){
+  // --- Barras: AA Coding Agent Index (desde cero) ---
+  var bars=[
+    {n:"GPT‑6 Astra",v:62,c:"var(--s1)"},
+    {n:"Claude Fable 5.1",v:62,c:"var(--s2)"},
+    {n:"Claude Opus 5",v:60,c:"var(--s2)"},
+    {n:"GPT‑5.6 Sol",v:55,c:"var(--s1)"}
+  ];
+  var svg=document.getElementById("barchart");
+  var W=520,H=210,L=130,R=50,T=14,B=30,pw=W-L-R,ph=H-T-B,max=80;
+  var s="";
+  [0,20,40,60,80].forEach(function(t){var x=L+pw*t/max;s+='<line x1="'+x+'" y1="'+T+'" x2="'+x+'" y2="'+(T+ph)+'" stroke="var(--grid)" stroke-width="1"/>';s+='<text class="tick" x="'+x+'" y="'+(H-8)+'" text-anchor="middle">'+t+'</text>';});
+  var bh=ph/bars.length;
+  bars.forEach(function(b,i){var y=T+i*bh+6,h=bh-12,w=pw*b.v/max;
+    s+='<rect x="'+L+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+b.c+'" rx="0"/>';
+    s+='<rect x="'+(L+w-4)+'" y="'+y+'" width="4" height="'+h+'" fill="'+b.c+'" rx="2"/>';
+    s+='<text class="lbl" x="'+(L-10)+'" y="'+(y+h/2+4)+'" text-anchor="end">'+b.n+'</text>';
+    s+='<text class="val" x="'+(L+w+8)+'" y="'+(y+h/2+4)+'">'+b.v+'</text>';
+    s+='<rect x="'+L+'" y="'+(T+i*bh)+'" width="'+pw+'" height="'+bh+'" fill="transparent"><title>'+b.n+': '+b.v+' (AA Coding Agent Index, 9 sep 2026)</title></rect>';
+  });
+  s+='<line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(T+ph)+'" stroke="var(--axis)" stroke-width="1"/>';
+  svg.innerHTML=s;
+
+  // --- Puntos: DeepSWE v1.1 (eje recortado 72–75) ---
+  var dots=[
+    {n:"Fugu Ultra v2",v:74.3,c:"var(--s3)"},
+    {n:"DeepSeek V4.1‑Flash",v:74.2,c:"var(--s4)"},
+    {n:"GPT‑6 Astra",v:74.1,c:"var(--s1)"},
+    {n:"Claude Opus 5",v:74.0,c:"var(--s2)"},
+    {n:"GPT‑5.6 Sol",v:73.0,c:"var(--s1)"},
+    {n:"SWE‑2 (Cognition)",v:73.0,c:"var(--s5)"}
+  ];
+  var d=document.getElementById("dotchart");
+  var L2=150,R2=40,min=72,mx=75,pw2=W-L2-R2,ph2=H-T-B;
+  var t="";
+  [72,73,74,75].forEach(function(v){var x=L2+pw2*(v-min)/(mx-min);t+='<line x1="'+x+'" y1="'+T+'" x2="'+x+'" y2="'+(T+ph2)+'" stroke="var(--grid)" stroke-width="1"/>';t+='<text class="tick" x="'+x+'" y="'+(H-8)+'" text-anchor="middle">'+v.toFixed(1).replace('.',',')+'</text>';});
+  var rh=ph2/dots.length;
+  dots.forEach(function(p,i){var y=T+i*rh+rh/2,x=L2+pw2*(p.v-min)/(mx-min);
+    t+='<line x1="'+L2+'" y1="'+y+'" x2="'+x+'" y2="'+y+'" stroke="var(--grid)" stroke-width="1" stroke-dasharray="2 3"/>';
+    t+='<circle cx="'+x+'" cy="'+y+'" r="6" fill="'+p.c+'" stroke="var(--surface)" stroke-width="2"><title>'+p.n+': '+p.v.toFixed(1).replace('.',',')+' (DeepSWE v1.1, auto‑reportado)</title></circle>';
+    t+='<text class="lbl" x="'+(L2-10)+'" y="'+(y+4)+'" text-anchor="end">'+p.n+'</text>';
+    t+='<text class="val" x="'+(x+11)+'" y="'+(y+4)+'">'+p.v.toFixed(1).replace('.',',')+'</text>';
+  });
+  t+='<line x1="'+L2+'" y1="'+T+'" x2="'+L2+'" y2="'+(T+ph2)+'" stroke="var(--axis)" stroke-width="1"/>';
+  t+='<text class="tick" x="'+(W-R2)+'" y="'+(T+8)+'" text-anchor="end">eje recortado</text>';
+  d.innerHTML=t;
+})();
+</script>
+
+</body></html>
