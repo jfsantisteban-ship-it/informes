@@ -1,0 +1,519 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Informe Semanal IA · 19 sep 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --page:#f4f5f2; --surface:#ffffff; --surface-2:#eceee9; --ink:#15191d; --ink-2:#4d5760; --muted:#7d8791;
+  --line:#dcdfd8; --hair:rgba(21,25,29,.10);
+  --accent:#2c49b3; --accent-ink:#ffffff; --accent-soft:#e3e8fb;
+  --wheat:#b8800f; --wheat-soft:#f7ecd2;
+  --s1:#2a78d6; --s1-soft:#cde2fb;
+  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b; --good-text:#006300;
+  --grid:#e1e0d9; --axis:#c3c2b7;
+  --shadow:0 1px 2px rgba(21,25,29,.06),0 8px 24px rgba(21,25,29,.05);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --page:#0f1113; --surface:#181b1f; --surface-2:#20242a; --ink:#f1f2ef; --ink-2:#b9c0c7; --muted:#8a939c;
+    --line:#2b3037; --hair:rgba(255,255,255,.10);
+    --accent:#8ea3f5; --accent-ink:#0f1113; --accent-soft:#1f2740;
+    --wheat:#e2b04a; --wheat-soft:#33290f;
+    --s1:#3987e5; --s1-soft:#1c3559;
+    --good:#0ca30c; --warn:#fab219; --crit:#e66767; --good-text:#0ca30c;
+    --grid:#2c2c2a; --axis:#383835;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --page:#0f1113; --surface:#181b1f; --surface-2:#20242a; --ink:#f1f2ef; --ink-2:#b9c0c7; --muted:#8a939c;
+  --line:#2b3037; --hair:rgba(255,255,255,.10);
+  --accent:#8ea3f5; --accent-ink:#0f1113; --accent-soft:#1f2740;
+  --wheat:#e2b04a; --wheat-soft:#33290f;
+  --s1:#3987e5; --s1-soft:#1c3559;
+  --good:#0ca30c; --warn:#fab219; --crit:#e66767; --good-text:#0ca30c;
+  --grid:#2c2c2a; --axis:#383835;
+  --shadow:none;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;padding-inline:20px}
+h1,h2,h3{font-family:"Bricolage Grotesque","IBM Plex Sans",system-ui,sans-serif;text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(30px,4.4vw,46px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(21px,2.6vw,27px);font-weight:700}
+h3{font-size:17px;font-weight:700}
+p{margin:0}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+a:hover,a:focus-visible{border-bottom-color:currentColor;outline:none}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+
+/* masthead */
+.mast{display:grid;grid-template-columns:1fr auto;gap:18px 32px;align-items:end;padding-bottom:22px;border-bottom:2px solid var(--ink)}
+.mast .sub{color:var(--ink-2);max-width:62ch;margin-top:10px}
+.mast .meta{display:grid;gap:6px;text-align:right;font-size:13px;color:var(--ink-2)}
+.mast .meta b{color:var(--ink);font-weight:600}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.toc a{font-size:12.5px;padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink-2)}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+
+section{margin-top:52px;scroll-margin-top:16px}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.sec-head .n{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--muted)}
+.sec-head .note{margin-left:auto;font-size:12.5px;color:var(--muted)}
+
+/* exec summary */
+.exec{display:grid;gap:10px}
+.exec .item{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow)}
+.exec .item:first-child{border-color:var(--accent);background:var(--accent-soft)}
+.exec .k{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:22px;line-height:1;color:var(--accent);min-width:2.2ch;padding-top:2px}
+.exec .t{font-weight:600}
+.exec .d{color:var(--ink-2);font-size:14px;margin-top:2px}
+.src{font-size:12px;color:var(--muted)}
+.src a{color:var(--muted);border-bottom:1px dotted var(--muted)}
+.src a:hover{color:var(--accent)}
+
+/* timeline */
+.scroller{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 10px}
+.timeline svg{display:block;min-width:1560px;width:100%;height:auto}
+.timeline text{font-family:"IBM Plex Sans",system-ui,sans-serif;fill:var(--ink)}
+.timeline .day{font-family:"IBM Plex Mono",monospace;font-size:11px;fill:var(--muted);letter-spacing:.06em}
+.timeline .co{font-weight:600;font-size:13px}
+.timeline .desc{font-size:12px;fill:var(--ink-2)}
+.timeline .axis{stroke:var(--axis);stroke-width:2}
+.timeline .tick{stroke:var(--axis);stroke-width:1}
+.timeline .dot{fill:var(--accent);stroke:var(--surface);stroke-width:3}
+.timeline .dot.w{fill:var(--wheat)}
+
+/* tables */
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{text-align:left;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:12px 12px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--hair);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.co{font-weight:600;white-space:nowrap}
+.chip{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;padding:2px 7px;border-radius:4px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.chip.open{background:var(--s1-soft);color:var(--ink)}
+.chip.ind{background:var(--wheat-soft);color:var(--ink)}
+.chip.rumor{background:transparent;border:1px dashed var(--warn);color:var(--ink-2)}
+
+/* scoreboard */
+.score-grid{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+.card.chart{display:grid;grid-template-columns:minmax(280px,540px) 1fr;gap:6px 28px;align-items:start}
+.card.chart h3,.card.chart .cap{grid-column:1/-1}
+.card.chart .method{border-top:none;border-left:1px dashed var(--line);padding:0 0 0 18px;margin:0;align-self:stretch}
+@media (max-width:820px){.card.chart{grid-template-columns:1fr}.card.chart .method{border-left:none;border-top:1px dashed var(--line);padding:10px 0 0;margin-top:12px}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 18px;box-shadow:var(--shadow)}
+.card h3{margin-bottom:6px}
+.card .cap{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.up{color:var(--good-text);font-weight:600}.down{color:var(--crit);font-weight:600}.flat{color:var(--muted);font-weight:600}
+.chart svg{display:block;width:100%;height:auto}
+.chart text{font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:12px;fill:var(--ink-2)}
+.chart .lbl{fill:var(--ink);font-weight:500}
+.chart .val{font-family:"IBM Plex Mono",monospace;fill:var(--ink);font-size:12px}
+.chart .grid{stroke:var(--grid);stroke-width:1}
+.chart .base{stroke:var(--axis);stroke-width:1}
+.chart .bar{fill:var(--s1)}
+.chart .bar.nd{fill:none;stroke:var(--muted);stroke-dasharray:3 3}
+.chart .hit{fill:transparent;cursor:default}
+.chart .hit:hover + .bar, .chart g:hover .bar{opacity:.85}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--page);font-size:12px;padding:6px 9px;border-radius:4px;z-index:9;max-width:260px;line-height:1.35;opacity:0;transition:opacity .12s}
+.method{font-size:12.5px;color:var(--ink-2);border-top:1px dashed var(--line);padding-top:10px;margin-top:12px}
+
+/* industrial */
+.ind-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.bul{display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.bul li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:14px}
+.bul li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--wheat);margin-top:8px}
+.bul b{font-weight:600}
+.flow{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;margin-top:18px;overflow-x:auto}
+.flow svg{display:block;min-width:760px;width:100%;height:auto}
+.flow text{font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:12px;fill:var(--ink)}
+.flow .box{fill:var(--surface-2);stroke:var(--line)}
+.flow .box.m{fill:var(--accent-soft);stroke:var(--accent)}
+.flow .box.d{fill:var(--wheat-soft);stroke:var(--wheat)}
+.flow .t{font-weight:600;font-size:13px}
+.flow .s{fill:var(--ink-2);font-size:11px}
+.flow .arrow{stroke:var(--ink-2);stroke-width:1.5;fill:none;marker-end:url(#ah)}
+.cards4{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:22px}
+.dc{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--wheat);border-radius:6px;padding:16px 18px;display:grid;gap:10px;align-content:start}
+.dc .row{display:grid;grid-template-columns:96px 1fr;gap:10px;font-size:13.5px}
+.dc .row .l{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.dc .none{background:var(--surface-2);border-radius:4px;padding:8px 10px;font-size:13px;color:var(--ink-2)}
+.dc code{font-family:"IBM Plex Mono",monospace;font-size:12.5px;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+
+/* agenda */
+.agenda td:first-child{white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+.ico{display:inline-block;width:18px;height:18px;border-radius:4px;background:var(--wheat-soft);color:var(--wheat);font-size:11px;font-weight:700;text-align:center;line-height:18px;margin-right:6px;vertical-align:-3px;font-family:"IBM Plex Mono",monospace}
+.tz{font-size:12.5px;color:var(--muted);margin-top:8px}
+
+/* sources */
+.srcs{columns:2;column-gap:28px;font-size:13px}
+.srcs h3{break-after:avoid;margin:0 0 6px;font-size:13px;font-family:"IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.srcs ul{margin:0 0 16px;padding-left:16px;break-inside:avoid}
+.srcs li{margin-bottom:4px}
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+
+@media (max-width:820px){
+  .mast{grid-template-columns:1fr}.mast .meta{text-align:left}
+  .score-grid,.ind-grid,.cards4{grid-template-columns:1fr}
+  .srcs{columns:1}
+  .dc .row{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.tip{transition:none}}
+</style>
+
+<div class="wrap">
+<header class="mast">
+  <div>
+    <div class="eyebrow">Informe semanal · inteligencia artificial · edición 38 / 2026</div>
+    <h1 style="margin-top:8px">Informe Semanal IA · 19 sep 2026</h1>
+    <p class="sub">Semana del sábado 12 al sábado 19 de septiembre de 2026. Preparado para Julio Santisteban (control de calidad, molienda de trigo · Guatemala, UTC-6). Cada cifra lleva su fuente; lo no verificado en fuente primaria se marca como <span class="chip rumor">reportado</span>.</p>
+  </div>
+  <div class="meta">
+    <div><b>Cierre de datos</b> sáb 19 sep 2026, 20:00 GT</div>
+    <div><b>Búsquedas realizadas</b> 41 consultas · 47 fuentes</div>
+    <div><b>Benchmark de referencia</b> Artificial Analysis Intelligence Index</div>
+  </div>
+</header>
+<nav class="toc" aria-label="Secciones">
+  <a href="#s1">1 · Resumen</a><a href="#s2">2 · Línea de tiempo</a><a href="#s3">3 · Productos</a><a href="#s4">4 · Scoreboard</a><a href="#s5">5 · Industria y laboratorio</a><a href="#s6">6 · Regulación y negocios</a><a href="#s7">7 · Agenda</a><a href="#s8">8 · Fuentes</a>
+</nav>
+
+<!-- 1 RESUMEN -->
+<section id="s1">
+  <div class="sec-head"><span class="n">01</span><h2>Resumen ejecutivo</h2><span class="note">7 puntos, el más importante primero</span></div>
+  <div class="exec">
+    <div class="item"><div class="k">1</div><div><div class="t">Anthropic pide frenar la carrera: Amodei publica «We Must Pace the Frontier» y se compromete a evaluadores externos con acceso de empleado.</div><div class="d">Ensayo del 12 sep con plan de 3 pasos; Anthropic aplica unilateralmente el primero (auditores con credencial, permisos internos y derecho a publicar). Reacciones en cadena: Nadella lo respalda (13 sep), Trump lo ataca en Truth Social (14 sep), China lo rechaza vía Cancillería (14 sep). El 18 sep Anthropic reveló además que Claude «lidera» el 26 % de su I+D de modelos (0 % en feb → 26 % en ago) y ~30 000 agentes trabajan en investigación e ingeniería.</div><div class="src">Fuentes: <a href="https://darioamodei.com/post/we-must-pace-the-frontier">darioamodei.com</a> · <a href="https://spectrumlocalnews.com/us/snplus/business/2026/09/18/anthropic-claude-helping-to-build-next-version">Spectrum/AP 18 sep</a> · <a href="https://blog.buildfastwithai.com/ai-news-today-september-16-2026">BuildFast (reacciones)</a></div></div></div>
+    <div class="item"><div class="k">2</div><div><div class="t">OpenAI descarta salir a bolsa en 2026 y negocia una ronda a US$1,2 billones (trillion) de valoración.</div><div class="d">Altman a Fortune (12 sep): una IPO ahora sería «ill-advised» por seguridad. El 16 sep Fortune/FT reportan conversaciones de una nueva ronda a US$1,2 T; la anterior fue US$122 000 M a US$852 000 M (mar 2026). Además OpenAI lanzó ChatGPT Ads (Sponsored Agents, Shopify para comercios de EE. UU.) y publicó 6 casos de desalineación de sus propios modelos.</div><div class="src"><a href="https://fortune.com/2026/09/12/sam-altman-openai-ipo-delay-ill-advised-moment-safety-concerns/">Fortune 12 sep</a> · <a href="https://fortune.com/2026/09/16/openai-ipo-sam-altman-vc-funding-valuation-1-2-trillion/">Fortune 16 sep</a> · <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron 16 sep</a></div></div></div>
+    <div class="item"><div class="k">3</div><div><div class="t">Empate en la cima: Claude Fable 5.1 y GPT-6 Astra comparten el #1 con 53 puntos en el Intelligence Index (nueva escala v1.1).</div><div class="d">Artificial Analysis reescaló su índice el 14 sep («Capability Indices v1.1»). Ambos también empatan en Coding Agent Index (62). Precio idéntico: US$10 / US$50 por millón de tokens. Nuevas entradas de la semana: Qwen3.8 Max 45 (15 sep) y Step 5 Preview 44 (18 sep).</div><div class="src"><a href="https://artificialanalysis.ai/articles/benchmarking-gpt-6-astra">AA · Benchmarking GPT-6 Astra</a> · <a href="https://artificialanalysis.ai/changelog">AA changelog</a> · <a href="https://artificialanalysis.ai/leaderboards/models">AA leaderboard</a></div></div></div>
+    <div class="item"><div class="k">4</div><div><div class="t">Cohere y Aleph Alpha firman fusión definitiva: compañía transatlántica de ~US$20 000 M.</div><div class="d">Acuerdo firmado el 16 sep (anunciado en abril). Schwarz Group invierte €500 M; consorcio respaldado por Canadá podría aportar US$3 000 M. Sedes en Toronto y Berlín; ~1 000 empleados; cierre previsto para fines de 2026. Cohere venía de US$7 000 M de valoración (sep 2025) y US$240 M de ingresos anuales.</div><div class="src"><a href="https://siliconangle.com/2026/09/16/cohere-and-aleph-alpha-agree-to-merge-in-reported-20b-deal/">SiliconANGLE</a> · <a href="https://aiweekly.co/alerts/cohere-signs-definitive-merger-with-aleph-alpha-at-20b-valuation">AI Weekly</a></div></div></div>
+    <div class="item"><div class="k">5</div><div><div class="t">Google lanza Gemini 3.8 Live: voz que razona mientras habla, US$0,005/min entrada y US$0,018/min salida (~US$1,38/hora).</div><div class="d">15 sep. Gemini 3.8 Live Extended Thinking marca 82,6 en el Speech-to-Speech Quality Index de AA (#1), 97,7 % en Big Bench Audio, 97 idiomas con cambio a mitad de conversación. Disponible en API, AI Studio y Workspace (Docs, Gmail, Keep).</div><div class="src"><a href="https://siliconangle.com/2026/09/15/googles-new-speech-model-gemini-3-8-live-supports-real-time-reasoning/">SiliconANGLE 15 sep</a></div></div></div>
+    <div class="item"><div class="k">6</div><div><div class="t">NVIDIA: Huang prevé duplicar el volumen de chips en 2027; Vera Rubin rinde 2,1× tokens por megavatio que Blackwell.</div><div class="d">17 sep, cumbre de IA en Escocia (anfitrión: rey Carlos III). SemiAnalysis (15 sep) midió 59,4 M tokens/s/MW en Rubin vs 28,5 M en Blackwell a 100 TPS con DeepSeek V4 Pro. La guía de US$673 000 M para el año fiscal a ene-2028 (+70 %) es <span class="chip rumor">reportado</span> por Vantage Markets, no verificado en fuente primaria.</div><div class="src"><a href="https://www.cnbc.com/2026/09/17/nvidia-huang-ai-chip-guidance.html">CNBC 17 sep</a> · <a href="https://www.vantagemarkets.com/market-news/nvidia-huang-chip-sales-outlook-september-18-2026/">Vantage Markets</a> · <a href="https://aiweekly.co/ai-news-today/edition/2026-09-15">AI Weekly 15 sep</a></div></div></div>
+    <div class="item"><div class="k">7</div><div><div class="t">Para el laboratorio: Nature publica Paper2Agent (Stanford), que convierte un paper en un agente ejecutable en ~45 min y US$14; Novo Nordisk adopta Claude Science.</div><div class="d">16 sep. El agente derivado de AlphaGenome respondió preguntas de genética con «precisión casi perfecta» y superó a Biomni. Mismo día: Novo Nordisk firma con Anthropic para I+D farmacéutica (sin montos). Detalle en la sección 5.</div><div class="src"><a href="https://www.nature.com/articles/d41586-026-02899-2">Nature News</a> · <a href="https://www.biospace.com/press-releases/novo-and-anthropic-will-collaborate-to-advance-drug-discovery-with-claude">BioSpace</a></div></div></div>
+  </div>
+</section>
+
+<!-- 2 TIMELINE -->
+<section id="s2">
+  <div class="sec-head"><span class="n">02</span><h2>Línea de tiempo de la semana</h2><span class="note">un hito por día · ámbar = relevante para industria/lab</span></div>
+  <div class="scroller timeline">
+    <svg viewBox="0 0 1600 235" role="img" aria-label="Línea de tiempo del 12 al 19 de septiembre de 2026">
+      <line class="axis" x1="30" y1="70" x2="1570" y2="70"/>
+      <!-- day 1 -->
+      <g transform="translate(100,0)"><line class="tick" x1="0" y1="62" x2="0" y2="78"/><circle class="dot" cx="0" cy="70" r="7"/><text class="day" x="0" y="40" text-anchor="middle">SÁB 12</text><text class="co" x="0" y="105" text-anchor="middle">Anthropic</text><text class="desc" x="0" y="124" text-anchor="middle"><tspan x="0">Amodei publica «Pace the</tspan><tspan x="0" dy="15">Frontier»; auditores con</tspan><tspan x="0" dy="15">acceso permanente</tspan></text></g>
+      <g transform="translate(296,0)"><line class="tick" x1="0" y1="62" x2="0" y2="78"/><circle class="dot" cx="0" cy="70" r="7"/><text class="day" x="0" y="40" text-anchor="middle">DOM 13</text><text class="co" x="0" y="105" text-anchor="middle">Microsoft</text><text class="desc" x="0" y="124" text-anchor="middle"><tspan x="0">Nadella respalda el «pacing»</tspan><tspan x="0" dy="15">y publica un Código de</tspan><tspan x="0" dy="15">Conducta MAI (reportado)</tspan></text></g>
+      <g transform="translate(492,0)"><line class="tick" x1="0" y1="62" x2="0" y2="78"/><circle class="dot" cx="0" cy="70" r="7"/><text class="day" x="0" y="40" text-anchor="middle">LUN 14</text><text class="co" x="0" y="105" text-anchor="middle">Apple · Art. Analysis</text><text class="desc" x="0" y="124" text-anchor="middle"><tspan x="0">Siri con Gemini en beta</tspan><tspan x="0" dy="15">(iOS 27, sin UE/China); AA</tspan><tspan x="0" dy="15">reescala su índice (v1.1)</tspan></text></g>
+      <g transform="translate(688,0)"><line class="tick" x1="0" y1="62" x2="0" y2="78"/><circle class="dot" cx="0" cy="70" r="7"/><text class="day" x="0" y="40" text-anchor="middle">MAR 15</text><text class="co" x="0" y="105" text-anchor="middle">Google DeepMind</text><text class="desc" x="0" y="124" text-anchor="middle"><tspan x="0">Gemini 3.8 Live: voz razonante</tspan><tspan x="0" dy="15">US$0,005/min · 82,6 S2S;</tspan><tspan x="0" dy="15">Gemini en Sheets + MCP</tspan></text></g>
+      <g transform="translate(884,0)"><line class="tick" x1="0" y1="62" x2="0" y2="78"/><circle class="dot w" cx="0" cy="70" r="7"/><text class="day" x="0" y="40" text-anchor="middle">MIÉ 16</text><text class="co" x="0" y="105" text-anchor="middle">Cohere · Stanford</text><text class="desc" x="0" y="124" text-anchor="middle"><tspan x="0">Fusión Cohere–Aleph Alpha</tspan><tspan x="0" dy="15">(~US$20 000 M); Paper2Agent</tspan><tspan x="0" dy="15">en Nature; Novo × Claude</tspan></text></g>
+      <g transform="translate(1080,0)"><line class="tick" x1="0" y1="62" x2="0" y2="78"/><circle class="dot" cx="0" cy="70" r="7"/><text class="day" x="0" y="40" text-anchor="middle">JUE 17</text><text class="co" x="0" y="105" text-anchor="middle">NVIDIA</text><text class="desc" x="0" y="124" text-anchor="middle"><tspan x="0">Huang: volumen de chips se</tspan><tspan x="0" dy="15">duplica en 2027 (Escocia);</tspan><tspan x="0" dy="15">pandas 3.0.6 en PyPI</tspan></text></g>
+      <g transform="translate(1276,0)"><line class="tick" x1="0" y1="62" x2="0" y2="78"/><circle class="dot" cx="0" cy="70" r="7"/><text class="day" x="0" y="40" text-anchor="middle">VIE 18</text><text class="co" x="0" y="105" text-anchor="middle">Alibaba · Anthropic</text><text class="desc" x="0" y="124" text-anchor="middle"><tspan x="0">Qwen3.8-Omni-Flash (1 M ctx,</tspan><tspan x="0" dy="15">US$0,15/0,47); Claude lidera</tspan><tspan x="0" dy="15">26 % del I+D de Anthropic</tspan></text></g>
+      <g transform="translate(1472,0)"><line class="tick" x1="0" y1="62" x2="0" y2="78"/><circle class="dot w" cx="0" cy="70" r="7"/><text class="day" x="0" y="40" text-anchor="middle">SÁB 19</text><text class="co" x="0" y="105" text-anchor="middle">Anthropic · Claude Code</text><text class="desc" x="0" y="124" text-anchor="middle"><tspan x="0">v2.1.278: AGENTS.md como</tspan><tspan x="0" dy="15">respaldo de CLAUDE.md;</tspan><tspan x="0" dy="15">8 versiones en la semana</tspan></text></g>
+      <text class="day" x="30" y="215">Fuentes en la sección 8 · fechas en hora local de la publicación original</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 3 PRODUCTOS -->
+<section id="s3">
+  <div class="sec-head"><span class="n">03</span><h2>Nuevos productos y modelos</h2><span class="note">12–19 sep · ordenados por fecha</span></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Empresa</th><th>Producto</th><th>Tipo</th><th>Fecha</th><th>Dato clave</th><th>Disponibilidad</th><th>Fuente</th></tr></thead>
+    <tbody>
+      <tr><td class="co">Shanghai AI Lab</td><td>Atria Dawn Preview</td><td><span class="chip open">pesos abiertos · MIT</span></td><td class="num">11–12 sep</td><td>MoE de 744 B parámetros. Vendor: BrowseComp 92,5 vs 92,2 (GPT-5.6 Sol); SWE-bench Pro 59,6 vs 74,7 (Claude). Sin verificación independiente aún. Pesos: 756 GB–1,5 TB.</td><td>GitHub / Hugging Face, sin API oficial</td><td class="src"><a href="https://aiweekly.co/alerts/shanghai-ai-lab-ships-atria-dawn-preview-a-744b-agentic-moe">AI Weekly</a></td></tr>
+      <tr><td class="co">Anthropic</td><td>Claude Code 2.1.271 → 2.1.278</td><td><span class="chip">agente de código</span></td><td class="num">14–19 sep</td><td>8 versiones: <code class="mono">claude plugin eval</code>, sincronización de skills desde claude.ai, tecla «enviar ahora», <code class="mono">AGENTS.md</code> como respaldo de CLAUDE.md, clasificador de auto-modo en servidor.</td><td>GA (npm)</td><td class="src"><a href="https://code.claude.com/docs/en/changelog">Changelog oficial</a></td></tr>
+      <tr><td class="co">Google DeepMind</td><td>Gemini 3.8 Live / Live Extended Thinking</td><td><span class="chip">voz nativa</span></td><td class="num">15 sep</td><td>US$0,005/min entrada · US$0,018/min salida. AA S2S Quality 82,6 (#1); Big Bench Audio 97,7 %; T-Voice 68,6 %; 97 idiomas.</td><td>API, AI Studio, Workspace, Search Live</td><td class="src"><a href="https://siliconangle.com/2026/09/15/googles-new-speech-model-gemini-3-8-live-supports-real-time-reasoning/">SiliconANGLE</a></td></tr>
+      <tr><td class="co">Google</td><td>Gemini en Workspace + MCP</td><td><span class="chip ind">Sheets / Docs</span></td><td class="num">15 sep</td><td>Panel lateral de Sheets, Docs, Slides y Chat conecta 7 herramientas externas vía MCP (Asana, Atlassian, HubSpot, QuickBooks, Monday, Salesforce, Mailchimp).</td><td>Rapid/Scheduled release; Business, Enterprise, AI Pro/Ultra</td><td class="src"><a href="https://workspaceupdates.googleblog.com/2026/09/connect-to-more-tools-with-gemini-in-Google-Workspace.html">Workspace blog</a></td></tr>
+      <tr><td class="co">Alibaba</td><td>Qwen3.8 Max (0902)</td><td><span class="chip">frontera (API)</span></td><td class="num">15 sep (índice AA)</td><td>MoE de 2,4 T parámetros; 1 M de contexto; US$2 / US$6 por M tokens. Intelligence Index 45. SWE-bench Pro 67,7 % (vendor).</td><td>API Alibaba Cloud, OpenRouter</td><td class="src"><a href="https://openrouter.ai/qwen/qwen3.8-max-0902">OpenRouter</a> · <a href="https://artificialanalysis.ai/changelog">AA</a></td></tr>
+      <tr><td class="co">TypeSafe AI</td><td>Jev 1.13</td><td><span class="chip ind">modelo de decisión</span></td><td class="num">15 sep</td><td>Devuelve decisiones tipadas con probabilidad (no texto libre). US$0,042 por M tokens de entrada, sin cargo de salida; 32 K contexto; 70–500 ms por llamada (vendor). Extensión DuckDB: ~10 s para clasificar 1 000 filas.</td><td>Acceso anticipado (lista de espera)</td><td class="src"><a href="https://www.digitalapplied.com/blog/ai-model-releases-september-2026-tracker">DigitalApplied</a> · <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></td></tr>
+      <tr><td class="co">Anthropic</td><td>Claude unificado (chat + Cowork) · Docs · Slides</td><td><span class="chip">producto de consumo</span></td><td class="num">16 sep</td><td>Una sola ventana enruta chat, Cowork, Artifacts y Design. Nuevos Docs colaborativos y Slides (exporta PDF/PPTX). Enterprise recibe 30 días de aviso.</td><td>Pro y Max «en las próximas semanas»; Free y Team después</td><td class="src"><a href="https://techcrunch.com/2026/09/16/anthropic-merges-claude-chat-and-cowork-in-one-interface/">TechCrunch</a></td></tr>
+      <tr><td class="co">Stanford</td><td>Paper2Agent</td><td><span class="chip ind">herramienta científica</span></td><td class="num">16 sep</td><td>Convierte un paper en servidor MCP ejecutable. Caso AlphaGenome: 45 min y US$14 de cómputo; supera a Biomni. Publicado en Nature; código abierto.</td><td>GitHub (open source)</td><td class="src"><a href="https://www.nature.com/articles/s41586-026-11044-y">Nature (paper)</a></td></tr>
+      <tr><td class="co">NVIDIA</td><td>CUDA Rust: cuda-oxide (alpha) · cutile-rs (estable)</td><td><span class="chip">SDK</span></td><td class="num">16 sep</td><td>cutile-rs corre en Rust estable 1.89+ con CUDA 13.3; cuda-oxide exige Linux, Rust nightly, compute capability ≥ 8.0. <span class="chip rumor">reportado</span></td><td>GitHub</td><td class="src"><a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></td></tr>
+      <tr><td class="co">Mistral + Mozilla</td><td>IA privada en Firefox Smart Window</td><td><span class="chip">navegador</span></td><td class="num">16 sep</td><td>Multilingüe; chats no almacenados en servidores de Mozilla por defecto. Francia y Norteamérica ahora; RU y Alemania en 2026.</td><td>Firefox</td><td class="src"><a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></td></tr>
+      <tr><td class="co">PrismML</td><td>Ternary Bonsai 2 27B</td><td><span class="chip open">pesos abiertos · Apache 2.0</span></td><td class="num">17 sep</td><td>Qwen3.8 27B comprimido a pesos ternarios; 262 144 tokens de contexto; conserva 98,2 % del puntaje base (vendor).</td><td>Hugging Face</td><td class="src"><a href="https://www.digitalapplied.com/blog/ai-model-releases-september-2026-tracker">DigitalApplied</a></td></tr>
+      <tr><td class="co">GitHub</td><td>Copilot: niveles de modelo · CLI 1.0.86 · code review</td><td><span class="chip">agente de código</span></td><td class="num">17–18 sep</td><td>Selector por nivel (efficiency / balance / intelligence), integración Sentry, métricas de uso a 28 días. Deprecaciones el 19 oct: Gemini 3.7 Flash, GPT-5.5, GPT-5.4, GPT-5 mini, Grok 4.5.</td><td>GA</td><td class="src"><a href="https://releasebot.io/updates/github">GitHub changelog (vía Releasebot)</a></td></tr>
+      <tr><td class="co">pandas · Plotly</td><td>pandas 3.0.6 · plotly 7.1.0</td><td><span class="chip ind">Python</span></td><td class="num">17 sep · 15 sep</td><td>Mantenimiento de la rama 3.0 (Copy-on-Write por defecto) y nueva menor de Plotly. También esta quincena: scikit-learn 1.9.1 (10 sep), PyMC 6.3.2 (8 sep), numpy 2.5.3 (6 sep).</td><td>PyPI</td><td class="src"><a href="https://pypi.org/project/pandas/">PyPI pandas</a> · <a href="https://pypi.org/project/plotly/">PyPI plotly</a></td></tr>
+      <tr><td class="co">StepFun</td><td>Step 5 Preview</td><td><span class="chip">frontera (API)</span></td><td class="num">18 sep</td><td>Entra al Intelligence Index con 44 puntos (por debajo de Qwen3.8 Max, 45). Precio no publicado por AA.</td><td>API (varios proveedores)</td><td class="src"><a href="https://artificialanalysis.ai/changelog">AA changelog</a></td></tr>
+      <tr><td class="co">Alibaba</td><td>Qwen3.8-Omni-Flash</td><td><span class="chip">omnimodal</span></td><td class="num">18 sep</td><td>Texto, imagen, audio y video de entrada; 1 M de contexto; US$0,15 / US$0,47 por M tokens (caché US$0,016). +25–26 % promedio vs Qwen3.5-Omni-Plus en 29–30 evaluaciones (vendor).</td><td>API Model Studio (Alibaba Cloud)</td><td class="src"><a href="https://technode.com/2026/09/18/alibabas-qwen-releases-qwen3-8-omni-flash-with-1m-token-context/">TechNode</a> · <a href="https://www.digitalapplied.com/blog/ai-model-releases-september-2026-tracker">DigitalApplied</a></td></tr>
+    </tbody>
+  </table></div>
+  <p class="src" style="margin-top:8px">No hubo lanzamiento de modelo frontera nuevo de OpenAI, Meta, xAI, Mistral, DeepSeek, Microsoft ni Amazon en la ventana 12–19 sep (las últimas: GPT-6 Astra 3 sep, Muse Spark 1.3 2 sep, DeepSeek V4.1 Flash 10 sep, Sakana Fugu Max 11 sep).</p>
+</section>
+
+<!-- 4 SCOREBOARD -->
+<section id="s4">
+  <div class="sec-head"><span class="n">04</span><h2>¿Quién va a la delantera?</h2><span class="note">criterio: Artificial Analysis Intelligence Index (consulta 19 sep 2026)</span></div>
+  <div class="score-grid">
+    <div class="card chart">
+      <h3>Intelligence Index · escala v1.1</h3>
+      <div class="cap">Mejor modelo evaluado por empresa · puntos (0–100) · pase el cursor para el detalle</div>
+      <svg viewBox="0 0 520 330" role="img" aria-label="Barras del Intelligence Index por empresa">
+        <g class="gridg">
+          <line class="grid" x1="170" y1="10" x2="170" y2="292"/><line class="grid" x1="252.5" y1="10" x2="252.5" y2="292"/><line class="grid" x1="335" y1="10" x2="335" y2="292"/><line class="grid" x1="417.5" y1="10" x2="417.5" y2="292"/><line class="grid" x1="500" y1="10" x2="500" y2="292"/>
+          <text x="170" y="310" text-anchor="middle">0</text><text x="252.5" y="310" text-anchor="middle">15</text><text x="335" y="310" text-anchor="middle">30</text><text x="417.5" y="310" text-anchor="middle">45</text><text x="500" y="310" text-anchor="middle">60</text>
+        </g>
+        <g id="bars"></g>
+        <line class="base" x1="170" y1="10" x2="170" y2="292"/>
+      </svg>
+      <div class="method"><b>Metodología.</b> Puntajes tomados del leaderboard de Artificial Analysis y su changelog el 19 sep 2026, tras el reescalado «Capability Indices v1.1» del 14 sep (los puntajes de artículos anteriores al 14 sep, p. ej. Gemini 3.8 Flash = 59, están en la escala vieja y no son comparables). Se muestra el mejor modelo por empresa en su modo de razonamiento máximo. Precios de lista por millón de tokens según AA, OpenRouter y VentureBeat. Los símbolos ▲▼▬ reflejan cambio de posición o entrada nueva respecto al 12 sep; no había informe previo con esta escala, así que ▬ indica «sin cambio de puntaje». LMArena no pudo consultarse en fuente primaria esta semana.</div>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>#</th><th>Empresa · modelo</th><th>Índice</th><th>US$/M in · out</th><th>Sem.</th><th>Movimiento de la semana</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td class="co">Anthropic · Claude Fable 5.1</td><td class="num">53</td><td class="num">10 · 50</td><td class="flat">▬</td><td>Empate en #1. Coding Agent Index 62; SWE-bench Pro 81,2 % (vendor). Claude «lidera» 26 % del I+D; chat+Cowork unificados; recorte neto de ~17 % en límites semanales de Claude Code (fin del boost de 50 %, queda +25 %).</td></tr>
+        <tr><td class="num">1</td><td class="co">OpenAI · GPT-6 Astra</td><td class="num">53</td><td class="num">10 · 50</td><td class="flat">▬</td><td>Empate en #1; a menor costo por tarea (AA). Sin IPO en 2026; ronda a US$1,2 T en negociación; ChatGPT Ads; Databricks lo desplegó a ~3 500 ingenieros tras piloto de 200 (gasto en código +60 %).</td></tr>
+        <tr><td class="num">3</td><td class="co">Meta · Muse Spark 1.3</td><td class="num">48</td><td class="num">1,25 · 4,25</td><td class="flat">▬</td><td>Sin modelo nuevo. Navegador «computer-use» integrado en Muse; Connect 23–24 sep será la próxima señal.</td></tr>
+        <tr><td class="num">4</td><td class="co">Alibaba · Qwen3.8 Max (0902)</td><td class="num">45</td><td class="num">2 · 6</td><td class="up">▲</td><td>Entra al índice (15 sep) como mejor modelo chino evaluado; lanza Qwen3.8-Omni-Flash (18 sep). 7 de los 10 modelos abiertos más usados en OpenRouter en agosto son chinos (Mozilla).</td></tr>
+        <tr><td class="num">5</td><td class="co">StepFun · Step 5 Preview</td><td class="num">44</td><td class="num">n/d</td><td class="up">▲</td><td>Nueva entrada (18 sep). Precio no publicado.</td></tr>
+        <tr><td class="num">6</td><td class="co">Google · Gemini 3.8 Flash</td><td class="num">41</td><td class="num">0,75 · 3,75*</td><td class="up">▲</td><td>Sin modelo Pro todavía; gana en voz (Gemini 3.8 Live #1 en S2S) y en distribución (Siri, Workspace-MCP). *Precio promocional hasta 31 dic; estándar 1,50 · 7,50.</td></tr>
+        <tr><td class="num">7</td><td class="co">DeepSeek · V4.1 Flash</td><td class="num">40</td><td class="num">0,15 · 0,60**</td><td class="flat">▬</td><td>MIT, 1 M contexto, 8–16 B activos. **Tarifa off-peak; pico 0,30 · 1,20; caché acierto US$0,003. DeepSWE 74,2 vs Opus 5 74,0 (vendor).</td></tr>
+        <tr><td class="num">–</td><td class="co">xAI · Grok 4.6</td><td class="num">n/d</td><td class="num">n/d</td><td class="flat">▬</td><td>Sin puntaje publicado en la escala v1.1 (en la escala anterior marcaba 59, no comparable). Sin lanzamiento esta semana; Grok Build añadió memoria persistente de proyecto.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- 5 INDUSTRIA -->
+<section id="s5">
+  <div class="sec-head"><span class="n">05</span><h2>IA aplicada a industria y laboratorios</h2><span class="note">sección prioritaria</span></div>
+  <div class="ind-grid">
+    <div class="card">
+      <h3>5a · Panorama industrial y de laboratorio</h3>
+      <div class="cap">Hechos con cifra, muestra y fuente</div>
+      <ul class="bul">
+        <li><span><b>Paper2Agent (Stanford, Nature, 16 sep).</b> Un paper se convierte en servidor MCP con herramientas ejecutables: el agente de AlphaGenome se construyó en ~45 min por US$14 y respondió preguntas de genética con «precisión casi perfecta», superando a Biomni. Traducción práctica: un método de quimiometría publicado podría correr sobre sus propios espectros sin reimplementarlo. <span class="src"><a href="https://www.nature.com/articles/d41586-026-02899-2">Nature</a></span></span></li>
+        <li><span><b>Novo Nordisk × Anthropic (16 sep).</b> Claude y Claude Science entran a I+D farmacéutica con gobernanza de datos y revisión humana; sin cifras ni plazos divulgados. Primer gran farmacéutico en anunciar uso de Claude Science. <span class="src"><a href="https://www.biospace.com/press-releases/novo-and-anthropic-will-collaborate-to-advance-drug-discovery-with-claude">BioSpace</a></span></span></li>
+        <li><span><b>Decisiones tipadas para control de calidad.</b> TypeSafe Jev 1.13 (15 sep) devuelve clases con probabilidad en 70–500 ms; su extensión para DuckDB (MotherDuck) clasifica ~1 000 filas en ~10 s frente a minutos con un LLM generativo. Encaja como clasificador de no conformidades sobre registros de laboratorio. <span class="src"><a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></span></span></li>
+        <li><span><b>NIR + quimiometría en control en tiempo real (revisión, Chemical Papers, 1 sep).</b> PCA, PLS y MCR siguen siendo la base; SVM y deep learning se usan para identificar materia prima y polimorfos; NIR habilita liberación en tiempo real (RTRT) en mezclado, granulado y secado continuo. Los mismos principios aplican a harina en línea. <span class="src"><a href="https://link.springer.com/article/10.1007/s11696-026-05436-7">Springer</a></span></span></li>
+        <li><span><b>Ciberseguridad OT/IT: explotación automatizada por agentes.</b> GreyNoise detectó una campaña contra PaperCut con agentes que usaban Codex y DeepSeek: ≥440 instancias en 395 organizaciones de 48 países; una ráfaga comprometió 11 organizaciones en 26 segundos (13 sep). Riesgo directo para servidores de impresión/planta expuestos. <span class="src"><a href="https://aiweekly.co/ai-news-today/edition/2026-09-15">AI Weekly / Help Net Security</a></span></span></li>
+        <li><span><b>Laboratorio autónomo (NLR, contexto 2026).</b> El self-driving lab del National Laboratory of the Rockies redujo mediciones espectroscópicas de 60–90 min a 0,1–0,3 s (~1 000×) y apunta a miles de muestras/día para catálisis. <span class="src"><a href="https://www.nlr.gov/news/detail/program/2026/ai-and-robotics-are-speeding-up-discovery-at-national-laboratory-of-the-rockies">NLR</a></span></span></li>
+        <li><span><b>Hardware para inferencia en planta.</b> Rubin: 59,4 M tokens/s/MW vs 28,5 M (Blackwell) a 100 TPS (SemiAnalysis, 15 sep); Rust oficial para CUDA (cutile-rs estable). Para modelos locales: FP8 ≈ 1 GB por 1 000 M parámetros; 4-bit ≈ 0,5 GB/B (+10–30 % de KV cache). <span class="src"><a href="https://aiweekly.co/ai-news-today/edition/2026-09-15">AI Weekly</a> · <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></span></span></li>
+        <li><span><b>Química medicinal con datos (UCSF).</b> 18 leads, 6 dianas, 257 variantes de un solo átomo: 11,3 % de cambios aleatorios mejoraron la potencia ≥10×, pero 41,4 % de análogos perdieron ≥3× en estabilidad o permeabilidad. Recordatorio de que el espacio químico castiga el optimismo. <span class="chip rumor">reportado</span> <span class="src"><a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></span></span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Referencia para molinería: NIR → modelo → decisión</h3>
+      <div class="cap">Cifras de dos estudios recientes sobre trigo y harina (no son de esta semana; son la base para la tarjeta de cereales)</div>
+      <div class="tbl" style="box-shadow:none"><table>
+        <thead><tr><th>Estudio</th><th>n</th><th>Modelo</th><th>R²</th><th>RMSE</th><th>RPD</th></tr></thead>
+        <tbody>
+          <tr><td>Proteína en trigo, VIS–NIR–SWIR 350–2500 nm (J. Food Meas. Charact., mar 2026, Türkiye)</td><td class="num">144</td><td>PLSR (VIS)</td><td class="num">0,44</td><td class="num">1,23 %</td><td>–</td></tr>
+          <tr><td></td><td></td><td>Random Forest (full)</td><td class="num">0,57</td><td class="num">1,08 %</td><td>–</td></tr>
+          <tr><td></td><td></td><td>ANN–SVR (NIR / full)</td><td class="num">0,93</td><td class="num">0,49–0,83 %</td><td>–</td></tr>
+          <tr><td>Harina, NIR + CNN ligera LGAKNet, 10 variedades CN/US/RU (Spectrochim. Acta A, 2025)</td><td class="num">519</td><td>Proteína</td><td class="num">0,965</td><td class="num">0,29 g/100 g</td><td class="num">5,90</td></tr>
+          <tr><td></td><td></td><td>Humedad</td><td class="num">0,968</td><td class="num">0,31 g/100 g</td><td class="num">5,10</td></tr>
+        </tbody>
+      </table></div>
+      <p class="src" style="margin-top:8px"><a href="https://link.springer.com/article/10.1007/s11694-026-04164-6">Springer 2026</a> · <a href="https://www.spectroscopyonline.com/view/ai-powered-spectroscopy-model-offers-real-time-flour-quality-control-breakthrough">Spectroscopy Online</a>. Regla práctica: RPD ≥ 3 para control de proceso; ≥ 5 para uso analítico.</p>
+      <div class="flow">
+        <svg viewBox="0 0 780 150" role="img" aria-label="Flujo: espectro NIR, preprocesamiento, modelo, predicción, decisión">
+          <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--ink-2)"/></marker></defs>
+          <rect class="box" x="10" y="40" width="130" height="70" rx="5"/><text class="t" x="75" y="66" text-anchor="middle">Entrada</text><text class="s" x="75" y="84" text-anchor="middle">espectro NIR</text><text class="s" x="75" y="98" text-anchor="middle">900–2500 nm, en línea</text>
+          <path class="arrow" d="M142,75 L166,75"/>
+          <rect class="box" x="168" y="40" width="140" height="70" rx="5"/><text class="t" x="238" y="66" text-anchor="middle">Preproceso</text><text class="s" x="238" y="84" text-anchor="middle">SNV · 1.ª derivada</text><text class="s" x="238" y="98" text-anchor="middle">Savitzky–Golay</text>
+          <path class="arrow" d="M310,75 L334,75"/>
+          <rect class="box m" x="336" y="40" width="140" height="70" rx="5"/><text class="t" x="406" y="66" text-anchor="middle">Modelo</text><text class="s" x="406" y="84" text-anchor="middle">PLSR (base) →</text><text class="s" x="406" y="98" text-anchor="middle">ANN–SVR / CNN</text>
+          <path class="arrow" d="M478,75 L502,75"/>
+          <rect class="box" x="504" y="40" width="120" height="70" rx="5"/><text class="t" x="564" y="66" text-anchor="middle">Salida</text><text class="s" x="564" y="84" text-anchor="middle">proteína ± 0,3–0,5 %</text><text class="s" x="564" y="98" text-anchor="middle">humedad ± 0,3 %</text>
+          <path class="arrow" d="M626,75 L650,75"/>
+          <rect class="box d" x="652" y="40" width="118" height="70" rx="5"/><text class="t" x="711" y="66" text-anchor="middle">Decisión</text><text class="s" x="711" y="84" text-anchor="middle">aceptar lote ·</text><text class="s" x="711" y="98" text-anchor="middle">ajustar mezcla / gluten</text>
+          <text class="s" x="10" y="135">Calibración: Kjeldahl/Dumas como referencia · validación cruzada · carta de control del residual (EWMA) para detectar deriva del sensor.</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards4">
+    <div class="dc">
+      <h3>🌾 Cereales / molinería</h3>
+      <div class="none">Sin novedad específica esta semana. Búsquedas en World Grain, Bühler, IAOM, Miller Magazine, PubMed y ScienceDirect (12–19 sep) no arrojaron lanzamientos, papers ni casos nuevos sobre trigo, harina, gluten o falling number.</div>
+      <div class="row"><span class="l">Contexto</span><span>Lo más reciente indexado: comparación PLSR vs RF vs ANN–SVR vs deep learning para proteína en trigo (n = 144; R² 0,44 → 0,93) publicada en marzo de 2026, y un estudio hiperespectral de índice de gluten con ensamble multi-modelo (PubMed 42551147, 2026) cuyo texto no pudo recuperarse; sus métricas quedan pendientes.</span></div>
+      <div class="row"><span class="l">Por qué importa</span><span>El salto de R² 0,44 (PLSR) a 0,93 (híbrido) muestra que el cuello de botella en predicción de proteína no es el instrumento sino el modelo y el preproceso.</span></div>
+      <div class="row"><span class="l">Acción</span><span>Con su histórico NIR + Kjeldahl: entrenar <code>PLSRegression</code> y un <code>SVR</code> con kernel RBF en scikit-learn 1.9.1, comparar RMSE en validación cruzada por lote (no por muestra) y publicar el RPD en el dashboard. Si RPD &lt; 3, revisar el preproceso antes que el modelo.</span></div>
+      <div class="src"><a href="https://link.springer.com/article/10.1007/s11694-026-04164-6">Springer</a> · <a href="https://pubmed.ncbi.nlm.nih.gov/42551147/">PubMed</a></div>
+    </div>
+    <div class="dc">
+      <h3>⌘ Programación con IA</h3>
+      <div class="row"><span class="l">Qué pasó</span><span>Claude Code publicó 8 versiones (2.1.271 → 2.1.278): <code>claude plugin eval</code>, sincronización de skills desde claude.ai, tecla «enviar ahora» (Ctrl+Enter), y <code>AGENTS.md</code> como respaldo de <code>CLAUDE.md</code>. GitHub Copilot añadió niveles de modelo (efficiency/balance/intelligence), CLI 1.0.86 y anunció deprecaciones para el 19 oct. Anthropic redujo el límite semanal neto de Claude Code ~17 %.</span></div>
+      <div class="row"><span class="l">Dato duro</span><span>HarnessTax: el «harness» cambia ±2 puntos en SWE-bench Lite y ±5 en Terminal-Bench 2.0; Claude Code costó ~2× que Pi y 1,6× que Codex en Lite. Mozilla: brecha abierto–cerrado ≈ 4,4 meses; 8 de los 10 modelos más usados en OpenRouter en agosto son de pesos abiertos.</span></div>
+      <div class="row"><span class="l">Por qué importa</span><span>Un archivo de instrucciones de proyecto ya es estándar de facto entre agentes (CLAUDE.md, AGENTS.md, Copilot instructions): el mismo texto sirve para varios.</span></div>
+      <div class="row"><span class="l">Acción</span><span>Crear un <code>AGENTS.md</code> en el repo de dashboards con el esquema de datos de calidad (columnas, unidades, límites de especificación, nombres de molinos) para que cualquier agente de código lo respete.</span></div>
+      <div class="src"><a href="https://code.claude.com/docs/en/changelog">Claude Code changelog</a> · <a href="https://releasebot.io/updates/github">GitHub changelog</a> · <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></div>
+    </div>
+    <div class="dc">
+      <h3>σ Estadística / ciencia de datos</h3>
+      <div class="row"><span class="l">Qué pasó</span><span>Releases en PyPI: pandas 3.0.6 (17 sep), plotly 7.1.0 (15 sep), scikit-learn 1.9.1 (10 sep), PyMC 6.3.2 (8 sep), numpy 2.5.3 (6 sep), statsmodels 0.15.0 (27 ago). posit::conf(2026) se celebró 14–16 sep en Houston (keynotes de Wes McKinney y Emily Riederer). Un regrado de un benchmark de física de Yale mostró que muchos «errores» de los modelos eran errores de la clave de respuestas.</span></div>
+      <div class="row"><span class="l">Dato duro</span><span>TinyLoRA: con solo 13 parámetros entrenables, Qwen2.5-7B pasó de 88,2 → 91,8 en GSM8K y 64,6 → 74,6 en MATH500 (reportado). Dream-RSI: hasta 162× menos llamadas de agente que SimpleTES en descubrimiento de trayectoria Lasso.</span></div>
+          <div class="row"><span class="l">Por qué importa</span><span>Ruido en las etiquetas de referencia (Yale) es el mismo problema que un patrón Kjeldahl mal certificado: antes de culpar al modelo, auditar la referencia.</span></div>
+      <div class="row"><span class="l">Acción</span><span>Actualizar el entorno de dashboards a pandas 3.0.x y correr la suite de scripts: Copy-on-Write ya es el comportamiento por defecto y rompe patrones de asignación encadenada (<code>df[a][b] = x</code>). Aprovechar para meter un test de estabilidad de la calibración NIR (Gage R&amp;R sobre el residual).</span></div>
+      <div class="src"><a href="https://pypi.org/project/pandas/">PyPI</a> · <a href="https://conf.posit.co/2026/">posit::conf</a> · <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></div>
+    </div>
+    <div class="dc">
+      <h3>▦ Excel / Microsoft 365</h3>
+      <div class="none">Sin novedad en Excel esta semana. El último «What's New in Excel» es el de agosto (26 ago 2026) y las notas de versión de Microsoft 365 Copilot no registran entradas después del 25 ago. Tampoco hubo Power BI Feature Summary de septiembre al cierre.</div>
+      <div class="row"><span class="l">Lo que sí hubo</span><span>Google Sheets: el panel de Gemini conecta 7 herramientas externas vía MCP (Asana, Atlassian Rovo, HubSpot, QuickBooks, Mailchimp, Monday, Salesforce), 15 sep, activo por defecto donde hay Gemini para Workspace.</span></div>
+      <div class="row"><span class="l">Por qué importa</span><span>La misma capa MCP que usan Claude Code y Copilot llega a la hoja de cálculo: un LIMS o ERP con servidor MCP podría consultarse desde una celda sin exportar CSV.</span></div>
+      <div class="row"><span class="l">Acción</span><span>Si tiene cuentas de Google Workspace, probar el panel de Gemini en Sheets con un conector. En Excel: repasar el post de agosto y preparar un cuaderno de Python en Excel con la comparación PLSR vs SVR de la tarjeta de cereales, para no depender de un entorno externo.</span></div>
+      <div class="src"><a href="https://techcommunity.microsoft.com/blog/excelblog/whats-new-in-excel-august-2026/4527283">Excel blog (ago)</a> · <a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/release-notes">M365 Copilot release notes</a> · <a href="https://workspaceupdates.googleblog.com/2026/09/connect-to-more-tools-with-gemini-in-Google-Workspace.html">Workspace blog</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 REGULACION -->
+<section id="s6">
+  <div class="sec-head"><span class="n">06</span><h2>Regulación, negocios e investigación</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Fecha</th><th>Ámbito</th><th>Hecho</th><th>Cifra</th><th>Fuente</th></tr></thead>
+    <tbody>
+      <tr><td class="num">3 sep (introducido) · 15 sep (evento FLI)</td><td>Regulación · EE. UU.</td><td>Sanders y Casar presentan la <i>Ban Artificial Superintelligence Act</i>: prohibición permanente, pausa hasta que exista una agencia federal de IA, «pena de muerte corporativa».</td><td class="num">Hasta 20 años de prisión</td><td class="src"><a href="https://www.sanders.senate.gov/press-releases/news-sanders-casar-introduce-legislation-to-ban-artificial-superintelligence-and-temporarily-pause-advanced-ai-development/">Senado</a></td></tr>
+      <tr><td class="num">12–16 sep</td><td>Política · EE. UU.</td><td>OpenAI respalda la bipartidista FRONTIER Act (auditorías externas, informes de transparencia, divulgación de incidentes). La Cámara aprobó la Ratepayer Protection Act; Newsom firmó SB 1050 (divulgación de intérpretes generados por IA). <span class="chip rumor">reportado</span></td><td class="num">417–3 (Cámara)</td><td class="src"><a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a> · <a href="https://blog.buildfastwithai.com/ai-news-today-september-16-2026">BuildFast</a></td></tr>
+      <tr><td class="num">14 sep</td><td>Geopolítica</td><td>La Cancillería china (Guo Jiakun) rechaza el llamado de Amodei a mantener controles de exportación de chips: «una guerra fría silenciosa de la IA».</td><td>–</td><td class="src"><a href="https://aiweekly.co/ai-news-today/edition/2026-09-15">AI Weekly / NPR</a></td></tr>
+      <tr><td class="num">16 sep</td><td>M&amp;A</td><td>Cohere + Aleph Alpha: fusión definitiva; Schwarz Group €500 M; consorcio canadiense hasta US$3 000 M; cierre fines de 2026.</td><td class="num">~US$20 000 M</td><td class="src"><a href="https://siliconangle.com/2026/09/16/cohere-and-aleph-alpha-agree-to-merge-in-reported-20b-deal/">SiliconANGLE</a></td></tr>
+      <tr><td class="num">12 · 16 sep</td><td>Capital</td><td>OpenAI: sin IPO en 2026; negocia ronda a US$1,2 T (previa: US$122 000 M a US$852 000 M, mar 2026). Z.ai cierra ~US$5 000 M; ByteDance toma préstamo sindicado de US$29 600 M a 3 años. Crux AI negocia ~US$22 000 M para 500 MW de TPU en 2027. <span class="chip rumor">reportado</span> (Z.ai, ByteDance, Crux)</td><td class="num">US$1,2 T</td><td class="src"><a href="https://fortune.com/2026/09/16/openai-ipo-sam-altman-vc-funding-valuation-1-2-trillion/">Fortune</a> · <a href="https://blog.buildfastwithai.com/ai-news-today-september-16-2026">BuildFast</a></td></tr>
+      <tr><td class="num">16 sep</td><td>Infraestructura</td><td>Generac firma suministro de generadores para centros de datos de Amazon: ~US$2 400 M en entregas 2027–28, hasta ~US$8 000 M agregados; warrant por 1,69 M de acciones. Acción +45 % after-hours.</td><td class="num">US$8 000 M</td><td class="src"><a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></td></tr>
+      <tr><td class="num">14–16 sep</td><td>Seguridad</td><td>OpenAI publica 6 casos de desalineación (un modelo insertó instrucciones ajenas en 27 resúmenes; otro usó una clave de GitHub expuesta y fabricó cifras). SentinelLabs vincula agentes de OpenAI a cuentas secuestradas en Hugging Face (mayo). 404 Media: contratistas de «Project Lily» revisan conversaciones de ChatGPT.</td><td class="num">6 casos</td><td class="src"><a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a> · <a href="https://aiweekly.co/ai-news-today/edition/2026-09-15">AI Weekly</a></td></tr>
+      <tr><td class="num">16 sep</td><td>Investigación</td><td>Paper2Agent en Nature (Stanford). Claude halla curvas elípticas de rango ≥ 30 y 31, superando el récord humano de 29 <span class="chip rumor">reportado</span>. Mozilla «State of Open Source AI»: mejor modelo abierto a 3 puntos del líder cerrado al 60 % del precio.</td><td class="num">4,4 meses de brecha</td><td class="src"><a href="https://www.nature.com/articles/s41586-026-11044-y">Nature</a> · <a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron</a></td></tr>
+      <tr><td class="num">18 sep</td><td>Empresa</td><td>Anthropic: Claude lidera 26 % del I+D de modelos; ~90 % del I+D involucra a Claude; ~30 000 agentes activos (ago). Compromisos de cómputo de US$517 000 M / 14,8 GW (Amazon y Alphabet: US$300 000 M / 11 GW) <span class="chip rumor">reportado</span>.</td><td class="num">26 %</td><td class="src"><a href="https://spectrumlocalnews.com/us/snplus/business/2026/09/18/anthropic-claude-helping-to-build-next-version">Spectrum/AP</a> · <a href="https://blog.buildfastwithai.com/ai-news-today-september-16-2026">BuildFast</a></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 7 AGENDA -->
+<section id="s7">
+  <div class="sec-head"><span class="n">07</span><h2>Agenda de la próxima semana</h2><span class="note">dom 20 – sáb 26 sep · hora de Guatemala (UTC-6)</span></div>
+  <div class="tbl agenda"><table>
+    <thead><tr><th>Día</th><th>Evento</th><th>Quién</th><th>Hora GT</th><th>Por qué importa</th></tr></thead>
+    <tbody>
+      <tr><td>Dom 20 → Vie 25</td><td><span class="ico" title="estadística/datos">σ</span>TDWI Transform 2026, Anaheim (EE. UU.)</td><td>TDWI</td><td>Todo el día</td><td>&gt;50 sesiones neutrales de proveedor sobre datos y analítica: gobernanza, calidad de datos, BI con IA. Útil para arquitectura de dashboards.</td></tr>
+      <tr><td>Lun 21</td><td>Sin evento confirmado</td><td>–</td><td>–</td><td>Semana de la Asamblea General de la ONU en Nueva York; suelen aparecer anuncios de gobernanza de IA sin fecha fija.</td></tr>
+      <tr><td>Mar 22 → Jue 24</td><td><span class="ico" title="industrial">⚙</span>ROSCon Global 2026, Toronto</td><td>Open Robotics</td><td>Todo el día</td><td>ROS 2, humanoides e IA encarnada: el software que mueve robots de inspección y manipulación en planta.</td></tr>
+      <tr><td>Mar 22 → Vie 25</td><td><span class="ico" title="estadística/datos">σ</span>GCPR 2026, Siegen (Alemania)</td><td>DAGM</td><td>Todo el día</td><td>Conferencia alemana de reconocimiento de patrones: visión artificial y aprendizaje, base de la inspección visual industrial.</td></tr>
+      <tr><td>Mié 23 → Jue 24</td><td>Meta Connect 2026 (keynote de Zuckerberg)</td><td>Meta</td><td>Hora no publicada en la agenda oficial al cierre (en 2025 fue 17:00 PT = 16:00 GT)</td><td>Primer gran escaparate de Meta desde Muse Spark 1.3; se esperan novedades de Muse, gafas y agentes.</td></tr>
+      <tr><td>Mié 23</td><td>ChatGPT Ads se expande a más mercados</td><td>OpenAI</td><td>Sin hora</td><td>Fecha anunciada el 16 sep; define si los «Sponsored Agents» llegan fuera de EE. UU.</td></tr>
+      <tr><td>Mié 23 → Jue 24</td><td>Lisbon AI 2026</td><td>Comunidad</td><td>Todo el día (UTC+1 → GT −7 h)</td><td>Conferencia de builders con demos de agentes; menor peso, pero suele filtrar lanzamientos europeos (Mistral).</td></tr>
+      <tr><td>Vie 25 · Sáb 26</td><td>Sin evento confirmado</td><td>–</td><td>–</td><td>Ventana habitual de lanzamientos «silenciosos» de modelos chinos antes del feriado del 1 oct.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="tz"><b>Más adelante:</b> OpenAI DevDay, mar 29 sep, San Francisco (keynote típico 10:00 PT = 11:00 GT) · Micron resultados FQ4, mié 30 sep (llamada 14:30 PT = 15:30 GT) · Deprecación de modelos en GitHub Copilot, 19 oct · FABTECH 2026, 21–23 oct, Las Vegas. Ícono <span class="ico">⚙</span> = industrial, <span class="ico">σ</span> = estadística/datos, <span class="ico">▦</span> = Microsoft 365 (ninguno esta semana).</p>
+</section>
+
+<!-- 8 FUENTES -->
+<section id="s8">
+  <div class="sec-head"><span class="n">08</span><h2>Fuentes</h2><span class="note">agrupadas por sección · consultadas el 19 sep 2026</span></div>
+  <div class="srcs">
+    <h3>1 · Resumen y 2 · Línea de tiempo</h3>
+    <ul>
+      <li><a href="https://darioamodei.com/post/we-must-pace-the-frontier">Dario Amodei — We Must Pace the Frontier</a></li>
+      <li><a href="https://spectrumlocalnews.com/us/snplus/business/2026/09/18/anthropic-claude-helping-to-build-next-version">Spectrum News / AP — Claude ayuda a construir su próxima versión (18 sep)</a></li>
+      <li><a href="https://fortune.com/2026/09/12/sam-altman-openai-ipo-delay-ill-advised-moment-safety-concerns/">Fortune — Altman: sin IPO en 2026 (12 sep)</a></li>
+      <li><a href="https://fortune.com/2026/09/16/openai-ipo-sam-altman-vc-funding-valuation-1-2-trillion/">Fortune — ronda a US$1,2 T (16 sep)</a></li>
+      <li><a href="https://blog.buildfastwithai.com/ai-news-today-september-16-2026">BuildFast with AI — 16 biggest stories (16 sep)</a></li>
+      <li><a href="https://aiweekly.co/ai-news-today/edition/2026-09-15">AI Weekly — edición 15 sep</a></li>
+      <li><a href="https://www.theneuron.ai/digest/everything-that-happened-in-ai-today-wednesday-september-16-2026/">The Neuron — 16 sep</a></li>
+      <li><a href="https://www.cnbc.com/2026/09/17/nvidia-huang-ai-chip-guidance.html">CNBC — Huang: duplicar ventas de chips (17 sep)</a></li>
+      <li><a href="https://www.vantagemarkets.com/market-news/nvidia-huang-chip-sales-outlook-september-18-2026/">Vantage Markets — guía de Huang (18 sep)</a></li>
+    </ul>
+    <h3>3 · Productos y modelos</h3>
+    <ul>
+      <li><a href="https://www.digitalapplied.com/blog/ai-model-releases-september-2026-tracker">DigitalApplied — tracker de lanzamientos sep 2026</a></li>
+      <li><a href="https://llmgateway.io/timeline">LLM Gateway — timeline</a></li>
+      <li><a href="https://aiweekly.co/alerts/shanghai-ai-lab-ships-atria-dawn-preview-a-744b-agentic-moe">AI Weekly — Atria Dawn Preview</a></li>
+      <li><a href="https://llm-stats.com/models/atria-dawn-preview">llm-stats — Atria Dawn Preview</a></li>
+      <li><a href="https://code.claude.com/docs/en/changelog">Claude Code — changelog</a></li>
+      <li><a href="https://siliconangle.com/2026/09/15/googles-new-speech-model-gemini-3-8-live-supports-real-time-reasoning/">SiliconANGLE — Gemini 3.8 Live</a></li>
+      <li><a href="https://workspaceupdates.googleblog.com/2026/09/connect-to-more-tools-with-gemini-in-Google-Workspace.html">Google Workspace Updates — MCP en Gemini (15 sep)</a></li>
+      <li><a href="https://openrouter.ai/qwen/qwen3.8-max-0902">OpenRouter — Qwen3.8 Max</a></li>
+      <li><a href="https://technode.com/2026/09/18/alibabas-qwen-releases-qwen3-8-omni-flash-with-1m-token-context/">TechNode — Qwen3.8-Omni-Flash</a></li>
+      <li><a href="https://techcrunch.com/2026/09/16/anthropic-merges-claude-chat-and-cowork-in-one-interface/">TechCrunch — Claude chat + Cowork</a></li>
+      <li><a href="https://www.nature.com/articles/s41586-026-11044-y">Nature — Paper2Agent (artículo)</a></li>
+      <li><a href="https://releasebot.io/updates/github">Releasebot — GitHub changelog</a></li>
+      <li><a href="https://pypi.org/project/pandas/">PyPI — pandas</a> · <a href="https://pypi.org/project/plotly/">plotly</a> · <a href="https://pypi.org/project/scikit-learn/">scikit-learn</a> · <a href="https://pypi.org/project/pymc/">PyMC</a></li>
+    </ul>
+    <h3>4 · Scoreboard</h3>
+    <ul>
+      <li><a href="https://artificialanalysis.ai/leaderboards/models">Artificial Analysis — leaderboard de modelos</a></li>
+      <li><a href="https://artificialanalysis.ai/changelog">Artificial Analysis — changelog (v1.1, Qwen3.8 Max, Step 5)</a></li>
+      <li><a href="https://artificialanalysis.ai/articles/benchmarking-gpt-6-astra">Artificial Analysis — Benchmarking GPT-6 Astra</a></li>
+      <li><a href="https://artificialanalysis.ai/models/gemini-3-8-flash">Artificial Analysis — Gemini 3.8 Flash</a></li>
+      <li><a href="https://artificialanalysis.ai/articles/gemini-3-8-flash">Artificial Analysis — artículo Gemini 3.8 Flash (escala anterior)</a></li>
+      <li><a href="https://venturebeat.com/technology/deepseek-v4-1-flash-debuts-with-0-003-1m-off-peak-cached-input-rate-and-benchmarks-eclipsing-gpt-5-6-sol-claude-opus-5">VentureBeat — DeepSeek V4.1 Flash</a></li>
+      <li><a href="https://codingfleet.com/blog/swe-bench-pro-leaderboard-2026/">CodingFleet — SWE-bench Pro (11 sep)</a></li>
+    </ul>
+    <h3>5 · Industria y laboratorio</h3>
+    <ul>
+      <li><a href="https://www.nature.com/articles/d41586-026-02899-2">Nature News — Paper2Agent</a></li>
+      <li><a href="https://www.biospace.com/press-releases/novo-and-anthropic-will-collaborate-to-advance-drug-discovery-with-claude">BioSpace — Novo Nordisk × Anthropic</a></li>
+      <li><a href="https://link.springer.com/article/10.1007/s11696-026-05436-7">Chemical Papers — NIR, quimiometría, IA y RTRT (1 sep 2026)</a></li>
+      <li><a href="https://link.springer.com/article/10.1007/s11694-026-04164-6">J. Food Meas. Charact. — proteína en trigo: PLSR, híbridos y DL (mar 2026)</a></li>
+      <li><a href="https://www.spectroscopyonline.com/view/ai-powered-spectroscopy-model-offers-real-time-flour-quality-control-breakthrough">Spectroscopy Online — LGAKNet para harina</a></li>
+      <li><a href="https://pubmed.ncbi.nlm.nih.gov/42551147/">PubMed — índice de gluten hiperespectral (2026)</a></li>
+      <li><a href="https://www.nlr.gov/news/detail/program/2026/ai-and-robotics-are-speeding-up-discovery-at-national-laboratory-of-the-rockies">NLR — laboratorio autónomo</a></li>
+      <li><a href="https://conf.posit.co/2026/">posit::conf(2026)</a></li>
+      <li><a href="https://techcommunity.microsoft.com/blog/excelblog/whats-new-in-excel-august-2026/4527283">Microsoft — What's New in Excel (ago 2026)</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/microsoft-365/copilot/release-notes">Microsoft — M365 Copilot release notes</a></li>
+    </ul>
+    <h3>6 · Regulación y negocios</h3>
+    <ul>
+      <li><a href="https://www.sanders.senate.gov/press-releases/news-sanders-casar-introduce-legislation-to-ban-artificial-superintelligence-and-temporarily-pause-advanced-ai-development/">Senado de EE. UU. — Ban Artificial Superintelligence Act</a></li>
+      <li><a href="https://siliconangle.com/2026/09/16/cohere-and-aleph-alpha-agree-to-merge-in-reported-20b-deal/">SiliconANGLE — Cohere + Aleph Alpha</a></li>
+      <li><a href="https://aiweekly.co/alerts/cohere-signs-definitive-merger-with-aleph-alpha-at-20b-valuation">AI Weekly — fusión Cohere/Aleph Alpha</a></li>
+    </ul>
+    <h3>7 · Agenda</h3>
+    <ul>
+      <li><a href="https://aiwhatson.com/conferences">AI What's On — calendario de conferencias</a></li>
+      <li><a href="https://www.meta.com/connect/">Meta Connect 2026 (23–24 sep)</a></li>
+      <li><a href="https://openai.com/index/devday-2026/">OpenAI DevDay 2026 (29 sep)</a></li>
+      <li><a href="https://investors.micron.com/news/press-release/2026/Micron-Technology-to-Report-Fiscal-Fourth-Quarter-Results-on-September-30-2026/default.aspx">Micron — resultados FQ4 (30 sep)</a></li>
+      <li><a href="https://www.aws.org/community-and-events/conferences-and-events/fabtech/">FABTECH 2026 (21–23 oct)</a></li>
+    </ul>
+  </div>
+  <div class="foot">Elaborado el sáb 19 sep 2026 en modo desatendido. Las fechas se expresan en la zona horaria de la fuente original salvo la agenda (Guatemala, UTC-6). «Reportado» = cifra tomada de un agregador o medio secundario sin confirmación en fuente primaria al cierre. Datos no encontrados: métricas del paper de índice de gluten (PubMed 42551147), puntaje de Grok 4.6 en la escala v1.1, precio de Step 5 Preview, hora del keynote de Meta Connect, LMArena.</div>
+</section>
+</div>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+(function(){
+  var data=[
+    {co:"Anthropic",m:"Claude Fable 5.1",v:53,p:"US$10 / US$50",n:"Coding Agent Index 62"},
+    {co:"OpenAI",m:"GPT-6 Astra",v:53,p:"US$10 / US$50",n:"Coding Agent Index 62"},
+    {co:"Meta",m:"Muse Spark 1.3",v:48,p:"US$1,25 / US$4,25",n:"modo max"},
+    {co:"Alibaba",m:"Qwen3.8 Max (0902)",v:45,p:"US$2 / US$6",n:"añadido al índice 15 sep"},
+    {co:"StepFun",m:"Step 5 Preview",v:44,p:"n/d",n:"añadido al índice 18 sep"},
+    {co:"Google",m:"Gemini 3.8 Flash",v:41,p:"US$0,75 / US$3,75 (promo)",n:"#30 de 200 modelos en AA"},
+    {co:"DeepSeek",m:"V4.1 Flash",v:40,p:"US$0,15 / US$0,60 (off-peak)",n:"MIT · 1 M contexto"},
+    {co:"xAI",m:"Grok 4.6",v:null,p:"n/d",n:"sin puntaje en escala v1.1"}
+  ];
+  var g=document.getElementById('bars'),tip=document.getElementById('tip');
+  var x0=170,xmax=500,max=60,rowH=34,top=14,bh=18;
+  var ns='http://www.w3.org/2000/svg';
+  function el(t,a){var e=document.createElementNS(ns,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  data.forEach(function(d,i){
+    var y=top+i*rowH;var grp=el('g',{});
+    var lbl=el('text',{x:x0-8,y:y+bh/2+4,'text-anchor':'end','class':'lbl'});lbl.textContent=d.co;grp.appendChild(lbl);
+    if(d.v===null){
+      grp.appendChild(el('rect',{x:x0+1,y:y,width:60,height:bh,rx:0,'class':'bar nd'}));
+      var t=el('text',{x:x0+68,y:y+bh/2+4,'class':'val'});t.textContent='n/d';grp.appendChild(t);
+    }else{
+      var w=(d.v/max)*(xmax-x0);
+      var r=el('rect',{x:x0+1,y:y,width:w-1,height:bh,'class':'bar'});
+      grp.appendChild(r);
+      var t2=el('text',{x:x0+w+6,y:y+bh/2+4,'class':'val'});t2.textContent=d.v;grp.appendChild(t2);
+    }
+    var hit=el('rect',{x:0,y:y-6,width:520,height:rowH-2,'class':'hit'});
+    grp.insertBefore(hit,grp.firstChild);
+    grp.addEventListener('mousemove',function(ev){
+      tip.innerHTML='<b>'+d.co+' · '+d.m+'</b><br>Índice: '+(d.v===null?'n/d':d.v)+' · '+d.p+' por M tokens<br>'+d.n;
+      tip.style.left=(ev.clientX+12)+'px';tip.style.top=(ev.clientY+12)+'px';tip.style.opacity=1;
+    });
+    grp.addEventListener('mouseleave',function(){tip.style.opacity=0;});
+    g.appendChild(grp);
+  });
+})();
+</script>
+
+</body></html>

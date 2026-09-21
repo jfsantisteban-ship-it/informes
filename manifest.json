@@ -75,5 +75,19 @@
     "titulo": "Informe Cripto Diario — 18 sep 2026",
     "url_artefacto": "https://claude.ai/artifact/NnytQuEskH4r84SNQqU6We",
     "publicado_en": "2026-09-18T19:05:00-06:00"
+  },
+  {
+    "carpeta": "ia",
+    "fecha": "2026-09-19",
+    "titulo": "Informe Semanal IA · 19 sep 2026",
+    "url_artefacto": "https://claude.ai/artifact/CVyCQVLnXLxTY5FouP2iuu",
+    "publicado_en": "2026-09-20T19:09:54-06:00"
+  },
+  {
+    "carpeta": "cripto",
+    "fecha": "2026-09-20",
+    "titulo": "Informe Cripto Diario — 20 sep 2026",
+    "url_artefacto": "https://claude.ai/artifact/NnytQuEskH4r84SNQqU6We",
+    "publicado_en": "2026-09-20T19:09:54-06:00"
   }
 ]
