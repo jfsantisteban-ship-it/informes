@@ -89,5 +89,19 @@
     "titulo": "Informe Cripto Diario — 20 sep 2026",
     "url_artefacto": "https://claude.ai/artifact/NnytQuEskH4r84SNQqU6We",
     "publicado_en": "2026-09-20T19:09:54-06:00"
+  },
+  {
+    "carpeta": "harinas",
+    "fecha": "2026-09-21",
+    "titulo": "Informe Normativo Harinas · 21 sep 2026",
+    "url_artefacto": "https://claude.ai/artifact/MtNp5zXgZsNXdFZEXsRFaS",
+    "publicado_en": "2026-09-21T19:09:16-06:00"
+  },
+  {
+    "carpeta": "cripto",
+    "fecha": "2026-09-21",
+    "titulo": "Informe Cripto Diario — 21 sep 2026",
+    "url_artefacto": "https://claude.ai/artifact/NnytQuEskH4r84SNQqU6We",
+    "publicado_en": "2026-09-21T19:09:16-06:00"
   }
 ]
