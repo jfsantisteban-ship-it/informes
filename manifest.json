@@ -187,5 +187,19 @@
     "titulo": "Informe Cripto Diario",
     "url_artefacto": "https://claude.ai/artifact/NnytQuEskH4r84SNQqU6We",
     "publicado_en": "2026-10-03T19:12:00-06:00"
+  },
+  {
+    "carpeta": "cripto",
+    "fecha": "2026-10-04",
+    "titulo": "Informe Cripto Diario",
+    "url_artefacto": "https://claude.ai/artifact/NnytQuEskH4r84SNQqU6We",
+    "publicado_en": "2026-10-04T19:13:39-06:00"
+  },
+  {
+    "carpeta": "ia",
+    "fecha": "2026-10-03",
+    "titulo": "Informe Semanal IA · 3 oct 2026",
+    "url_artefacto": "https://claude.ai/artifact/EeoYCwpms3g2HpLS8C6yfg",
+    "publicado_en": "2026-10-04T19:13:39-06:00"
   }
 ]
