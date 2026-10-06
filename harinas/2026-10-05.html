@@ -1,0 +1,653 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Informe Normativo Harinas · 5 oct 2026</title>
+<style>
+/* Layout: columna única de tarjetas sobre rejilla de 1120px; embudo de 5 niveles como eje vertebral */
+:root{
+  --surface:#fcfcfb; --surface-2:#ffffff; --ink:#0b0b0b; --ink-2:#52514e;
+  --grid:#e1e0d9; --blue:#2a78d6; --accent:#eb6834;
+  --green:#0ca30c; --amber:#fab219; --red:#d03b3b;
+  --f1:#cde2fb; --f2:#9ec5f4; --f3:#5598e7; --f4:#2a78d6; --f5:#184f95;
+  --bar-bg:#eeede7;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --surface:#1a1a19; --surface-2:#232322; --ink:#ffffff; --ink-2:#c3c2b7;
+  --grid:#2c2c2a; --blue:#3987e5; --bar-bg:#2c2c2a; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --surface:#1a1a19; --surface-2:#232322; --ink:#ffffff; --ink-2:#c3c2b7;
+  --grid:#2c2c2a; --blue:#3987e5; --bar-bg:#2c2c2a; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--surface);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.55;margin:0;padding-block:28px 56px;padding-left:16px;padding-right:16px;
+  font-variant-numeric:tabular-nums}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+h1,h2,h3,h4{text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(25px,4.6vw,40px);font-weight:760;letter-spacing:-.022em}
+h2{font-size:19px;font-weight:700;letter-spacing:-.01em}
+h3{font-size:15px;font-weight:700}
+p{margin:0}
+a{color:var(--blue);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--blue) 35%,transparent)}
+a:hover{border-bottom-color:var(--blue)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2)}
+.muted{color:var(--ink-2)}
+.small{font-size:12.5px}
+.mono{font-family:var(--mono);font-size:12.5px}
+b,strong{font-weight:700}
+
+/* cabecera */
+header.top{border-bottom:2px solid var(--ink);padding-bottom:20px;display:flex;flex-direction:column;gap:11px}
+.datestrip{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline}
+.lede{font-size:16.5px;color:var(--ink-2);max-width:68ch}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tile{background:var(--surface-2);border:1px solid var(--grid);border-radius:10px;padding:16px 17px;
+  display:flex;flex-direction:column;gap:5px;min-width:0}
+.tile .n{font-size:38px;font-weight:770;line-height:1;letter-spacing:-.03em}
+.tile .u{font-size:12px;font-weight:600;color:var(--ink-2)}
+.tile .d{font-size:12.5px;color:var(--ink-2);line-height:1.4}
+.tile.hot .n{color:var(--accent)} .tile.warn .n{color:var(--amber)} .tile.cool .n{color:var(--blue)}
+
+/* alertas */
+.alerts{display:flex;flex-direction:column;gap:11px}
+.alert{border-left:4px solid var(--grid);background:var(--surface-2);border-radius:0 9px 9px 0;
+  padding:14px 16px;display:flex;flex-direction:column;gap:5px}
+.alert.r{border-left-color:var(--red)} .alert.a{border-left-color:var(--amber)} .alert.b{border-left-color:var(--blue)}
+.alert .hd{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between}
+.alert .ttl{font-weight:700;font-size:15px}
+.alert .when{font-family:var(--mono);font-size:12px;font-weight:700}
+.alert.r .when{color:var(--red)} .alert.a .when{color:var(--amber)} .alert.b .when{color:var(--blue)}
+.alert p{font-size:13.5px;color:var(--ink-2)}
+
+/* embudo */
+.funnel{display:flex;flex-direction:column;gap:7px;align-items:center}
+.frow{display:flex;align-items:center;gap:12px;width:100%;justify-content:center}
+.fbar{height:54px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 15px;color:#0b0b0b;font-weight:700;gap:12px;min-width:0}
+.fbar .lv{font-size:13px;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fbar .ct{display:flex;align-items:baseline;gap:5px;flex-shrink:0}
+.fbar .ct b{font-size:23px;line-height:1}
+.fbar .ct span{font-size:11px;font-weight:600;opacity:.75}
+.fside{font-size:11.5px;color:var(--ink-2);white-space:nowrap;flex-shrink:0;width:108px}
+
+/* tarjetas de nivel */
+.card{background:var(--surface-2);border:1px solid var(--grid);border-radius:12px;padding:20px;
+  display:flex;flex-direction:column;gap:15px;min-width:0}
+.card > header{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between;
+  border-bottom:1px solid var(--grid);padding-bottom:11px}
+.lvtag{font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;color:#0b0b0b}
+.news{display:flex;flex-direction:column;gap:9px;margin:0;padding:0;list-style:none}
+.news li{display:flex;gap:10px;font-size:13.8px;line-height:1.5}
+.news li::before{content:"";flex-shrink:0;width:6px;height:6px;border-radius:50%;background:var(--blue);margin-top:8px}
+.news li.none::before{background:var(--ink-2)}
+.news li.hit::before{background:var(--accent)}
+
+/* tablas */
+.tscroll{overflow-x:auto;border:1px solid var(--grid);border-radius:9px}
+table{border-collapse:collapse;width:100%;font-size:12.6px;min-width:560px}
+th{text-align:left;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);
+  font-weight:700;padding:9px 11px;border-bottom:1px solid var(--grid);white-space:nowrap;background:var(--surface)}
+td{padding:9px 11px;border-bottom:1px solid var(--grid);vertical-align:top;line-height:1.42}
+tr:last-child td{border-bottom:none}
+td.code{font-family:var(--mono);font-size:11.8px;white-space:nowrap}
+.pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2.5px 8px;border-radius:999px;
+  white-space:nowrap;letter-spacing:.01em}
+.p-ok{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
+.p-wait{background:color-mix(in srgb,var(--amber) 20%,transparent);color:#8a6000}
+.p-new{background:color-mix(in srgb,var(--blue) 16%,transparent);color:var(--blue)}
+.p-off{background:color-mix(in srgb,var(--red) 14%,transparent);color:var(--red)}
+.p-nv{background:var(--bar-bg);color:var(--ink-2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .p-wait{color:var(--amber)}}
+:root[data-theme="dark"] .p-wait{color:var(--amber)}
+
+/* gráficos */
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.chart{display:flex;flex-direction:column;gap:11px;min-width:0}
+.chart h3{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap}
+.chart h3 span{font-size:11.5px;font-weight:600;color:var(--ink-2)}
+.bars{display:flex;flex-direction:column;gap:5px}
+.brow{display:grid;grid-template-columns:118px 1fr 62px;align-items:center;gap:9px;min-width:0}
+.blab{font-size:11.8px;color:var(--ink-2);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btrack{background:var(--bar-bg);border-radius:3px;height:17px;overflow:hidden}
+.bfill{height:100%;background:var(--blue);border-radius:3px}
+.bval{font-family:var(--mono);font-size:11.8px;font-weight:700}
+.brow.gt .blab{color:var(--ink);font-weight:700}
+.brow.gt .bfill{background:var(--accent)}
+.brow.gt .bval{color:var(--accent)}
+.brow.alt .bfill{background:var(--f2)}
+.brow.alt .blab,.brow.alt .bval{color:var(--ink-2)}
+.axis{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-2);
+  font-family:var(--mono);border-top:1px solid var(--grid);padding-top:4px;margin-left:127px}
+
+/* calendario */
+.cal{display:flex;flex-direction:column;gap:0}
+.calrow{display:grid;grid-template-columns:118px 1fr;gap:14px;padding:11px 0;border-bottom:1px solid var(--grid);align-items:start}
+.calrow:last-child{border-bottom:none}
+.caldate{font-family:var(--mono);font-size:12px;font-weight:700;display:flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.calbody{font-size:13.3px;line-height:1.45;min-width:0}
+.calbody .who{font-size:11px;color:var(--ink-2);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+
+/* notas */
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.nbox{display:flex;flex-direction:column;gap:8px;min-width:0}
+.nlist{margin:0;padding-left:17px;font-size:12.8px;color:var(--ink-2);line-height:1.5;display:flex;flex-direction:column;gap:5px}
+.nlist code{font-family:var(--mono);font-size:11.8px;color:var(--ink)}
+
+footer{border-top:1px solid var(--grid);padding-top:16px;font-size:12px;color:var(--ink-2);
+  display:flex;flex-direction:column;gap:5px}
+
+@media (max-width:900px){
+  .tiles{grid-template-columns:1fr}
+  .charts{grid-template-columns:1fr}
+  .notes{grid-template-columns:1fr}
+  .fside{display:none}
+  .fbar{width:100%!important}
+  .brow{grid-template-columns:96px 1fr 56px}
+  .axis{margin-left:105px}
+  .calrow{grid-template-columns:1fr;gap:4px}
+}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="datestrip">
+    <span class="eyebrow">Informe Normativo Semanal · Harinas y Premezclas Panificables</span>
+    <span class="small muted mono">Lunes 5 oct 2026 · 06:00 America/Guatemala (UTC−6)</span>
+  </div>
+  <h1>Guatemala estrena inspección por canales de riesgo para el trigo y el maíz importados</h1>
+  <p class="lede">Ventana cubierta: <b>28 sep – 5 oct 2026</b>. Única novedad normativa de los cinco niveles: el <b>Acuerdo Ministerial 154-2026</b> del MAGA, publicado en el Diario de Centro América el 2 de octubre y vigente hacia el 10. Mundo, Norteamérica, Latinoamérica y Centroamérica cerraron la semana <b>sin publicaciones nuevas</b> del sector. Lo que corre es el reloj: dos consultas abiertas vencen este mes.</p>
+</header>
+
+<section>
+  <h2 style="margin-bottom:13px">Lo que exige acción</h2>
+  <div class="tiles">
+    <div class="tile hot">
+      <div class="n">5</div>
+      <div class="u">días para la vigencia del AM 154-2026</div>
+      <div class="d">Guatemala. Inspección basada en riesgo (canal verde / amarillo / rojo) para toda importación bajo control fitosanitario. El historial del importador define el canal.</div>
+    </div>
+    <div class="tile warn">
+      <div class="n">14</div>
+      <div class="u">días para cerrar la CP 1.400/2026 de ANVISA</div>
+      <div class="d">Brasil. Propone declaración cuantitativa de ingredientes (QUID). Afectaría la etiqueta de toda la línea «pan con X» / «galleta de Y». Cierra el 19-oct-2026.</div>
+    </div>
+    <div class="tile cool">
+      <div class="n">12</div>
+      <div class="u">retiros del sector en 4 semanas</div>
+      <div class="d">El <b>75 %</b> por alérgenos no declarados y <b>6 de 12</b> por error propio de etiqueta. Cero por patógenos, cero por micotoxinas.</div>
+    </div>
+  </div>
+</section>
+
+<section class="alerts">
+  <div class="alert r">
+    <div class="hd"><span class="ttl">AM 154-2026 (MAGA/VISAR) — importaciones por canal de riesgo</span><span class="when">≈ 10 oct 2026</span></div>
+    <p>Publicado en el DCA el 2-oct-2026, vigente ocho días después. Clasifica embarques en canal <b>verde</b> (despacho expedito), <b>amarillo</b> (revisión documental reforzada) y <b>rojo</b> (inspección física, muestreo y tratamiento cuarentenario), con base en historial del importador, tasas de rechazo e intercepciones de plagas. Alcanza productos de origen vegetal, insumos agropecuarios y <b>embalaje</b> (sacos, tarimas, NIMF-15), en puertos, fronteras, aduanas internas y recintos fiscales. Implementación por fases. <b>Acción:</b> revisar el historial de rechazos del importador y la documentación fitosanitaria del trigo y el maíz antes del 10 de octubre. <span class="small muted">El texto íntegro no pudo leerse — maga.gob.gt y dca.gob.gt devolvieron HTTP 403. No está verificado en fuente primaria si el acuerdo nombra explícitamente trigo o maíz.</span></p>
+  </div>
+  <div class="alert a">
+    <div class="hd"><span class="ttl">ANVISA CP 1.400/2026 — QUID, códigos QR e irradiados</span><span class="when">cierra 19 oct 2026</span></div>
+    <p>Modifica la RDC 727/2022. La pieza con filo es el <b>QUID</b>: obligaría a declarar el porcentaje del ingrediente destacado en el nombre del producto. Si exporta premezclas o panificados a Brasil, esta es la ventana para comentar vía cámara sectorial. <span class="small muted">Corrección: no es rotulado nutricional frontal, como a veces se reporta. Las CP 1.357 y 1.358 son de 2025 y cerraron el 9-mar-2026.</span></p>
+  </div>
+  <div class="alert b">
+    <div class="hd"><span class="ttl">RTCA 67.01.07:10 — reformas de etiquetado ya adoptadas</span><span class="when">vigencia 26 feb 2027</span></div>
+    <p>Resoluciones <b>499-2026</b> y <b>501-2026</b> (COMIECO-CXIII, 26-jun-2026), ambas confirmadas en SIECA. Permiten que fabricante, importador <i>o</i> distribuidor coloquen la etiqueta complementaria (numerales 9.1.6 y 9.2.1), y suman la adhesión de Panamá. Aplica a harina preenvasada, premezclas y pan empacado en los cinco países parte.</p>
+  </div>
+</section>
+
+<section class="card">
+  <header><h2>Embudo de la semana</h2><span class="small muted">novedades publicadas 28 sep – 5 oct · plazos vivos en radar</span></header>
+  <div class="funnel">
+    <div class="frow"><div class="fbar" style="width:100%;background:var(--f1)"><span class="lv">1 · Mundial — Codex, FAO/OMS, ISO, UE</span><span class="ct"><b>0</b><span>novedades</span></span></div><span class="fside">7 en radar</span></div>
+    <div class="frow"><div class="fbar" style="width:85%;background:var(--f2)"><span class="lv">2 · América del Norte — FDA, Canadá</span><span class="ct"><b>0</b><span>novedades</span></span></div><span class="fside">6 en radar</span></div>
+    <div class="frow"><div class="fbar" style="width:70%;background:var(--f3);color:#fff"><span class="lv">3 · Latinoamérica — MX, BR, CO, PE, CL, AR, EC</span><span class="ct"><b>0</b><span>novedades</span></span></div><span class="fside">5 en radar</span></div>
+    <div class="frow"><div class="fbar" style="width:55%;background:var(--f4);color:#fff"><span class="lv">4 · Centroamérica — RTCA, COMIECO</span><span class="ct"><b>0</b><span>novedades</span></span></div><span class="fside">3 en radar</span></div>
+    <div class="frow"><div class="fbar" style="width:40%;background:var(--f5);color:#fff"><span class="lv">5 · Guatemala</span><span class="ct"><b>1</b><span>novedad</span></span></div><span class="fside">2 en radar</span></div>
+  </div>
+  <p class="small muted">Cuatro ceros consecutivos no son un hueco del informe: son el estado real de la semana. Se verificaron el Federal Register de la FDA, el índice diario del DOF, el sumario de El Peruano, el listado de resoluciones COMIECO en SIECA y el índice del Diario de Centro América del 28-sep y el 2-oct.</p>
+</section>
+
+<section class="card">
+  <header>
+    <h2><span class="lvtag" style="background:var(--f1)">N1</span>&nbsp; Mundial — Codex, FAO/OMS, ISO, Unión Europea</h2>
+    <span class="pill p-nv">Sin novedades normativas</span>
+  </header>
+  <ul class="news">
+    <li class="none"><b>Sin norma, reglamento, guía OMS ni norma ISO nueva</b> sobre harinas en la ventana de 7 días. Lo ocurrido fueron hitos de proceso.</li>
+    <li><b>29-sep-2026</b> — Reunión pública preparatoria de EE. UU. rumbo a <b>CCCF19</b> (contaminantes). La agenda del comité incluye revisión de acrilamida, aflatoxina B1 en piensos y revisión de las normas Codex de contaminantes.</li>
+    <li><b>5-oct-2026</b> — Reunión pública preparatoria rumbo a <b>CCNFSDU45</b> (nutrición). Fija valores de referencia de nutrientes y justificación tecnológica de aditivos: toca premezclas vitamínicas.</li>
+    <li><b>29-ago-2026</b> — Se completó la <b>retirada de ISO 712:2009</b> (humedad en cereales). Sucesor no identificado. Afecta a los métodos citados en especificaciones de compra de trigo y maíz.</li>
+    <li class="hit"><b>En el horizonte:</b> la Comisión Europea anunció el paso de la acrilamida de <b>niveles de referencia voluntarios a límites máximos vinculantes</b> (referencia ≈ percentil 80–85, límite ≈ percentil 95). Sin fecha oficial publicada. Es el cambio de mayor impacto potencial sobre una panificadora exportadora.</li>
+    <li><b>EWG Codex de aflatoxinas totales en granos de cereal</b>, liderado por Brasil y Tailandia: evalúa los límites vigentes y derivará posibles nuevos LM por cereal. Entrega a CCCF20, no a CCCF19.</li>
+  </ul>
+
+  <div>
+    <h3 style="margin-bottom:8px">Normas de referencia</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>Código</th><th>Objeto</th><th>Última revisión / enmienda</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td class="code">CXS 152-1985</td><td>Harina de trigo</td><td>Rev. 1995; enm. 2016, 2019, 2021, 2023</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">CXS 154-1985</td><td>Harina integral de maíz</td><td>Rev. 1995; enm. 2019, 2023</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">CXS 155-1985</td><td>Harina de maíz desgerminada y sémolas</td><td>No confirmado (PDF oficial HTTP 502)</td><td><span class="pill p-nv">No verificado</span></td></tr>
+        <tr><td class="code">CXS 163-1987</td><td>Productos proteicos de trigo, incl. gluten</td><td>No confirmado</td><td><span class="pill p-nv">No verificado</span></td></tr>
+        <tr><td class="code">CXS 193-1995</td><td>Contaminantes y toxinas (micotoxinas)</td><td>CAC48 nov-2025; CAC49 jul-2026 no añadió nada</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">CXS 192-1995</td><td>GSFA — aditivos alimentarios</td><td>CAC49 jul-2026 redujo 19 de 56 disposiciones de ésteres de poliglicerol (INS 475) y revocó 6</td><td><span class="pill p-ok">Vigente · ed. 2026 en publicación</span></td></tr>
+        <tr><td class="code">CXS 1-1985</td><td>Etiquetado de preenvasados</td><td>CAC49 jul-2026: nuevo anexo de etiquetado precautorio de alérgenos (PAL)</td><td><span class="pill p-ok">Vigente · rev. 2026</span></td></tr>
+        <tr><td class="code">Reg. (UE) 2023/915</td><td>Contaminantes en alimentos</td><td>Mod. 2024/1022 (DON), 2024/1038 (T-2/HT-2), 2024/1808 (cornezuelo)</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">Reg. (UE) 2017/2158</td><td>Acrilamida — mitigación y niveles de referencia</td><td>Aplicable desde 11-abr-2018. No fija límites máximos legales</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">Reg. (UE) 2026/215</td><td>LMR: dimoxistrobina, etefón, propamocarb</td><td>DO 30-ene-2026</td><td><span class="pill p-ok">Aplicable desde 19-ago-2026</span></td></tr>
+        <tr><td class="code">ISO 712:2009</td><td>Humedad en cereales y productos de cereales</td><td>Retiro completado 29-ago-2026</td><td><span class="pill p-off">Retirada</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div>
+    <h3 style="margin-bottom:8px">Micotoxinas en harinas y derivados — Codex vs. Unión Europea</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>Micotoxina</th><th>Matriz</th><th>Codex CXS 193 (µg/kg)</th><th>UE Reg. 2023/915 (µg/kg)</th></tr></thead>
+      <tbody>
+        <tr><td>DON</td><td>Harina, sémola u hojuelas de trigo, maíz o cebada</td><td><b>1 000</b></td><td><b>600</b></td></tr>
+        <tr><td>DON</td><td>Cereales sin procesar (excepto arroz)</td><td>2 000</td><td>1 000 · <span class="muted">1 500 trigo duro, avena y maíz</span></td></tr>
+        <tr><td>DON</td><td>Pan, pastelería, galletas</td><td>—</td><td>400</td></tr>
+        <tr><td>DON</td><td>Alimentos a base de cereal para lactantes</td><td>200</td><td>150</td></tr>
+        <tr><td>Aflatoxina B1</td><td>Cereales y derivados</td><td><span class="pill p-nv">No verificado</span></td><td>2,0</td></tr>
+        <tr><td>Aflatoxinas totales</td><td>Cereales y derivados</td><td><span class="pill p-nv">No verificado</span></td><td>4,0</td></tr>
+        <tr><td>Fumonisinas B1+B2</td><td>Maíz sin procesar</td><td><span class="pill p-nv">No verificado</span></td><td>4 000</td></tr>
+        <tr><td>Fumonisinas B1+B2</td><td>Otros productos de maíz</td><td><span class="pill p-nv">No verificado</span></td><td>1 000</td></tr>
+        <tr><td>Zearalenona</td><td>Productos de cereal procesados</td><td>—</td><td>50 – 100</td></tr>
+        <tr><td>Cornezuelo (12 alcaloides)</td><td>Molienda de trigo, bajo contenido de cenizas</td><td>—</td><td>100 → <b>50 desde 1-jul-2028</b></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted" style="margin-top:7px">Los LM de DON del Codex se confirmaron contra literatura revisada por pares, no contra el PDF oficial: el servidor de FAO devolvió HTTP 502 en cuatro intentos. Reverificar antes de usarlos como especificación de compra.</p>
+  </div>
+
+  <div>
+    <h3 style="margin-bottom:8px">Acrilamida — niveles de referencia UE para panificación (µg/kg)</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>Categoría</th><th>Nivel de referencia</th><th>Categoría</th><th>Nivel de referencia</th></tr></thead>
+      <tbody>
+        <tr><td>Pan blando a base de trigo</td><td><b>50</b></td><td>Galletas y barquillos</td><td><b>350</b></td></tr>
+        <tr><td>Pan blando distinto de trigo</td><td>100</td><td>Pan crujiente (crispbread)</td><td>350</td></tr>
+        <tr><td>Cereales de desayuno de maíz, avena, cebada, arroz</td><td>150</td><td>Crackers (excepto de papa)</td><td>400</td></tr>
+        <tr><td>Cereales de desayuno de trigo y centeno</td><td>300</td><td>Pan de jengibre</td><td>800</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted" style="margin-top:7px">Verificado directamente en EUR-Lex (CELEX 32017R2158, Anexo IV). Son valores de referencia, no límites legales — por ahora.</p>
+  </div>
+</section>
+
+<section class="card">
+  <header>
+    <h2><span class="lvtag" style="background:var(--f2)">N2</span>&nbsp; América del Norte — FDA y Canadá</h2>
+    <span class="pill p-nv">Sin novedades normativas</span>
+  </header>
+  <ul class="news">
+    <li class="none"><b>Nada del sector en el Federal Register</b> entre el 28-sep y el 5-oct-2026. Lo publicado el 1-oct fueron avisos administrativos de comités de medicamentos.</li>
+    <li class="hit"><b>31-ago-2026 — Canadá abrió una ventana comercial real.</b> Health Canada emitió una política interina de discreción de aplicación que permite importar y vender <b>harina blanca no enriquecida</b> para uso industrial (confitería, postres congelados, salsas, sopas, mezclas de especias, vehículo de premezclas vitamínicas), con el rótulo <b>«for manufacturing use only»</b>. Es política interina y reversible, no una modificación al FDR.</li>
+    <li><b>ago-2026</b> — Health Canada aclaró que las reglas de fortificación de <i>corn meal</i> aplican también a <b>corn masa flour</b>: ácido fólico 0,15–0,22 mg/100 g, de forma voluntaria. Da certeza para exportar masa harina fortificada.</li>
+    <li><b>8-sep-2026</b> — Entró en vigor la revocación del colorante <b>Orange B</b>. Señal de depuración de autorizaciones de colorantes derivados de petróleo.</li>
+    <li class="hit"><b>Corrección de archivo:</b> 21 CFR <b>137.211 es «White corn flour», no masa harina</b>. <b>No existe estándar de identidad federal para masa harina ni para harina de maíz nixtamalizada</b> en la Parte 137; lo aplicable es 21 CFR 172.345 (ácido fólico, voluntario).</li>
+    <li class="hit"><b>Segunda corrección:</b> el <b>bromato de potasio sigue legal a nivel federal</b> en EE. UU. — §137.155, §137.160 y §137.205 están vigentes, con 75 ppm en 21 CFR 136.110(c)(14). La presión es estatal, no federal. Texas e Illinois <b>no</b> tienen prohibición estatal de venta; Texas (SB 314) solo restringe ADA en comidas escolares.</li>
+  </ul>
+
+  <div>
+    <h3 style="margin-bottom:8px">Expedientes y normas</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>Referencia</th><th>Objeto</th><th>Fecha clave</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td class="code">FDA-2026-N-4126</td><td>Azodicarbonamida (ADA) — <i>Request for Information</i>. 91 FR 27060</td><td>Pub. 13-may-2026 · comentarios cerraron <b>13-jul-2026</b></td><td><span class="pill p-wait">Cerrado · en evaluación</span></td></tr>
+        <tr><td class="code">FDA-2025-N-3262</td><td>GRAS obligatorio: elimina la autodeterminación. Enmienda 21 CFR partes 170 y 570. 91 FR 51834</td><td>Pub. 11-ago-2026 · cierra <b>9-dic-2026</b></td><td><span class="pill p-new">Propuesta · en comentarios</span></td></tr>
+        <tr><td class="code">FDA-2024-N-2910</td><td>Etiquetado frontal «Nutrition Info box». RIN 0910-AI80</td><td>Propuesta 16-ene-2025 · final proyectada dic-2026</td><td><span class="pill p-wait">Comentarios cerrados</span></td></tr>
+        <tr><td class="code">21 CFR 101.65</td><td>Regla «healthy»</td><td>Efectiva 28-abr-2025 · cumplimiento <b>25-feb-2028</b></td><td><span class="pill p-ok">Final · vigente</span></td></tr>
+        <tr><td class="code">21 CFR 1, subp. S</td><td>FSMA 204 — trazabilidad. Harinas y masa <b>no</b> están en la Food Traceability List</td><td>Cumplimiento <b>20-jul-2028</b> (mandato del Congreso)</td><td><span class="pill p-ok">Vigente · diferido</span></td></tr>
+        <tr><td class="code">21 CFR 172.806</td><td>Azodicarbonamida — máx. 45 ppm sobre harina</td><td>—</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">California AB 418</td><td>Prohíbe bromato de potasio, BVO, propilparabeno y Red No. 3. Multas hasta USD 10 000</td><td><b>1-ene-2027</b></td><td><span class="pill p-wait">Promulgada · pendiente de vigencia</span></td></tr>
+        <tr><td class="code">NY S1239-F / A1556-G</td><td>Prohibición estatal de bromato de potasio</td><td>+2 años tras la firma</td><td><span class="pill p-wait">Aprobada · pendiente de firma</span></td></tr>
+        <tr><td class="code">FD&amp;C Red No. 3</td><td>Revocación de autorización</td><td>Alimentos <b>15-ene-2027</b> · medicamentos 15-ene-2028</td><td><span class="pill p-ok">Final</span></td></tr>
+        <tr><td class="code">6 colorantes sintéticos</td><td>Green 3, Red 40, Yellow 5 y 6, Blue 1 y 2 — eliminación solicitada por FDA</td><td>Meta declarada: fin de 2026</td><td><span class="pill p-nv">Voluntario · sin rulemaking</span></td></tr>
+        <tr><td class="code">FDR B.13.001</td><td>Canadá — composición y enriquecimiento obligatorio de la harina</td><td>—</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">FOP Canadá</td><td>Símbolo nutricional frontal obligatorio, sin discreción de aplicación</td><td><b>1-ene-2026</b></td><td><span class="pill p-ok">Vigente y exigible</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="card">
+  <header>
+    <h2><span class="lvtag" style="background:var(--f3);color:#fff">N3</span>&nbsp; Latinoamérica</h2>
+    <span class="pill p-nv">Sin novedades normativas · 2 consultas abiertas</span>
+  </header>
+  <ul class="news">
+    <li class="none"><b>México:</b> DOF del 5-oct-2026 sin publicaciones del sector. No hay PROY-NOM activo para la NOM-247. <b>Confirmado:</b> NOM-051 Fase 2 hasta el 31-dic-2027 y Fase 3 desde el 1-ene-2028 (Acuerdo DOF 31-jul-2025).</li>
+    <li class="none"><b>Perú:</b> El Peruano del 4-oct-2026 sin normas de alimentos, DIGESA, etiquetado ni harinas.</li>
+    <li class="none"><b>Brasil, Colombia, Chile, Argentina, Ecuador y Mercosur:</b> sin publicaciones nuevas verificables en la ventana.</li>
+    <li class="hit"><b>Lo vivo es Brasil y es de plazo:</b> CP 1.400/2026 cierra el <b>19-oct</b> (QUID, QR, irradiados) y la consulta técnica de la Ley 15.404/2026 sobre cacao y chocolate cierra el <b>13-oct</b> — esta última toca rellenos y coberturas de panificación.</li>
+    <li><b>Tendencia estructural de fondo:</b> el sello <b>ULTRAPROCESADO</b> avanza por dos vías paralelas — el proyecto de resolución de MinSalud en Colombia (divulgado abr-2026, comentarios abr–may-2026, sin resolución definitiva) y el Boletín <b>17.176-11</b> en el Senado chileno (ingresado 11-oct-2024, sin urgencia). Si prospera en cualquiera de los dos, el criterio deja de ser nutricional y pasa a ser el uso de aditivos cosméticos: tocaría emulsionantes, mejoradores de masa y colorantes aun en productos sin exceso de azúcar, grasa o sodio.</li>
+    <li class="hit"><b>Chile, cambio ya exigible:</b> desde mediados de 2026 la harina de trigo comercializada en Chile debe llevar <b>vitamina D3 (2,25–3,15 µg/100 g)</b>, verificada en producto terminado y con declaración del origen vegetal o animal. Chile es el primer país de la región en exigirlo.</li>
+    <li><b>Correcciones de archivo:</b> la NOM-187 vigente es de <b>2002</b> (DOF 18-ago-2003), con un PROY-NOM-187-SSA1/SE-2021 que la cancelaría pero sin norma definitiva. Las CP 1.357 y 1.358 son de <b>2025</b> y cerraron el 9-mar-2026. El Decreto 697/2026 de Argentina <b>no es de fortificación ni de etiquetado</b>: es desregulación del control e importación de alimentos con consolidación en SENASA — y, de hecho, facilita el ingreso de alimentos certificados.</li>
+  </ul>
+
+  <div>
+    <h3 style="margin-bottom:8px">Normas por país</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>País</th><th>Referencia</th><th>Objeto</th><th>Fecha clave</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>México</td><td class="code">NOM-247-SSA1-2008</td><td>Cereales, harinas, masa nixtamalizada y panificados</td><td>DOF 27-jul-2009</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>México</td><td class="code">NOM-187-SSA1/SCFI-2002</td><td>Masa, tortillas, tostadas y harinas preparadas</td><td>DOF 18-ago-2003</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>México</td><td class="code">NOM-051-SCFI/SSA1-2010</td><td>Etiquetado frontal — Fase 2</td><td>Fase 3 desde <b>1-ene-2028</b></td><td><span class="pill p-ok">Vigente · Fase 2</span></td></tr>
+        <tr><td>México</td><td class="code">PROY-NOM-051-SE/SSA1-2025</td><td>Actualiza el cálculo de nutrimentos críticos añadidos (num. 4.5.3)</td><td>DOF 5-dic-2025</td><td><span class="pill p-new">En trámite</span></td></tr>
+        <tr><td>Brasil</td><td class="code">RDC 150/2017</td><td>Fortificación obligatoria de harinas de trigo y maíz</td><td>Vigor abr-2019</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Brasil</td><td class="code">RDC 778/2023 + IN 211/2023</td><td>Aditivos y coadyuvantes (lista positiva)</td><td>Adecuación de rótulos venció 31-mar-2026 (RDC 975/2025)</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Brasil</td><td class="code">RDC 429/2020 + IN 75/2020</td><td>Rotulado nutricional frontal (lupa «ALTO EM»)</td><td>Exigible desde oct-2022</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Brasil</td><td class="code">RDC 722/2022 + IN 160/2022</td><td>Contaminantes; Anexo II = micotoxinas</td><td>1-jul-2022</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Brasil</td><td class="code">CP 1.400/2026</td><td>QUID, QR e irradiados — modifica RDC 727/2022</td><td>Cierra <b>19-oct-2026</b></td><td><span class="pill p-new">Consulta abierta</span></td></tr>
+        <tr><td>Colombia</td><td class="code">Decreto 380 de 2026</td><td>Fortificación obligatoria de arroz, harina de maíz y harina de trigo. Deroga el Decreto 1944 de 1996</td><td>D.O. 53.453 del 9-abr-2026 · transición 24 meses → <b>≈abr-2028</b></td><td><span class="pill p-ok">Vigente · en transición</span></td></tr>
+        <tr><td>Colombia</td><td class="code">Res. 810/2021 + 2492/2022</td><td>Etiquetado frontal de advertencia (octágonos)</td><td>Exigible desde 15-jun-2024</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Colombia</td><td class="code">Proy. Res. ULTRAPROCESADO</td><td>Derogaría la Res. 810/2021; añade sello de advertencia «ultraprocesado» y microsellos</td><td>Comentarios abr–may-2026</td><td><span class="pill p-new">Proyecto · no vigente</span></td></tr>
+        <tr><td>Colombia</td><td class="code">Ley 2277/2022 — ICUI</td><td>Impuesto a ultraprocesados, <b>20 %</b> en 2026. «Pan» excluido; repostería industrial empacada sí tributa</td><td>Declaración bimestral</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Perú</td><td class="code">Ley 28314 + D.S. 008-2005-SA</td><td>Fortificación obligatoria de la harina de trigo</td><td>2005</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Perú</td><td class="code">Ley 30021 + D.S. 017-2017-SA</td><td>Octógonos. Ley de adhesivos permite aplicarlos sin reimprimir el envase primario</td><td>Parámetros finales desde 2021</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Chile</td><td class="code">D.S. 977/96 (RSA) art. 350</td><td>Fortificación de harina de trigo. Texto consolidado al 6-mar-2026</td><td>Vitamina D exigible desde ≈jun-2026 (D.S. 29/2024)</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Chile</td><td class="code">Boletín 17.176-11</td><td>Modificaría la Ley 20.606 para exigir rótulo «ultraprocesado» y restringir su publicidad</td><td>Ingresó 11-oct-2024 · sin urgencia</td><td><span class="pill p-new">En trámite</span></td></tr>
+        <tr><td>Argentina</td><td class="code">Ley 25.630</td><td>Fortificación obligatoria de harina de trigo tipo 000</td><td>2002</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Argentina</td><td class="code">Ley 27.642</td><td>Etiquetado frontal (octógonos negros). Proyecto de derogación en el Senado desde may-2026, sin sanción</td><td>2021</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Argentina</td><td class="code">Decreto 697/2026</td><td>Desregula el control de alimentos; equivalencia de certificaciones e importación por declaración jurada; consolida en SENASA</td><td>B.O. 3-ago-2026</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td>Ecuador</td><td class="code">RTE INEN 022</td><td>Semáforo nutricional de 3 barras. El plan regulatorio 2026 de ARCSA no incluye reforma</td><td>—</td><td><span class="pill p-ok">Vigente · sin reforma</span></td></tr>
+        <tr><td>Mercosur</td><td class="code">P. Res. SGT N°3 03/25 Rev.1</td><td>RTM de rotulado general. Derogaría GMC Res. 06/94 y 26/03</td><td>Consulta cerró 21-ene-2026</td><td><span class="pill p-new">Proyecto · no aprobado por GMC</span></td></tr>
+        <tr><td>Mercosur</td><td class="code">P. Res. SGT N°3 05/25</td><td>RTM de rotulado nutricional. Derogaría GMC Res. 44/03, 46/03, 48/06 y 40/11</td><td>Consulta cerró 21-ene-2026</td><td><span class="pill p-new">Proyecto · no aprobado por GMC</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="card">
+  <header>
+    <h2><span class="lvtag" style="background:var(--f4);color:#fff">N4</span>&nbsp; Centroamérica — RTCA y COMIECO</h2>
+    <span class="pill p-nv">Sin resoluciones nuevas</span>
+  </header>
+  <ul class="news">
+    <li class="none"><b>Sin resolución COMIECO, consulta ni acto regional nuevo</b> entre el 28-sep y el 5-oct-2026. La última actividad documentada sobre alimentos es del 26-jun-2026 (COMIECO-CXIII).</li>
+    <li><b>Los siete códigos RTCA del tablero existen con su código exacto</b> en formato NN.NN.NN:AA. Las tres reformas que seguíamos quedan <b>confirmadas</b>: Res. 499-2026 y 501-2026 (vigencia 26-feb-2027), revisión :23 del etiquetado nutricional en consulta, y Res. 497-2025 de aditivos ya vigente desde el 15-jul-2025.</li>
+    <li class="hit"><b>RTCA-EFAN (etiquetado frontal de advertencia regional): estancado.</b> La propuesta se presentó a SIECA en 2017 con apoyo del INCAP, COMISCA la ratificó en 2021 — y <b>no ha sido adoptada por COMIECO</b>, que es el órgano que aprueba los RTCA. No está en consulta pública regional. No hay EFAN obligatorio por vía regional en ningún país. El sector privado regional presiona por la vía del RTCA precisamente para evitar reglas nacionales divergentes.</li>
+    <li><b>Res. 500-2026:</b> Panamá se adhiere al RTCA 01.01.11:06 (cantidad de producto en preenvasados), vigente para Panamá el 26-jun-2027. Afecta la declaración de contenido neto en sacos y bolsas de harina.</li>
+    <li><b>Pendiente para la próxima pasada:</b> el contenido de las resoluciones COMIECO <b>498-2026, 502-2026 y 503-2026</b> no pudo verificarse. Existen en el listado de SIECA y podrían tocar alimentos.</li>
+  </ul>
+
+  <div>
+    <h3 style="margin-bottom:8px">Tablero RTCA</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>Código RTCA</th><th>Objeto</th><th>Resolución COMIECO</th><th>Estado</th><th>Vigencia</th></tr></thead>
+      <tbody>
+        <tr><td class="code">67.01.15:07</td><td>Harina de trigo fortificada. Especificaciones</td><td>201-2007 (COMIECO-XLV)</td><td><span class="pill p-ok">Vigente</span></td><td>desde 2007</td></tr>
+        <tr><td class="code">67.01.07:10</td><td>Etiquetado general de preenvasados</td><td>280-2012 · mod. <b>499-2026</b> y <b>501-2026</b></td><td><span class="pill p-wait">Vigente · reformas pendientes</span></td><td><b>26-feb-2027</b></td></tr>
+        <tr><td class="code">67.01.60:10</td><td>Etiquetado nutricional</td><td>Resolución de adopción <span class="pill p-nv">no verificada</span></td><td><span class="pill p-ok">Vigente</span></td><td>en vigor</td></tr>
+        <tr><td class="code">67.01.60:23</td><td>Etiquetado nutricional, 1.ª revisión (población desde 3 años)</td><td>Ninguna — no adoptada</td><td><span class="pill p-new">En consulta · no vigente</span></td><td>sin fecha</td></tr>
+        <tr><td class="code">67.04.54:18</td><td>Aditivos alimentarios</td><td>419-2019 · mod. <b>497-2025</b> (26-jun-2025)</td><td><span class="pill p-ok">Vigente · ya reformado</span></td><td>desde 15-jul-2025</td></tr>
+        <tr><td class="code">67.04.50:17</td><td>Criterios microbiológicos para la inocuidad</td><td>402-2018 (COMIECO-LXXXIII)</td><td><span class="pill p-ok">Vigente</span></td><td>en vigor</td></tr>
+        <tr><td class="code">67.01.31:20</td><td>Registro sanitario de alimentos procesados</td><td>Resolución de adopción <span class="pill p-nv">no verificada</span></td><td><span class="pill p-ok">Vigente</span></td><td>en vigor</td></tr>
+        <tr><td class="code">67.01.33:06</td><td>Buenas Prácticas de Manufactura</td><td>176-2006 (COMIECO-XXXVIII), Anexo 4</td><td><span class="pill p-ok">Vigente</span></td><td>en vigor</td></tr>
+        <tr><td class="code">01.01.11:06</td><td>Cantidad de producto en preenvasados</td><td>168-2006 · mod. 291-2012 · <b>500-2026</b> (adhesión de Panamá)</td><td><span class="pill p-wait">Vigente · Panamá pendiente</span></td><td>Panamá: 26-jun-2027</td></tr>
+        <tr><td class="code">RTCA-EFAN</td><td>Etiquetado frontal de advertencia nutricional regional</td><td>Res. COMISCA 20-2019 (texto no accesible)</td><td><span class="pill p-off">Propuesta estancada</span></td><td>—</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="card">
+  <header>
+    <h2><span class="lvtag" style="background:var(--f5);color:#fff">N5</span>&nbsp; Guatemala</h2>
+    <span class="pill p-new">1 novedad en la ventana</span>
+  </header>
+  <ul class="news">
+    <li class="hit"><b>2-oct-2026 · Acuerdo Ministerial 154-2026 (MAGA), publicado en el Diario de Centro América.</b> Establece el modelo de inspección basada en riesgo para todas las importaciones sujetas a control sanitario, fitosanitario y zoosanitario. Vigencia ocho días después de la publicación. Ejecuta el VISAR. Detalle en la alerta roja del encabezado.</li>
+    <li class="none"><b>Sin novedades del MSPAS esta semana</b> en fortificación, vigilancia de harinas, registro sanitario, etiquetado ni alertas sanitarias.</li>
+    <li class="none"><b>DCA del 28-sep:</b> solo normativa municipal (Santa Apolonia y Chiquimula). <b>DCA del 2-oct:</b> además del AM 154-2026, solo el Acuerdo Gubernativo 157-2026 (reglamento interno de Cultura y Deportes).</li>
+    <li><b>Iniciativa de ley 5504</b> («Ley de Promoción de Alimentación Saludable», con régimen de etiquetado frontal de advertencia): número confirmado en el sitio del Congreso. Última actividad documentada con fecha: <b>29-abr-2024</b>, cuando MINECO informó enmiendas para alinearla con el marco regional y evitar obstáculos técnicos al comercio. <b>Sin movimiento en la ventana.</b> Lectura y dictamen actuales no verificados — el buscador de iniciativas de congreso.gob.gt no fue accesible.</li>
+    <li><b>La pregunta de fondo sigue abierta:</b> si el etiquetado frontal llega a Guatemala por la vía regional del RTCA-EFAN, estancado desde 2017, o por la vía nacional de la 5504, detenida desde 2024.</li>
+  </ul>
+
+  <div>
+    <h3 style="margin-bottom:8px">Marco normativo guatemalteco</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>Norma</th><th>Objeto</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td class="code">Decreto 44-92</td><td>Ley General de Enriquecimiento de Alimentos. Faculta al MSPAS, en consulta con el INCAP, a emitir reglamentos y niveles</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">A.G. 128-2021</td><td>Reglamento de fortificación con micronutrientes de la harina de maíz nixtamalizado. Aplica a molinos, productores, importadores y distribuidores</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">A.G. 298-2015</td><td>Antiguo reglamento de fortificación de harina de maíz nixtamalizado</td><td><span class="pill p-off">Derogado por el art. 28 del A.G. 128-2021</span></td></tr>
+        <tr><td class="code">RTCA 67.01.15:07</td><td>Harina de trigo fortificada — <b>es el instrumento vinculante y operativamente exigible</b> en Guatemala: 55 mg/kg de hierro y 1,8 de ácido fólico</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">A.G. 498-93</td><td>Reglamento de fortificación de harina de trigo; modificado en 2001 para fijar fumarato ferroso</td><td><span class="pill p-nv">No verificado en fuente primaria</span></td></tr>
+        <tr><td class="code">A.M. 154-2026</td><td>Inspección basada en riesgo para importaciones (MAGA/VISAR)</td><td><span class="pill p-new">Publicado · vigencia ≈10-oct-2026</span></td></tr>
+        <tr><td class="code">A.M. 119-2026</td><td>Plataforma de trazabilidad de productos de origen animal, vegetal e hidrobiológico</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">NTS 003-2020</td><td>Clasificación de riesgo para registro sanitario. <b>Los alimentos de fortificación obligatoria son Riesgo A</b></td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">A.G. 969-99</td><td>Reglamento para la Inocuidad de los Alimentos. No es norma de fortificación</td><td><span class="pill p-ok">Vigente</span></td></tr>
+        <tr><td class="code">Iniciativa 5504</td><td>Ley de Promoción de Alimentación Saludable (etiquetado frontal de advertencia)</td><td><span class="pill p-new">En trámite · estado procesal no verificado</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div>
+    <h3 style="margin-bottom:8px">A.G. 128-2021 — harina de maíz nixtamalizado, Guatemala (mg/kg)</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>Micronutriente</th><th>Compuesto</th><th>Contenido promedio</th><th>Intervalo de tolerancia</th></tr></thead>
+      <tbody>
+        <tr><td><b>Hierro</b></td><td>Fumarato ferroso</td><td><b>25 – 40</b></td><td>27 – 52</td></tr>
+        <tr><td>Tiamina (B1)</td><td>Mononitrato de tiamina</td><td>3,9 – 6,1</td><td>2,9 – 8,9</td></tr>
+        <tr><td>Riboflavina (B2)</td><td>Riboflavina</td><td>2,5 – 3,5</td><td>1,7 – 5,0</td></tr>
+        <tr><td>Niacina (B3)</td><td>Niacinamida</td><td>33 – 49</td><td>24 – 71</td></tr>
+        <tr><td><b>Ácido fólico (B9)</b></td><td>Ácido fólico</td><td><b>1,0 – 1,3</b></td><td>0,6 – 1,9</td></tr>
+        <tr><td>Vitamina B12</td><td>Cianocobalamina</td><td>0,0035</td><td>0,002 – 0,005</td></tr>
+        <tr><td>Zinc</td><td>Óxido de zinc</td><td>20 – 38</td><td>26 – 50</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted" style="margin-top:7px">Se contemplan alternativas con compuestos bisglicinados para hierro y zinc. El acuerdo obliga al MSPAS a inspecciones semestrales en puntos de venta, con el hierro como indicador trazador, mínimo cinco muestras por proceso y análisis en la CONAFOR. El A.G. 298-2015, derogado, exigía 47,0 mg/kg de hierro como <b>bisglicinato</b>: el cambio de 2021 bajó el hierro, cambió la forma química a fumarato y añadió B12 y zinc.</p>
+  </div>
+</section>
+
+<section class="card">
+  <header><h2>Fortificación de harina de trigo — niveles mínimos legales</h2><span class="small muted">mg/kg (ppm) · Guatemala resaltada</span></header>
+  <div class="charts">
+    <div class="chart">
+      <h3>Hierro <span>escala 0–60 mg/kg</span></h3>
+      <div class="bars">
+        <div class="brow gt"><span class="blab">Guatemala</span><div class="btrack"><div class="bfill" style="width:91.7%"></div></div><span class="bval">55,0</span></div>
+        <div class="brow"><span class="blab">CA — RTCA (SV·HN·NI·CR)</span><div class="btrack"><div class="bfill" style="width:91.7%"></div></div><span class="bval">55,0</span></div>
+        <div class="brow"><span class="blab">Panamá</span><div class="btrack"><div class="bfill" style="width:91.7%"></div></div><span class="bval">55,0</span></div>
+        <div class="brow"><span class="blab">Perú</span><div class="btrack"><div class="bfill" style="width:91.7%"></div></div><span class="bval">55,0</span></div>
+        <div class="brow"><span class="blab">Ecuador</span><div class="btrack"><div class="bfill" style="width:91.7%"></div></div><span class="bval">55,0</span></div>
+        <div class="brow"><span class="blab">Colombia</span><div class="btrack"><div class="bfill" style="width:75%"></div></div><span class="bval">45,0</span></div>
+        <div class="brow"><span class="blab">Estados Unidos</span><div class="btrack"><div class="bfill" style="width:73.5%"></div></div><span class="bval">44,1</span></div>
+        <div class="brow"><span class="blab">Canadá</span><div class="btrack"><div class="bfill" style="width:73.3%"></div></div><span class="bval">44,0</span></div>
+        <div class="brow"><span class="blab">México</span><div class="btrack"><div class="bfill" style="width:66.7%"></div></div><span class="bval">40,0</span></div>
+        <div class="brow"><span class="blab">Brasil (40–90)</span><div class="btrack"><div class="bfill" style="width:66.7%"></div></div><span class="bval">40,0</span></div>
+        <div class="brow"><span class="blab">Chile</span><div class="btrack"><div class="bfill" style="width:50%"></div></div><span class="bval">30,0</span></div>
+        <div class="brow"><span class="blab">Argentina</span><div class="btrack"><div class="bfill" style="width:50%"></div></div><span class="bval">30,0</span></div>
+        <div class="brow gt alt"><span class="blab">GT maíz nixt. (25–40)</span><div class="btrack"><div class="bfill" style="width:41.7%;background:var(--accent);opacity:.55"></div></div><span class="bval">25,0</span></div>
+      </div>
+      <div class="axis"><span>0</span><span>15</span><span>30</span><span>45</span><span>60</span></div>
+    </div>
+
+    <div class="chart">
+      <h3>Ácido fólico <span>escala 0–2,4 mg/kg</span></h3>
+      <div class="bars">
+        <div class="brow"><span class="blab">Argentina</span><div class="btrack"><div class="bfill" style="width:91.7%"></div></div><span class="bval">2,20</span></div>
+        <div class="brow"><span class="blab">México</span><div class="btrack"><div class="bfill" style="width:83.3%"></div></div><span class="bval">2,00</span></div>
+        <div class="brow gt"><span class="blab">Guatemala</span><div class="btrack"><div class="bfill" style="width:75%"></div></div><span class="bval">1,80</span></div>
+        <div class="brow"><span class="blab">CA — RTCA (SV·HN·NI·CR)</span><div class="btrack"><div class="bfill" style="width:75%"></div></div><span class="bval">1,80</span></div>
+        <div class="brow"><span class="blab">Panamá</span><div class="btrack"><div class="bfill" style="width:75%"></div></div><span class="bval">1,80</span></div>
+        <div class="brow"><span class="blab">Chile</span><div class="btrack"><div class="bfill" style="width:75%"></div></div><span class="bval">1,80</span></div>
+        <div class="brow"><span class="blab">Estados Unidos</span><div class="btrack"><div class="bfill" style="width:64.3%"></div></div><span class="bval">1,54</span></div>
+        <div class="brow"><span class="blab">Colombia</span><div class="btrack"><div class="bfill" style="width:64.2%"></div></div><span class="bval">1,54</span></div>
+        <div class="brow"><span class="blab">Canadá</span><div class="btrack"><div class="bfill" style="width:62.5%"></div></div><span class="bval">1,50</span></div>
+        <div class="brow"><span class="blab">Brasil (1,40–2,20)</span><div class="btrack"><div class="bfill" style="width:58.3%"></div></div><span class="bval">1,40</span></div>
+        <div class="brow"><span class="blab">Perú</span><div class="btrack"><div class="bfill" style="width:50%"></div></div><span class="bval">1,20</span></div>
+        <div class="brow gt alt"><span class="blab">GT maíz nixt. (1,0–1,3)</span><div class="btrack"><div class="bfill" style="width:41.7%;background:var(--accent);opacity:.55"></div></div><span class="bval">1,00</span></div>
+        <div class="brow"><span class="blab">Ecuador</span><div class="btrack"><div class="bfill" style="width:25%"></div></div><span class="bval">0,60</span></div>
+      </div>
+      <div class="axis"><span>0</span><span>0,6</span><span>1,2</span><span>1,8</span><span>2,4</span></div>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="margin-bottom:8px">La forma química del hierro es el problema operativo real</h3>
+    <div class="tscroll"><table>
+      <thead><tr><th>País / región</th><th>Forma química admitida</th><th>Norma</th></tr></thead>
+      <tbody>
+        <tr><td><b>Guatemala y CA (RTCA)</b></td><td><b>Fumarato ferroso</b></td><td>RTCA 67.01.15:07</td></tr>
+        <tr><td>México</td><td>Sulfato o fumarato ferroso (ion ferroso)</td><td>NOM-247-SSA1-2008</td></tr>
+        <tr><td>Brasil</td><td>Sulfato y fumarato ferroso, incl. encapsulados. <b>No admite hierro reducido ni NaFeEDTA</b></td><td>RDC 150/2017</td></tr>
+        <tr><td>Colombia</td><td>Fumarato ferroso, gluconato ferroso, pirofosfato férrico, pirofosfato férrico sódico y encapsulados</td><td>Decreto 380 de 2026</td></tr>
+        <tr><td>Perú</td><td>Sulfato o fumarato ferroso; otros requieren aprobación previa del CENAN</td><td>D.S. 008-2005-SA</td></tr>
+        <tr><td>Argentina</td><td>Sulfato ferroso, explícito en la ley</td><td>Ley 25.630</td></tr>
+        <tr><td>Ecuador</td><td><b>Hierro reducido micronizado</b></td><td>D.E. 3609 (TULSMA)</td></tr>
+        <tr><td>Chile</td><td><span class="pill p-nv">No especificada en el art. 350</span></td><td>D.S. 977/96</td></tr>
+        <tr><td>Panamá</td><td><span class="pill p-nv">No verificada</span></td><td>Decreto ejecutivo de 2003, número no verificado</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted" style="margin-top:7px"><b>No existe una sola premezcla que sirva para los diez mercados.</b> Argentina exige sulfato, Ecuador hierro reducido, Brasil prohíbe el reducido, Colombia abre a pirofosfatos. El rango de hierro va de 30 a 55 mg/kg — un <b>83 % de diferencia</b> entre el piso y el techo. Los seis países del RTCA, en cambio, convergen exactamente: esa línea plana es el dato.</p>
+    <p class="small muted"><b>Divergencia nacional dentro del RTCA — bromato de potasio, máximo permitido (mg/kg):</b> Guatemala 35 · El Salvador 35 · Honduras 35 · Nicaragua 30 · <b>Costa Rica 0 (prohibido)</b>.</p>
+  </div>
+</section>
+
+<section class="card">
+  <header><h2>Retiros de alimentos</h2><span class="small muted">7 sep – 5 oct 2026 · harinas, premezclas, masa y panificación</span></header>
+  <div class="tscroll"><table>
+    <thead><tr><th>Fecha</th><th>Autoridad</th><th>Empresa</th><th>Producto</th><th>Motivo</th><th>Alcance</th><th>Clase</th></tr></thead>
+    <tbody>
+      <tr><td class="code">04-oct</td><td>EE. UU. / FDA</td><td>Flowers Foods</td><td>Nature's Own Hawaiian Bread, 20 oz y 2-pack 40 oz</td><td><b>Leche no declarada</b> (el empaque omitió el ingrediente)</td><td>AR, LA, NM, OK, TX. Sin enfermos</td><td><span class="pill p-nv">Sin asignar</span></td></tr>
+      <tr><td class="code">03-oct</td><td>R. Unido / FSA</td><td>Lambertz</td><td>Mini Spekulatius 150 g; Christmas Tree Cookies 160 g</td><td>Alérgenos <b>no declarados en inglés</b>: cebada, trigo, avellana, leche, soya</td><td>Reino Unido</td><td><span class="pill p-wait">Allergy Alert</span></td></tr>
+      <tr><td class="code">02-oct</td><td>EE. UU. / FDA</td><td>Saint Francis Apizza</td><td>Pizzas congeladas (4 variedades) — producto de masa</td><td><b>Soya no declarada</b>: faltaron subingredientes (aceite y lecitina de soya)</td><td>Cincinnati, Dayton, norte de KY + venta en línea</td><td><span class="pill p-nv">Sin asignar</span></td></tr>
+      <tr><td class="code">30-sep</td><td>Canadá / MAPAQ</td><td>Boulangerie Richard</td><td>Pâté saveur hareng y saveur morue, cajas de 12</td><td><b>Trigo y pescado no declarados</b></td><td>Varios establecimientos de Quebec</td><td><span class="pill p-off">Classe 1</span></td></tr>
+      <tr><td class="code">30-sep</td><td>Australia / FSANZ</td><td>Sunlife Import &amp; Export</td><td>Spring Roll Wrapper 200 g — obleas de harina</td><td><b>Gluten no declarado</b></td><td>Australia</td><td><span class="pill p-wait">Retiro a consumidor</span></td></tr>
+      <tr><td class="code">23-sep</td><td>EE. UU. / FDA</td><td>Best Friends Bakery</td><td>Pumpkin Spice No Bake Cookie, 3.5 oz</td><td><b>Cacahuate ausente del «Contains»</b> aunque sí estaba en la lista de ingredientes</td><td>10 estados · <b>1 416 unidades</b></td><td><span class="pill p-wait">Class II</span></td></tr>
+      <tr><td class="code">23-sep</td><td>EE. UU. / FDA</td><td>Elegant Foods</td><td>Carrot Cake 9"</td><td>Colorantes no declarados (Amarillo #5 y #6) en la decoración</td><td>Wisconsin · 300 pasteles</td><td><span class="pill p-wait">Class II</span></td></tr>
+      <tr><td class="code">18-sep</td><td>EE. UU. / FDA</td><td>GF Blends</td><td><b>Truly AIP All Purpose Flour</b> 15.3 oz; <b>Bread Mix</b> 14 oz; Flat Bread Pizza Mix</td><td><b>Gluten de trigo &gt;20 ppm</b> por harina de plátano contaminada del proveedor PMF Global</td><td>Nacional EE. UU. (web, Amazon, retail)</td><td><span class="pill p-nv">Sin asignar</span></td></tr>
+      <tr><td class="code">16-sep</td><td>Canadá / MAPAQ</td><td>La Fournée Saint-Félicien</td><td>8 productos, incl. pan de queso blanco</td><td>Trigo, leche, sésamo, soya y <b>sulfitos</b> no declarados</td><td>Punto de venta propio</td><td><span class="pill p-off">Classe 1</span></td></tr>
+      <tr><td class="code">10-sep</td><td>Canadá / MAPAQ</td><td>Grand Marché Col-Fax</td><td>Tarte aux fruits refrigerada</td><td>Inocuidad no asegurada en preparación y acondicionamiento</td><td>Un local en Laval. Sin enfermos</td><td><span class="pill p-nv">Precautorio</span></td></tr>
+      <tr><td class="code">09-sep</td><td>Canadá / MAPAQ</td><td>Royaume de la tarte</td><td>Tarte au citron 610 g; Tarte à la lime 500 g</td><td><b>Sulfitos no declarados</b></td><td>Capitale-Nationale y Chaudière-Appalaches</td><td><span class="pill p-off">Classe 1</span></td></tr>
+      <tr><td class="code">08-sep</td><td>N. Zelanda / MPI</td><td>Woolworths NZ</td><td>Multi Grain Cereal 500 g</td><td><b>Cuerpo extraño: plástico azul</b></td><td>Todo NZ + exportado a 6 territorios del Pacífico y Malasia</td><td><span class="pill p-wait">Retiro a consumidor</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="charts" style="margin-top:4px">
+    <div class="chart">
+      <h3>Motivo primario <span>n = 12</span></h3>
+      <div class="bars">
+        <div class="brow"><span class="blab">Alérgeno no declarado</span><div class="btrack"><div class="bfill" style="width:100%;background:var(--accent)"></div></div><span class="bval">9</span></div>
+        <div class="brow"><span class="blab">Cuerpo extraño</span><div class="btrack"><div class="bfill" style="width:11.1%"></div></div><span class="bval">1</span></div>
+        <div class="brow"><span class="blab">Colorante no declarado</span><div class="btrack"><div class="bfill" style="width:11.1%"></div></div><span class="bval">1</span></div>
+        <div class="brow"><span class="blab">Inocuidad de proceso</span><div class="btrack"><div class="bfill" style="width:11.1%"></div></div><span class="bval">1</span></div>
+        <div class="brow alt"><span class="blab">Patógenos</span><div class="btrack"><div class="bfill" style="width:0%"></div></div><span class="bval">0</span></div>
+        <div class="brow alt"><span class="blab">Micotoxinas</span><div class="btrack"><div class="bfill" style="width:0%"></div></div><span class="bval">0</span></div>
+        <div class="brow alt"><span class="blab">Masa cruda</span><div class="btrack"><div class="bfill" style="width:0%"></div></div><span class="bval">0</span></div>
+      </div>
+      <div class="axis"><span>0</span><span>3</span><span>6</span><span>9</span></div>
+    </div>
+    <div class="chart">
+      <h3>Alérgeno implicado <span>un retiro puede contar varias veces</span></h3>
+      <div class="bars">
+        <div class="brow gt"><span class="blab">Trigo / gluten</span><div class="btrack"><div class="bfill" style="width:100%"></div></div><span class="bval">5</span></div>
+        <div class="brow"><span class="blab">Leche</span><div class="btrack"><div class="bfill" style="width:60%"></div></div><span class="bval">3</span></div>
+        <div class="brow"><span class="blab">Soya</span><div class="btrack"><div class="bfill" style="width:60%"></div></div><span class="bval">3</span></div>
+        <div class="brow"><span class="blab">Sulfitos</span><div class="btrack"><div class="bfill" style="width:40%"></div></div><span class="bval">2</span></div>
+        <div class="brow"><span class="blab">Frutos secos / cacahuate</span><div class="btrack"><div class="bfill" style="width:40%"></div></div><span class="bval">2</span></div>
+        <div class="brow"><span class="blab">Sésamo</span><div class="btrack"><div class="bfill" style="width:20%"></div></div><span class="bval">1</span></div>
+        <div class="brow"><span class="blab">Huevo</span><div class="btrack"><div class="bfill" style="width:20%"></div></div><span class="bval">1</span></div>
+      </div>
+      <div class="axis"><span>0</span><span>1</span><span>3</span><span>5</span></div>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="margin-bottom:6px">Lo que esta ventana dice sobre su propio control de calidad</h3>
+    <ul class="news">
+      <li class="hit"><b>El riesgo número uno es su etiqueta, no su microbiología.</b> Nueve de doce fueron alérgenos no declarados y <b>seis de doce</b> fueron error propio de etiqueta. El caso Best Friends Bakery es el ejemplo exacto: el cacahuate <i>sí</i> estaba en la lista de ingredientes y <i>faltaba</i> en el «Contiene» — eso bastó para un Class II sobre 1 416 unidades.</li>
+      <li><b>Audite los subingredientes de sus insumos, no solo el nombre del insumo.</b> Saint Francis Apizza cayó por no declarar aceite y lecitina de soya que venían dentro de otros ingredientes. Pida ficha técnica con desglose completo y actualícela en cada cambio de proveedor o de formulación.</li>
+      <li><b>Si vende «libre de gluten», el riesgo se multiplica.</b> GF Blends se contaminó por <b>harina de plátano de un tercero</b>, no por su propia planta. Exija certificado de análisis de gluten por lote (ELISA R5, &lt;20 ppm) a cada proveedor de harina alternativa <i>y</i> verifique con su propio muestreo de producto terminado.</li>
+      <li><b>Idioma y formato del mercado de destino.</b> El producto de Lambertz era seguro: los alérgenos no estaban en inglés. Canadá exige además <b>sulfitos</b> y mostaza — dos retiros de esta ventana fueron por sulfitos.</li>
+      <li><b>Cuerpos extraños en línea seca.</b> Use plástico <b>azul detectable</b> en toda la zona de proceso, con inventario y verificación por turno; verifique la sensibilidad del detector de metales por turno con piezas patrón Fe / no-Fe / inoxidable; y prohíba la madera en zona de producto expuesto — el clavo de tarima es un vector real.</li>
+      <li class="none"><b>Cero retiros por Salmonella, E. coli STEC o micotoxinas es coyuntura, no un cambio de riesgo.</b> La harina no es un producto listo para consumo. Mantenga muestreo de fumonisinas en maíz y aflatoxinas en maíz y trigo a recepción, con plan estadísticamente válido: la micotoxina se distribuye en focos y el error típico es muestrear poco.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="card">
+  <header><h2>Calendario de cumplimiento</h2><span class="small muted">fechas verificadas salvo indicación</span></header>
+  <div class="cal">
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--red)"></span>≈10 oct 2026</span><div class="calbody"><span class="who">Guatemala · MAGA</span><br>Entra en vigor el <b>A.M. 154-2026</b>: inspección por canal de riesgo para importaciones agropecuarias, incluido el embalaje.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--amber)"></span>13 oct 2026</span><div class="calbody"><span class="who">Brasil · ANVISA</span><br>Cierra la consulta técnica sobre la Ley 15.404/2026 (cacao y chocolate). Toca rellenos y coberturas.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--blue)"></span>12–17 oct 2026</span><div class="calbody"><span class="who">Codex · Perth</span><br><b>CCFICS28</b>: fraude alimentario, equivalencia, trazabilidad y digitalización de certificados de exportación.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--amber)"></span>19 oct 2026</span><div class="calbody"><span class="who">Brasil · ANVISA</span><br>Cierra la <b>CP 1.400/2026</b>: QUID, códigos QR e irradiados. Modifica la RDC 727/2022.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--blue)"></span>19–23 oct 2026</span><div class="calbody"><span class="who">Codex · El Cairo</span><br><b>CCCF19</b>: revisión de acrilamida, aflatoxina B1 en piensos y revisión de las normas de contaminantes.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--blue)"></span>2–6 nov 2026</span><div class="calbody"><span class="who">Codex · Núremberg</span><br><b>CCNFSDU45</b>: valores de referencia de nutrientes y justificación tecnológica de aditivos.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--ink-2)"></span>nov 2026</span><div class="calbody"><span class="who">EE. UU. · FDA — proyectado</span><br>Tres reglas propuestas para <b>revocar los estándares de identidad</b> de <i>bakery products</i> y <i>cereal flours</i>. Agenda Unificada, no compromiso vinculante.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--ink-2)"></span>dic 2026</span><div class="calbody"><span class="who">EE. UU. · FDA — proyectado</span><br>Regla <b>final</b> de etiquetado frontal («Nutrition Info box»), con 3 años de plazo para empresas ≥ USD 10 M y 4 para las menores.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--amber)"></span>9 dic 2026</span><div class="calbody"><span class="who">EE. UU. · FDA</span><br>Cierran los comentarios de la regla propuesta de <b>GRAS obligatorio</b> (FDA-2025-N-3262).</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--red)"></span>1 ene 2027</span><div class="calbody"><span class="who">California · AB 418</span><br>Prohibición de <b>bromato de potasio</b>, BVO, propilparabeno y Red No. 3 en todo alimento vendido en California.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--red)"></span>15 ene 2027</span><div class="calbody"><span class="who">EE. UU. · FDA</span><br>Cumplimiento de la revocación de <b>FD&amp;C Red No. 3</b> en alimentos.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--accent)"></span>26 feb 2027</span><div class="calbody"><span class="who">Centroamérica · COMIECO</span><br>Entran en vigor las <b>Res. 499-2026 y 501-2026</b> sobre el RTCA 67.01.07:10, en CR, SV, GT, HN y NI.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--blue)"></span>mar 2027</span><div class="calbody"><span class="who">Chile · RSA</span><br>Obligatorio el criterio «libre de gluten» ≤ 5 mg/kg.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--blue)"></span>12–16 abr 2027</span><div class="calbody"><span class="who">Codex · sede sin confirmar</span><br><b>CCFA57</b>: GSFA y agentes de tratamiento de harinas.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--accent)"></span>26 jun 2027</span><div class="calbody"><span class="who">Panamá · COMIECO</span><br>Entra en vigor para Panamá el RTCA 01.01.11:06 (cantidad de producto en preenvasados), vía Res. 500-2026.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--blue)"></span>31 dic 2027</span><div class="calbody"><span class="who">México · NOM-051</span><br>Termina la Fase 2 del etiquetado frontal.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--red)"></span>1 ene 2028</span><div class="calbody"><span class="who">México · NOM-051</span><br>Arranca la <b>Fase 3</b>: se evalúa el perfil completo de 5 nutrimentos, no solo los añadidos. Pan dulce, pan de molde y galletería pueden ganar sellos sin reformularse.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--blue)"></span>25 feb 2028</span><div class="calbody"><span class="who">EE. UU. · FDA</span><br>Cumplimiento obligatorio de la regla <b>«healthy»</b> (21 CFR 101.65).</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--accent)"></span>≈abr 2028</span><div class="calbody"><span class="who">Colombia · Decreto 380 de 2026</span><br>Fin de la transición de 24 meses: fortificación obligatoria con nuevos niveles y <b>nuevas formas de hierro</b>. Cambia la especificación de premezcla.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--blue)"></span>1 jul 2028</span><div class="calbody"><span class="who">Unión Europea</span><br>Segundo escalón de alcaloides del cornezuelo: molienda de trigo baja en cenizas pasa de 100 a <b>50 µg/kg</b>.</div></div>
+    <div class="calrow"><span class="caldate"><span class="dot" style="background:var(--blue)"></span>20 jul 2028</span><div class="calbody"><span class="who">EE. UU. · FSMA 204</span><br>Cumplimiento de la regla de trazabilidad. <b>Harinas y masa no están en la Food Traceability List.</b></div></div>
+  </div>
+</section>
+
+<section class="card">
+  <header><h2>Notas de verificación</h2><span class="small muted">lo no confirmado y lo que no se pudo abrir</span></header>
+  <div class="notes">
+    <div class="nbox">
+      <h3>No verificado — no usar sin segunda pasada</h3>
+      <ul class="nlist">
+        <li><b>El acuerdo gubernativo guatemalteco de fortificación de harina de trigo.</b> La única referencia hallada es el <code>A.G. 498-93</code>, modificado en 2001, citada por un informe FANTA/USAID de 2016 y no por fuente legal primaria. Lo operativamente exigible y sí verificado es el <code>RTCA 67.01.15:07</code>.</li>
+        <li><b>Si el A.M. 154-2026 nombra explícitamente trigo o maíz.</b> Las tres fuentes accesibles hablan de categorías generales de origen vegetal.</li>
+        <li><b>Estado procesal de la Iniciativa 5504</b> (lectura, dictamen, movimiento 2025-2026).</li>
+        <li><b>Contenido de las resoluciones COMIECO 498-2026, 502-2026 y 503-2026</b>, y de la Resolución COMISCA 20-2019.</li>
+        <li><b>Resolución COMIECO que adopta los RTCA 67.01.60:10 y 67.01.31:20.</b> Los reglamentos están verificados; sus resoluciones de adopción, no.</li>
+        <li><b>Codex CXS 155-1985 y CXS 163-1987</b>, y los LM de fumonisinas, aflatoxinas y ocratoxina A de CXS 193-1995: el PDF oficial devolvió HTTP 502 en todos los intentos.</li>
+        <li><b>Número del decreto panameño</b> de fortificación (2003) y forma química del hierro en Panamá y en el art. 350 del RSA chileno.</li>
+        <li><b>Estado actual del proyecto colombiano de sello ULTRAPROCESADO</b> y del proyecto argentino de derogación de la Ley 27.642. Ambas normas vigentes siguen vigentes.</li>
+        <li><b>Número de comentarios</b> en el docket ADA FDA-2026-N-4126 y criterios numéricos de la regla «healthy» para productos de grano.</li>
+        <li><b>RASFF de la UE, USDA-FSIS y autoridades centroamericanas</b> no pudieron barrerse: no hay retiros documentados de Centroamérica en la ventana, pero eso no equivale a que no existan.</li>
+      </ul>
+    </div>
+    <div class="nbox">
+      <h3>Sitios oficiales inaccesibles</h3>
+      <ul class="nlist">
+        <li><code>dca.gob.gt</code> · <code>maga.gob.gt</code> — <b>HTTP 403</b> en todos los intentos, como se anticipaba. El contenido del Diario de Centro América se recuperó por su índice en vLex.</li>
+        <li><code>sica.int</code> (Res. COMISCA 20-2019) · <code>cretec.org.gt</code> — HTTP 403.</li>
+        <li><code>congreso.gob.gt</code> (buscador de iniciativas) · <code>sieca.int</code> (fichas 502 y 503-2026) — permiso de acceso no concedido.</li>
+        <li><code>cgab.org.gt</code> — certificado TLS expirado.</li>
+        <li><code>regulations.gov</code> · <code>accessdata.fda.gov</code> · <code>canadagazette.gc.ca</code> · <code>fsis.usda.gov</code> — bloqueados.</li>
+        <li><code>webgate.ec.europa.eu/rasff-window</code> · <code>arsa.gob.hn</code> · <code>ministeriodesalud.go.cr</code> — bloqueados.</li>
+        <li><code>api.fda.gov</code> (openFDA Food Enforcement) — CONNECT rechazado por el proxy; sustituido por un espejo de la base de enforcement, que confirmó el número de retiro H-1386-2026 y las clasificaciones Class II.</li>
+        <li><code>fao.org</code> (calendario de reuniones, índice de cartas circulares, PDF de CXS 193 y 155) — HTTP 502 y permisos denegados. <b>No se pudo inventariar las cartas circulares Codex abiertas a comentarios.</b></li>
+        <li>Buscador avanzado de <code>EUR-Lex</code> y <code>have-your-say.ec.europa.eu</code> — no se pudo barrer el DOUE de la semana ni inventariar las consultas abiertas de la Comisión.</li>
+        <li><code>dof.gob.mx</code> · <code>suin-juriscol.gov.co</code> · <code>tramitacion.senado.cl</code> · <code>anmat.gob.ar</code> — robots.txt, fallo TLS o bucles de redirección; se usaron espejos oficiales.</li>
+      </ul>
+      <h3 style="margin-top:6px">Fuentes secundarias descartadas</h3>
+      <ul class="nlist">
+        <li>La tabla de <b>Nutrition International</b> reporta 60 mg/kg de hierro y 1,5 de ácido fólico para Costa Rica y Panamá, con «hierro reducido» para los seis países. El Decreto 26371-S de Costa Rica dice 55,0 «como fumarato ferroso» y 1,8. Tabla desactualizada.</li>
+        <li>El perfil de país de la <b>Food Fortification Initiative</b> para Guatemala reporta 60 ppm de hierro y 0,4 de ácido fólico. El RTCA dice 55,0 y 1,8; la cifra de 0,4 es además implausible frente a toda la normativa regional.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><b>Informe Normativo Semanal — Harinas y Premezclas Panificables.</b> Ventana 28 sep – 5 oct 2026. Preparado el lunes 5 de octubre de 2026, zona horaria America/Guatemala.</p>
+  <p>Cada número de norma, resolución, decreto y fecha de este informe se contrastó contra fuente oficial o, cuando no fue accesible, contra fuente secundaria especificada. Lo que no se pudo confirmar aparece marcado como <i>no verificado</i> y no se completó por inferencia. Los niveles de fortificación provienen exclusivamente de los textos legales primarios.</p>
+</footer>
+
+</div>
+
+</body></html>
