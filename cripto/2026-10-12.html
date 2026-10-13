@@ -1,0 +1,572 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Informe Cripto Diario</title>
+<style>
+  :root{
+    --surface:#fcfcfb; --raised:#ffffff; --ink:#0b0b0b; --ink2:#52514e;
+    --grid:#e1e0d9; --blue:#2a78d6; --red:#d03b3b; --green:#0ca30c; --amber:#b07400;
+    --amber-fill:#fab219; --zero:#9a9992;
+    color-scheme:light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --surface:#1a1a19; --raised:#222221; --ink:#ffffff; --ink2:#c3c2b7;
+      --grid:#2c2c2a; --blue:#3987e5; --red:#d03b3b; --green:#0ca30c; --amber:#fab219;
+      --amber-fill:#fab219; --zero:#6e6d66;
+    }
+  }
+  :root[data-theme="dark"]{
+    --surface:#1a1a19; --raised:#222221; --ink:#ffffff; --ink2:#c3c2b7;
+    --grid:#2c2c2a; --blue:#3987e5; --red:#d03b3b; --green:#0ca30c; --amber:#fab219;
+    --amber-fill:#fab219; --zero:#6e6d66;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--surface); color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:40px 16px 72px}
+  .num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1}
+  h1{font-size:30px; line-height:1.2; letter-spacing:-.02em; margin:0 0 10px; font-weight:650}
+  h2{font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink2);
+     font-weight:600; margin:52px 0 14px; padding-bottom:8px; border-bottom:1px solid var(--grid)}
+  h3{font-size:17px; margin:0 0 6px; font-weight:620; line-height:1.3}
+  p{margin:0 0 12px}
+  .sub{color:var(--ink2); font-size:13.5px; margin:0}
+  .eyebrow{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
+           color:var(--ink2); font-weight:600; margin:0 0 14px}
+  a{color:var(--blue)}
+
+  .method{
+    border:1px solid var(--grid); border-left:3px solid var(--amber);
+    background:var(--raised); border-radius:4px; padding:16px 18px; margin:26px 0 0;
+  }
+  .method .mt{font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+              color:var(--amber); font-weight:650; margin:0 0 8px}
+  .method ul{margin:0; padding-left:18px; font-size:13.5px; color:var(--ink2)}
+  .method li{margin-bottom:6px}
+  .method strong{color:var(--ink); font-weight:600}
+
+  .tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:30px 0 0}
+  .tile{border:1px solid var(--grid); background:var(--raised); border-radius:5px; padding:16px 18px}
+  .tile .lab{font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+             color:var(--ink2); font-weight:600; margin:0 0 8px}
+  .tile .big{font-size:29px; font-weight:640; letter-spacing:-.02em; line-height:1.05}
+  .tile .note{font-size:12.5px; color:var(--ink2); margin:7px 0 0}
+  .up{color:var(--blue)} .down{color:var(--red)}
+
+  table{width:100%; border-collapse:collapse; font-size:13.5px}
+  th{text-align:left; font-size:11px; letter-spacing:.07em; text-transform:uppercase;
+     color:var(--ink2); font-weight:600; padding:0 10px 8px 0; border-bottom:1px solid var(--grid)}
+  td{padding:9px 10px 9px 0; border-bottom:1px solid var(--grid); vertical-align:middle}
+  .r{text-align:right}
+  tbody tr:last-child td{border-bottom:none}
+  .tick{font-size:11px; color:var(--ink2)}
+  .tscroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+  .tscroll th,.tscroll td{white-space:nowrap}
+
+  .dv{margin:6px 0 0}
+  .dvrow{display:grid; grid-template-columns:54px 1fr 148px; align-items:center;
+         gap:10px; padding:2.5px 0; position:relative}
+  .dvsym{font-size:12.5px; font-weight:620; letter-spacing:.01em}
+  .unv{color:var(--amber); font-weight:700; font-size:11px; margin-left:1px}
+  .dvtrack{position:relative; height:19px}
+  .dvtrack::before{content:""; position:absolute; left:50%; top:-2px; bottom:-2px;
+                   width:1px; background:var(--zero)}
+  .bar{position:absolute; top:3px; height:13px; border-radius:3px}
+  .bpos{left:50%; border-top-left-radius:0; border-bottom-left-radius:0;
+        background:var(--blue); margin-left:1px}
+  .bneg{right:50%; border-top-right-radius:0; border-bottom-right-radius:0;
+        background:var(--red); margin-right:1px}
+  .dvmeta{font-size:12.5px; color:var(--ink2); display:flex; gap:8px; justify-content:flex-end;
+          align-items:baseline; white-space:nowrap}
+  .dvval{font-weight:620; min-width:60px; text-align:right; white-space:nowrap}
+  .dvvol{min-width:54px; text-align:right; font-size:11.5px; white-space:nowrap}
+  .dvcost{min-width:26px; text-align:right; font-size:11.5px; white-space:nowrap}
+
+  .volrow{display:grid; grid-template-columns:52px 1fr 86px; align-items:center; gap:10px; padding:2.5px 0}
+  .voltrack{height:17px; position:relative}
+  .volbar{position:absolute; left:0; top:2px; height:13px; border-radius:3px; background:var(--blue); opacity:.82}
+
+  [data-tip]{cursor:default}
+  [data-tip]:hover::after{
+    content:attr(data-tip); position:absolute; left:50%; transform:translate(-50%,-100%);
+    top:-4px; z-index:9; white-space:pre; background:var(--ink); color:var(--surface);
+    font-size:11.5px; line-height:1.5; padding:6px 9px; border-radius:4px;
+    font-variant-numeric:tabular-nums; pointer-events:none;
+    box-shadow:0 2px 10px rgba(0,0,0,.22)
+  }
+
+  .legend{display:flex; gap:18px; flex-wrap:wrap; font-size:12px; color:var(--ink2);
+          margin:0 0 12px; align-items:center}
+  .legend span{display:flex; gap:6px; align-items:center}
+  .sw{width:11px; height:11px; border-radius:2.5px; display:inline-block}
+
+  .fg{border:1px solid var(--grid); background:var(--raised); border-radius:5px; padding:18px}
+  .fgscale{position:relative; height:26px; margin:34px 0 6px; display:flex}
+  .fgz:first-child{border-top-left-radius:3px; border-bottom-left-radius:3px}
+  .fgz:last-child{border-top-right-radius:3px; border-bottom-right-radius:3px}
+  .fgz{flex:1; display:flex; align-items:center; justify-content:center;
+       font-size:9.5px; letter-spacing:.04em; text-transform:uppercase; color:#fff; font-weight:600}
+  .fgneedle{position:absolute; top:-15px; bottom:-7px; width:2px; background:var(--ink); z-index:3}
+  .fgneedle::after{content:attr(data-v); position:absolute; top:-19px; left:50%;
+    transform:translateX(-50%); background:var(--ink); color:var(--surface);
+    font-size:11.5px; font-weight:650; padding:1px 6px; border-radius:3px;
+    font-variant-numeric:tabular-nums}
+  .fgtick{position:absolute; top:-5px; bottom:-5px; width:1px; background:var(--ink2); opacity:.6; z-index:2}
+  .fghist{display:flex; gap:20px; font-size:12.5px; color:var(--ink2); margin:16px 0 0; flex-wrap:wrap}
+  .fghist b{color:var(--ink); font-weight:620}
+
+  .pb{display:grid; grid-template-columns:150px 1fr 54px; gap:10px; align-items:center;
+      padding:4px 0; font-size:13.5px}
+  .pbtrack{height:17px; background:var(--grid); border-radius:3px; position:relative; overflow:hidden}
+  .pbfill{position:absolute; left:0; top:0; bottom:0; border-radius:3px; background:var(--blue)}
+
+  .frame{border:1px solid var(--grid); border-left:3px solid var(--blue); background:var(--raised);
+         border-radius:4px; padding:15px 18px; margin:0 0 20px; font-size:13.5px; color:var(--ink2)}
+  .frame strong{color:var(--ink)}
+  .okbox{border:1px solid var(--grid); border-left:3px solid var(--blue); background:var(--raised);
+         border-radius:4px; padding:15px 18px; margin:20px 0 0; font-size:13.5px; color:var(--ink2)}
+  .okbox strong{color:var(--ink)}
+  .okbox .bt{font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue);
+             font-weight:650; margin:0 0 8px}
+  .fixbox{border:1px solid var(--grid); border-left:3px solid var(--red); background:var(--raised);
+          border-radius:4px; padding:15px 18px; margin:14px 0 0; font-size:13.5px; color:var(--ink2)}
+  .fixbox strong{color:var(--ink)}
+  .fixbox .bt{font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--red);
+              font-weight:650; margin:0 0 8px}
+  .warnbox{border:1px solid var(--grid); border-left:3px solid var(--amber); background:var(--raised);
+           border-radius:4px; padding:15px 18px; margin:20px 0 0; font-size:13.5px; color:var(--ink2)}
+  .warnbox strong{color:var(--ink)}
+
+  .news{border-top:1px solid var(--grid); padding:24px 0 4px}
+  .news:first-of-type{border-top:none}
+  .nhead{display:flex; gap:12px; align-items:baseline}
+  .nnum{font-size:12px; font-weight:650; color:var(--ink2); min-width:17px;
+        font-variant-numeric:tabular-nums; padding-top:3px}
+  .tags{display:flex; gap:6px; flex-wrap:wrap; margin:9px 0 11px}
+  .tag{font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; font-weight:650;
+       padding:2.5px 7px; border-radius:3px; border:1px solid}
+  .t-bear{color:var(--red); border-color:var(--red)}
+  .t-bull{color:var(--blue); border-color:var(--blue)}
+  .t-mix{color:var(--amber); border-color:var(--amber)}
+  .t-cat{color:var(--ink2); border-color:var(--grid)}
+  .facts{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:14px 0 0}
+  .fact{border:1px solid var(--grid); background:var(--raised); border-radius:4px; padding:10px 11px}
+  .fact .fv{font-size:16.5px; font-weight:640; letter-spacing:-.01em; line-height:1.15}
+  .fact .fl{font-size:10.5px; color:var(--ink2); margin:5px 0 0; line-height:1.4}
+  .news p strong{font-weight:650}
+
+  .radar li{margin-bottom:9px; font-size:13.5px}
+  .cal{display:grid; gap:0}
+  .calrow{display:grid; grid-template-columns:116px 1fr; gap:12px; padding:11px 0;
+          border-bottom:1px solid var(--grid); font-size:13.5px; align-items:baseline}
+  .calrow:last-child{border-bottom:none}
+  .cald{font-weight:620; font-size:12.5px}
+  .hot{color:var(--red); font-weight:650}
+
+  footer{margin:56px 0 0; padding-top:20px; border-top:1px solid var(--grid);
+         font-size:12px; color:var(--ink2); line-height:1.6}
+  footer a{color:var(--ink2); text-decoration:underline; text-underline-offset:2px}
+  .disc{margin-top:14px; font-style:italic}
+
+  @media (max-width:720px){
+    .tiles{grid-template-columns:1fr}
+    .facts{grid-template-columns:repeat(2,1fr)}
+    h1{font-size:25px}
+    .dvrow{grid-template-columns:46px 1fr 128px; gap:6px}
+    .dvmeta{font-size:11.5px}
+    .dvcost{display:none}
+    .pb{grid-template-columns:104px 1fr 46px}
+    .calrow{grid-template-columns:1fr; gap:3px}
+    .tscroll table{min-width:660px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Informe Cripto Diario · Julio</p>
+  <h1>Manda el bono: el 30 años en máximos desde 2002 tira de todo, y tus alts caen el triple que el bitcoin</h1>
+  <p class="sub">Corte: <strong>lunes 12 de octubre de 2026, 18:05</strong> (America/Guatemala, UTC−6) · 00:05 UTC del 13 de oct.</p>
+
+  <div class="method">
+    <p class="mt">⚠ Nota de método — hubo sustituciones de fuente</p>
+    <ul>
+      <li><strong>BingX falló de nuevo</strong> con <code>PROVENANCE_REQUIRED</code>: van <strong>27 ejecuciones programadas seguidas sin ticker de BingX</strong> desde el 7 de septiembre. También fallaron de entrada Coinbase, KuCoin, MEXC, CoinDesk, blockchain.com y Binance. No se reintentó a ciegas: lo que desbloqueó el acceso fue <strong>aflorar primero la URL exacta con una búsqueda acotada al dominio</strong> y pedirla después.</li>
+      <li><strong>El bloque B no son perpetuos de BingX</strong>, sino <em>spot</em> de CoinGecko activo por activo, con una segunda lectura de contraste. La variación de un perpetuo y la de su spot no son idénticas: léelo como terreno, no como la cifra de tu libro. El volumen sí es homogéneo hoy — agregado global de la misma fuente para los 17, lo que ayer no se pudo.</li>
+      <li><strong>Hoy hubo evento intradía</strong>, el caso en que la regla de «dos fuentes contra una» falla porque las dos concordantes suelen ser las dos rezagadas. Lecturas rancias descartadas por eso: <strong>MetaMask daba ETH a $2.563 (+2,44 %)</strong> cuando el precio real era $2.421 — su propio mínimo de 24 h ($2.495,93) ya excluía la cifra buena; <strong>KuCoin daba ADA a $0,2544 (+2,82 %)</strong>, que es el máximo de la mañana, cuando el cierre fue $0,2336 (−7,4 %); y <strong>CoinGecko sirvió LINK con el signo perdido</strong> (+6,3 % con el precio pegado a su mínimo de 24 h: era −6,3 %).</li>
+      <li><strong>Cuatro activos van marcados ⚠</strong> por desvío &gt;1 pp entre las dos aritméticas: FIL, CRV, ALGO y LTC. En los tres primeros el sospechoso es <strong>la base de ayer</strong>, no la lectura de hoy — eran exactamente los tres peor medidos del informe del 11. Detalle al pie del bloque B.</li>
+      <li><strong>CME FedWatch: no medido.</strong> Las probabilidades de la Fed vienen de Kalshi y Polymarket.</li>
+      <li><strong>Miedo y Codicia: cambio de rastreador</strong> (alternative.me no respondió). Hoy la cifra es de ChainCatcher; no es una serie continua con el 69 de ayer. Y lleva sello de las <strong>12:30 UTC</strong>, es decir <em>antes</em> de la caída de la tarde.</li>
+    </ul>
+  </div>
+
+  <div class="okbox">
+    <p class="bt">✓ El control de las dos aritméticas firma su mejor día de la serie</p>
+    <p style="margin:0">Comparar, activo por activo, la <strong>variación de corte a corte</strong> (hoy contra el precio que este informe publicó ayer) contra la <strong>ventana de 24 h de la propia fuente</strong> son dos cálculos independientes que no comparten aritmética. Hoy coinciden en <strong>13 de 17 activos</strong> con una <strong>mediana de desvío de 0,18 pp</strong>, y cuatro de ellos cuadran por debajo de 0,1 pp (DOGE 0,02 · SOL 0,05 · LINK 0,08 · BTC y BNB 0,09). ETH cuadra <strong>exacto, a 0,00 pp</strong>.</p>
+    <p style="margin:10px 0 0"><strong>Y hay un segundo control que hoy funcionó en bloque.</strong> En los <strong>17 activos</strong>, sin una sola excepción, el <em>máximo</em> de 24 h de la fuente queda por encima del precio de corte de ayer (AAVE $172,74 contra $172,50; BNB $756,78 contra $752,60; ADA $0,2556 contra $0,2516). Es decir: la ventana de hoy <strong>arranca donde terminó el informe de ayer</strong> y luego el mercado subió por la mañana y se cayó por la tarde. Una caché no fabrica esa coincidencia diecisiete veces seguidas.</p>
+  </div>
+
+  <div class="fixbox">
+    <p class="bt">✗ Corrección al informe de ayer — el festivo no cerró lo que dije que cerraba</p>
+    <p style="margin:0">Ayer quedó escrito que «el lunes 12 los mercados de EE. UU. <strong>cierran</strong> por el Columbus Day». <strong>Es inexacto, y el matiz importa justo hoy:</strong> en Columbus Day cierra el mercado de <strong>bonos</strong>, no el de acciones, que operó con normalidad — Yahoo Finance servía cotizaciones marcadas «Market Open» a las 12:43 UTC.</p>
+    <p style="margin:10px 0 0">La consecuencia va en la dirección contraria a la que sugería ayer. No fue un día de menos liquidez y poco más: el mercado de renta variable funcionó y <strong>la caída es un movimiento real, no ruido de festivo</strong>. Lo que sí quedó más fino de lo normal es el mercado de bonos, que es precisamente donde nació el movimiento — con el 30 años en el 5,70 %, el precio se formó con menos profundidad de la habitual.</p>
+  </div>
+
+  <div class="tiles">
+    <div class="tile">
+      <p class="lab">Bitcoin</p>
+      <div class="big num">$81.479 <span class="down" style="font-size:17px">−2,7 %</span></div>
+      <p class="note">Tocó <strong>$84.231</strong> por la mañana y cerró cerca del mínimo ($81.286).</p>
+    </div>
+    <div class="tile">
+      <p class="lab">Tu universo · mediana 24 h</p>
+      <div class="big num down">−5,5 %</div>
+      <p class="note"><strong>16 de 17 en rojo.</strong> El único que no, LTC, es justo el peor medido.</p>
+    </div>
+    <div class="tile">
+      <p class="lab">Liquidaciones 24 h</p>
+      <div class="big num">$488,6 M</div>
+      <p class="note"><strong>83,2 % fueron largos.</strong> Ayer el 66 % eran cortos: se dio la vuelta.</p>
+    </div>
+  </div>
+
+  <h2>Precios al contado</h2>
+  <div class="tscroll">
+  <table>
+    <thead>
+      <tr>
+        <th>Activo</th><th class="r">Precio</th><th class="r">Δ 24 h</th>
+        <th class="r">Corte a corte</th><th class="r">Desvío</th>
+        <th class="r">Rango 24 h</th><th>Verificación</th>
+      </tr>
+    </thead>
+    <tbody class="num">
+      <tr><td><strong>BTC</strong></td><td class="r">$81.478,61</td><td class="r down">−2,70 %</td>
+          <td class="r">−2,61 %</td><td class="r">0,09 pp</td><td class="r">$81.286–$84.231</td>
+          <td><span style="color:var(--green)">✓ verificado</span></td></tr>
+      <tr><td><strong>ETH</strong></td><td class="r">$2.420,96</td><td class="r down">−4,50 %</td>
+          <td class="r">−4,50 %</td><td class="r">0,00 pp</td><td class="r">$2.417–$2.575</td>
+          <td><span style="color:var(--green)">✓ verificado</span></td></tr>
+      <tr><td><strong>SOL</strong></td><td class="r">$103,99</td><td class="r down">−6,40 %</td>
+          <td class="r">−6,45 %</td><td class="r">0,05 pp</td><td class="r">$103,65–$113,22</td>
+          <td><span style="color:var(--green)">✓ verificado</span></td></tr>
+      <tr><td><strong>XRP</strong></td><td class="r">$1,33</td><td class="r down">−5,50 %</td>
+          <td class="r">−5,67 %</td><td class="r">0,17 pp</td><td class="r">$1,33–$1,42</td>
+          <td><span style="color:var(--green)">✓ verificado</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="tick" style="margin-top:10px"><strong>Las dos aritméticas.</strong> «Corte a corte» compara el precio de hoy contra el que este informe publicó ayer a las 18:10 ($83.660 · $2.535 · $111,16 · $1,41); «desvío» es su distancia frente a la ventana de 24 h de la fuente. Los cuatro cuadran por debajo de 0,2 pp, y <strong>ETH a 0,00 pp</strong>. Contraste independiente a la hora de corte: ChainCatcher daba BTC $81.379,78, ETH $2.422,78 y SOL $104,18 — dentro del 0,2 % en los tres. Bitcoin.com, con cierre a las 23:57 UTC, daba BTC $81.823 y XRP $1,34.<br>⚠ Nota sobre XRP: su base de ayer quedó registrada «en disputa», así que el 0,17 pp de hoy es mejor noticia de lo que parecía — y <strong>XRP perdió hoy sus medias de 50 y 200 días</strong> ($1,40 y $1,38).</p>
+
+  <h2>Flujos netos de ETF al contado · semana del 5 al 9 de octubre</h2>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--red)"></i> Salidas netas</span>
+    <span><i class="sw" style="background:var(--blue)"></i> Entradas netas</span>
+    <span style="margin-left:auto">Millones de USD · datos SoSoValue</span>
+  </div>
+  <div class="dv">
+    <div class="dvrow"><span class="dvsym">BTC</span>
+      <span class="dvtrack" data-tip="BTC · −$681,1 M&#10;Peor semana desde la del 26 de junio&#10;Acumulado histórico: $57,09 MM · activos netos $104,91 MM">
+        <i class="bar bneg" style="width:48.60%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−$681,1 M</b></span></div>
+    <div class="dvrow"><span class="dvsym">ETH</span>
+      <span class="dvtrack" data-tip="ETH · −$542,1 M&#10;9 sesiones seguidas en negativo&#10;Acumulado histórico: $13,32 MM · activos netos $15,64 MM">
+        <i class="bar bneg" style="width:38.68%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−$542,1 M</b></span></div>
+    <div class="dvrow"><span class="dvsym">SOL</span>
+      <span class="dvtrack" data-tip="SOL · −$24,8 M&#10;Las 5 sesiones de la semana en negativo&#10;El 9 de oct: −$3,76 M">
+        <i class="bar bneg" style="width:1.77%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−$24,8 M</b></span></div>
+    <div class="dvrow"><span class="dvsym">XRP</span>
+      <span class="dvtrack" data-tip="XRP · +$11,3068 M&#10;13.ª semana consecutiva de entradas&#10;Acumulado: $1,80 MM">
+        <i class="bar bpos" style="width:0.81%"></i></span>
+      <span class="dvmeta"><b class="dvval num up">+$11,3 M</b></span></div>
+  </div>
+  <p class="tick" style="margin-top:12px"><strong>Son las mismas cifras que ayer, y eso es correcto:</strong> la semana al 9 de octubre es el último dato completo publicado. La semana en curso no cierra hasta el viernes 16, y el lunes 12 no aparecerá hasta mañana. La cifra de XRP está verificada al cuarto decimal (<span class="num">+$11,3068 M</span>) contra SoSoValue vía ChainCatcher. Desglose diario del 8 de octubre, para escala: BTC <span class="num">−$244,13 M</span>, ETH <span class="num">−$72,54 M</span>, XRP <span class="num">+$8,17 M</span>, SOL <span class="num">−$3,32 M</span>. Neto de los cuatro en la semana: <strong><span class="num">−$1.236,7 M</span></strong>.</p>
+
+  <h2>Sentimiento y expectativas de tasas</h2>
+  <div class="fg">
+    <p class="lab" style="font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink2); font-weight:600; margin:0">Índice de Miedo y Codicia (ChainCatcher, sello 12:30 UTC)</p>
+    <div class="fgscale">
+      <span class="fgz" style="background:#8e2626">Miedo extremo</span>
+      <span class="fgz" style="background:var(--red)">Miedo</span>
+      <span class="fgz" style="background:var(--zero)">Neutral</span>
+      <span class="fgz" style="background:var(--blue)">Codicia</span>
+      <span class="fgz" style="background:#1b4f8f">Codicia extrema</span>
+      <i class="fgtick" style="left:60%" title="Víspera según el mismo rastreador: 60"></i>
+      <i class="fgtick" style="left:65%" title="Media de 7 días: 65"></i>
+      <i class="fgneedle" data-v="68" style="left:68%"></i>
+    </div>
+    <div class="fghist num">
+      <span>Ahora <b>68</b> Codicia</span>
+      <span>Víspera <b>60</b> <span style="color:var(--amber)">(mismo rastreador)</span></span>
+      <span>Media 7 días <b>65</b></span>
+      <span>Ayer se publicó <b>69</b> <span style="color:var(--amber)">(alternative.me — otra serie)</span></span>
+    </div>
+    <p class="tick" style="margin-top:14px">⚠ <strong>Dos avisos, y los dos importan hoy.</strong> Primero: el sello es de las <strong>12:30 UTC</strong>, cuando el BTC rondaba los $83.000 — <strong>el índice todavía no ha digerido la caída de la tarde</strong>, así que ese 68 mide la mañana, no el cierre. Segundo: hay <strong>divergencia abierta entre rastreadores</strong> — 68 «Codicia» aquí, <span class="num">56</span> «Neutral» en el índice que citan Cryptonomist y TokenPost, <span class="num">59</span> en CFGI.io y <span class="num">48</span> en su variante solo-bitcoin. <strong>No son comparables:</strong> metodologías distintas. Que el índice marque Codicia el día en que 16 de tus 17 activos caen es, en sí mismo, el dato.</p>
+  </div>
+
+  <div style="margin-top:22px">
+    <p class="lab" style="font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink2); font-weight:600; margin:0 0 12px">Próxima decisión de la Fed · 28 de octubre · rango actual 3,75–4,00 %</p>
+    <div class="pb"><span>Mantener</span>
+      <span class="pbtrack" data-tip="Kalshi 81,5¢ (tabla 82 %) · Polymarket 84 %&#10;Observado 12 oct, 20:29 ET"><i class="pbfill" style="width:82%"></i></span>
+      <span class="r num" style="font-weight:620">82 %</span></div>
+    <div class="pb"><span>Subir 25 pb</span>
+      <span class="pbtrack" data-tip="Kalshi 17,5¢ · Polymarket 18,5¢ (18 % y 17 % en las tablas)&#10;Observado 12 oct, 20:29 ET"><i class="pbfill" style="width:18%; background:var(--red)"></i></span>
+      <span class="r num" style="font-weight:620">18 %</span></div>
+    <div class="pb"><span>Bajar 25 pb</span>
+      <span class="pbtrack" data-tip="≈1–2 % · no desglosado por mercado"><i class="pbfill" style="width:1.5%"></i></span>
+      <span class="r num" style="font-weight:620">≈1–2 %</span></div>
+    <p class="tick" style="margin-top:12px">⚠ <strong>CME FedWatch: no medido</strong> — no se pudo consultar. Cifras de Kalshi y Polymarket observadas el 12 de oct a las 20:29 ET. Suman algo más de 100 % porque son precios de contratos de dos mercados distintos, no una distribución. El riesgo que descuenta el mercado <strong>sigue siendo de subida, no de recorte</strong>: la Fed subió 25 pb el 16 de septiembre, su primera subida desde 2023, y sus actas dicen que la mayoría de los participantes espera <strong>otra antes de fin de año</strong>. Para diciembre, CME daba a principios de mes ≈81 % de probabilidad de al menos una subida más.</p>
+  </div>
+
+  <h2>Bloque B · Rotación de tu universo (17 activos)</h2>
+
+  <div class="frame">
+    <strong>Esto es el TERRENO con el que llegas a tu clasificación de las 18:00. No es una señal ni una recomendación de entrada.</strong>
+    Es la foto de qué se movió y dónde hubo volumen en las últimas 24 h, nada más. No hay aquí ninguna lectura de oportunidad: el orden lo impone la variación, y la variación de un día no predice la del siguiente.
+    Deliberadamente <strong>no</strong> aparecen las mayores subidas o caídas del mercado general ni listas de «criptos prometedoras» — ese ranking selecciona por iliquidez por construcción.
+  </div>
+
+  <div class="legend">
+    <span><i class="sw" style="background:var(--blue)"></i> Al alza</span>
+    <span><i class="sw" style="background:var(--red)"></i> A la baja</span>
+    <span><sup class="unv" style="font-size:12px">†</sup> Desvío &gt;1 pp entre las dos aritméticas</span>
+    <span><sup class="unv" style="font-size:12px">◆</sup> Sin holgura (auditoría 1-sep)</span>
+    <span style="margin-left:auto">Δ 24 h · volumen M USD · coste ida y vuelta de $5.000 en % de R</span>
+  </div>
+  <div class="dv">
+    <div class="dvrow"><span class="dvsym">LTC<sup class="unv">†</sup></span>
+      <span class="dvtrack" data-tip="LTC · $64,74&#10;⚠ CoinGecko dice +2,10 %; corte a corte dice +0,09 %&#10;Base de ayer LIMPIA → el sospechoso es la lectura de hoy&#10;Banda: 0,0 % a +2,1 % · Vol $254,1 M · coste 1,8 % de R">
+        <i class="bar bpos" style="width:12.35%; opacity:.45"></i></span>
+      <span class="dvmeta"><b class="dvval num up">+0,1 %⚠</b><span class="dvvol num">$254</span><span class="dvcost num">1,8</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">TRX</span>
+      <span class="dvtrack" data-tip="TRX · −0,20 % · $0,3299&#10;✓ corte a corte −0,09 % (0,11 pp) · Bitcoin.com daba −0,29 %&#10;Rango 24 h $0,3298–$0,3326 — el más estrecho del universo&#10;Vol $315,4 M · coste 0,2 % de R">
+        <i class="bar bneg" style="width:1.18%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−0,20 %</b><span class="dvvol num">$315</span><span class="dvcost num">0,2</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">BTC</span>
+      <span class="dvtrack" data-tip="BTC · −2,70 % · $81.478,61&#10;✓ corte a corte −2,61 % (0,09 pp)&#10;Rango $81.286–$84.231 · Vol $28.322 M&#10;coste: n/d (no consta en la auditoría del 1-sep)">
+        <i class="bar bneg" style="width:15.88%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−2,70 %</b><span class="dvvol num">$28.322</span><span class="dvcost num">n/d</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">BNB</span>
+      <span class="dvtrack" data-tip="BNB · −3,30 % · $728,41&#10;✓ corte a corte −3,21 % (0,09 pp)&#10;Máximo 24 h $756,78 ≈ corte de ayer $752,60&#10;Vol $773,9 M · coste 0,1 % de R">
+        <i class="bar bneg" style="width:19.41%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−3,30 %</b><span class="dvvol num">$774</span><span class="dvcost num">0,1</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">CRV<sup class="unv">†◆</sup></span>
+      <span class="dvtrack" data-tip="CRV · $0,3594&#10;⚠ CoinGecko dice −3,90 %; corte a corte dice −1,67 % (2,23 pp)&#10;Su base de ayer llevaba sello de 14 h → el sospechoso es la base&#10;Vol $67,8 M — el más fino del universo · coste 3,1 % de R&#10;◆ Sin holgura para escalar: $14.327">
+        <i class="bar bneg" style="width:22.94%; opacity:.45"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−3,90 %⚠</b><span class="dvvol num">$68</span><span class="dvcost num">3,1</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">ETH</span>
+      <span class="dvtrack" data-tip="ETH · −4,50 % · $2.420,96&#10;✓✓ corte a corte −4,50 % — cuadre EXACTO, 0,00 pp&#10;Rango $2.417–$2.575 · Vol $13.959 M · coste 0,1 % de R">
+        <i class="bar bneg" style="width:26.47%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−4,50 %</b><span class="dvvol num">$13.959</span><span class="dvcost num">0,1</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">FIL<sup class="unv">†</sup></span>
+      <span class="dvtrack" data-tip="FIL · $1,14&#10;⚠ CoinGecko dice −5,30 %; corte a corte dice −7,32 % (2,02 pp)&#10;Ayer FIL se publicó con UNA sola fuente fresca → el sospechoso es la base&#10;Vol $270,0 M · coste 0,8 % de R&#10;Su catalizador (fin del vesting) se consume el 15 de octubre">
+        <i class="bar bneg" style="width:31.18%; opacity:.45"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−5,30 %⚠</b><span class="dvvol num">$270</span><span class="dvcost num">0,8</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">XRP</span>
+      <span class="dvtrack" data-tip="XRP · −5,50 % · $1,33&#10;✓ corte a corte −5,67 % (0,17 pp)&#10;Perdió sus medias de 50 y 200 días ($1,40 y $1,38)&#10;Vol $1.865 M · coste 0,7 % de R">
+        <i class="bar bneg" style="width:32.35%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−5,50 %</b><span class="dvvol num">$1.865</span><span class="dvcost num">0,7</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">DOGE</span>
+      <span class="dvtrack" data-tip="DOGE · −5,50 % · $0,08195&#10;✓✓ corte a corte −5,48 % (0,02 pp) — el mejor cuadre del día&#10;Rango $0,08130–$0,08799 · Vol $666,7 M · coste 0,7 % de R">
+        <i class="bar bneg" style="width:32.35%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−5,50 %</b><span class="dvvol num">$667</span><span class="dvcost num">0,7</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">ALGO<sup class="unv">†◆</sup></span>
+      <span class="dvtrack" data-tip="ALGO · $0,1186&#10;⚠ CoinGecko dice −5,80 %; corte a corte dice −7,05 % (1,25 pp)&#10;Ayer ALGO quedó marcado NO MEDIDO (4 fuentes discrepaban) → el sospechoso es la base&#10;Vol $77,4 M · coste 3,2 % de R&#10;◆ Sin holgura para escalar: $12.793">
+        <i class="bar bneg" style="width:34.12%; opacity:.45"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−5,80 %⚠</b><span class="dvvol num">$77</span><span class="dvcost num">3,2</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">DOT</span>
+      <span class="dvtrack" data-tip="DOT · −6,20 % · $1,18&#10;✓ corte a corte −5,60 % (0,60 pp)&#10;Cerró EN su mínimo de 24 h ($1,18) · Vol $172,6 M · coste 1,1 % de R">
+        <i class="bar bneg" style="width:36.47%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−6,20 %</b><span class="dvvol num">$173</span><span class="dvcost num">1,1</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">LINK</span>
+      <span class="dvtrack" data-tip="LINK · −6,30 % · $12,52&#10;SIGNO CORREGIDO: la fuente publicaba +6,3 % con el precio pegado al mínimo&#10;✓ corte a corte −6,22 % (0,08 pp) confirma el negativo&#10;Vol $328,3 M · coste 0,8 % de R">
+        <i class="bar bneg" style="width:37.06%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−6,30 %</b><span class="dvvol num">$328</span><span class="dvcost num">0,8</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">SOL</span>
+      <span class="dvtrack" data-tip="SOL · −6,40 % · $103,99&#10;✓✓ corte a corte −6,45 % (0,05 pp)&#10;Rango $103,65–$113,22 — recorrido de 9,2 % en el día&#10;Vol $3.329 M · coste 0,3 % de R">
+        <i class="bar bneg" style="width:37.65%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−6,40 %</b><span class="dvvol num">$3.329</span><span class="dvcost num">0,3</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">UNI</span>
+      <span class="dvtrack" data-tip="UNI · −7,30 % · $7,18&#10;✓ corte a corte −7,12 % (0,18 pp)&#10;Cerró EN su mínimo de 24 h ($7,18) · Vol $338,2 M · coste 1,8 % de R">
+        <i class="bar bneg" style="width:42.94%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−7,30 %</b><span class="dvvol num">$338</span><span class="dvcost num">1,8</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">ADA</span>
+      <span class="dvtrack" data-tip="ADA · −7,40 % · $0,2336&#10;✓ corte a corte −7,15 % (0,25 pp)&#10;KuCoin daba +2,82 % a $0,2544: era el máximo de la mañana, descartado&#10;Vol $404,6 M · coste 4,5 % de R — el peor del universo">
+        <i class="bar bneg" style="width:43.53%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−7,40 %</b><span class="dvvol num">$405</span><span class="dvcost num">4,5</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">AAVE</span>
+      <span class="dvtrack" data-tip="AAVE · −7,60 % · $158,54&#10;✓ corte a corte −8,09 % (0,49 pp)&#10;Máximo 24 h $172,74 ≈ corte de ayer $172,50 — prueba de frescura&#10;Cerró EN su mínimo ($158,49) · Vol $242,1 M · coste 1,0 % de R">
+        <i class="bar bneg" style="width:44.71%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−7,60 %</b><span class="dvvol num">$242</span><span class="dvcost num">1,0</span></span></div>
+
+    <div class="dvrow"><span class="dvsym">AVAX</span>
+      <span class="dvtrack" data-tip="AVAX · −8,50 % · $10,05 — el peor del universo&#10;✓ corte a corte −8,30 % (0,20 pp)&#10;Cerró EN su mínimo de 24 h ($10,03) · Vol $370,9 M · coste 1,3 % de R">
+        <i class="bar bneg" style="width:50.00%"></i></span>
+      <span class="dvmeta"><b class="dvval num down">−8,50 %</b><span class="dvvol num">$371</span><span class="dvcost num">1,3</span></span></div>
+  </div>
+
+  <p class="tick" style="margin-top:16px"><strong>Pie de tabla.</strong> Las barras translúcidas y los símbolos marcados con <sup class="unv">†</sup> tienen un desvío mayor de 1 pp entre las dos aritméticas; el tooltip de cada fila dice exactamente cuál discrepa y quién es el sospechoso. <strong>La columna de coste vuelve hoy</strong>: son las cifras de la <strong>auditoría del 1 de septiembre</strong>, que hoy cumple <strong>42 días</strong> — úsalas como orden de magnitud, no como medida de hoy, y menos en un día de caída, cuando los libros se adelgazan justo al revés de lo que conviene. BTC va como «n/d» porque no consta en el desglose de aquella auditoría: no se interpola. <strong>Seis activos cerraron literalmente en su mínimo de 24 h</strong> — ALGO, DOT, UNI y XRP exactos, AAVE y TRX a 0,03 % — y otros tres a menos de un cuarto de punto de él (ETH, AVAX y BTC): <strong>nueve de diecisiete pegados a su mínimo</strong>, la firma de un día que no rebotó al cierre.</p>
+
+  <p class="lab" style="font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink2); font-weight:600; margin:30px 0 12px">Volumen 24 h de los no-mayores (agregado global, millones de USD)</p>
+  <div>
+    <div class="volrow"><span class="dvsym">BNB</span><span class="voltrack" data-tip="BNB · $773,9 M"><i class="volbar" style="width:100%"></i></span><span class="r num" style="font-size:12.5px">$774</span></div>
+    <div class="volrow"><span class="dvsym">DOGE</span><span class="voltrack" data-tip="DOGE · $666,7 M"><i class="volbar" style="width:86.15%"></i></span><span class="r num" style="font-size:12.5px">$667</span></div>
+    <div class="volrow"><span class="dvsym">ADA</span><span class="voltrack" data-tip="ADA · $404,6 M"><i class="volbar" style="width:52.28%"></i></span><span class="r num" style="font-size:12.5px">$405</span></div>
+    <div class="volrow"><span class="dvsym">AVAX</span><span class="voltrack" data-tip="AVAX · $370,9 M"><i class="volbar" style="width:47.92%"></i></span><span class="r num" style="font-size:12.5px">$371</span></div>
+    <div class="volrow"><span class="dvsym">UNI</span><span class="voltrack" data-tip="UNI · $338,2 M"><i class="volbar" style="width:43.70%"></i></span><span class="r num" style="font-size:12.5px">$338</span></div>
+    <div class="volrow"><span class="dvsym">LINK</span><span class="voltrack" data-tip="LINK · $328,3 M"><i class="volbar" style="width:42.42%"></i></span><span class="r num" style="font-size:12.5px">$328</span></div>
+    <div class="volrow"><span class="dvsym">TRX</span><span class="voltrack" data-tip="TRX · $315,4 M"><i class="volbar" style="width:40.75%"></i></span><span class="r num" style="font-size:12.5px">$315</span></div>
+    <div class="volrow"><span class="dvsym">FIL</span><span class="voltrack" data-tip="FIL · $270,0 M"><i class="volbar" style="width:34.89%"></i></span><span class="r num" style="font-size:12.5px">$270</span></div>
+    <div class="volrow"><span class="dvsym">LTC</span><span class="voltrack" data-tip="LTC · $254,1 M"><i class="volbar" style="width:32.83%"></i></span><span class="r num" style="font-size:12.5px">$254</span></div>
+    <div class="volrow"><span class="dvsym">AAVE</span><span class="voltrack" data-tip="AAVE · $242,1 M"><i class="volbar" style="width:31.28%"></i></span><span class="r num" style="font-size:12.5px">$242</span></div>
+    <div class="volrow"><span class="dvsym">DOT</span><span class="voltrack" data-tip="DOT · $172,6 M"><i class="volbar" style="width:22.30%"></i></span><span class="r num" style="font-size:12.5px">$173</span></div>
+    <div class="volrow"><span class="dvsym">ALGO</span><span class="voltrack" data-tip="ALGO · $77,4 M · ◆ sin holgura (auditoría 1-sep)"><i class="volbar" style="width:10.00%"></i></span><span class="r num" style="font-size:12.5px">$77</span></div>
+    <div class="volrow"><span class="dvsym">CRV</span><span class="voltrack" data-tip="CRV · $67,8 M · ◆ sin holgura (auditoría 1-sep)"><i class="volbar" style="width:8.76%"></i></span><span class="r num" style="font-size:12.5px">$68</span></div>
+  </div>
+  <p class="tick" style="margin-top:12px"><strong>Por qué este gráfico excluye a los cuatro mayores:</strong> BTC movió <span class="num">$28.322 M</span>, ETH <span class="num">$13.959 M</span>, SOL <span class="num">$3.329 M</span> y XRP <span class="num">$1.865 M</span>. En la misma escala, CRV sería una barra del <strong>0,24 %</strong> del ancho y las trece filas de abajo serían ilegibles. Se separan en vez de comprimirlas. Hoy, por primera vez en la serie, <strong>los 17 volúmenes vienen del mismo agregado</strong> y son comparables entre sí. Lo que dice el gráfico es lo de siempre y conviene releerlo: <strong>ALGO y CRV mueven una décima y una onceava parte de lo que mueve BNB</strong> — son los mismos dos que la auditoría etiquetó sin holgura, y hoy los dos peor medidos.</p>
+
+  <div class="warnbox">
+    <strong>Bloque C · Auditoría de capacidad: omitido hoy, por calendario.</strong> Solo corre el día 1 y hoy es 12 de octubre. La última registrada es la del <strong>1 de septiembre</strong>, que hoy cumple <strong>42 días</strong>: etiquetó sin holgura a <strong>CRV ($14.327) y ALGO ($12.793)</strong> frente al umbral de $15.000, y sus cifras de coste son las que alimentan la columna del bloque B.<br><br><strong>Advertencia permanente:</strong> una sola foto del libro es una anécdota, no una estadística — y la de hoy tiene 42 días. <strong>Merecen re-muestreo prioritario</strong> CRV y ALGO (sin holgura, los dos de menor volumen del universo y los dos peor medidos hoy), <strong>ADA</strong> (coste 4,5 % de R, el peor del universo, y volumen que hoy sí se midió bien), y <strong>FIL y LTC</strong> por fallar hoy el cuadre de las dos aritméticas. <strong>Aparcamiento de candidatos:</strong> vacío, contador de 30 días sin arrancar.<br><br><strong>Riesgo operativo, y conviene insistir:</strong> van <strong>27 ejecuciones programadas consecutivas sin BingX</strong>. La auditoría del 1 de octubre ya se perdió; si la del 1 de noviembre también falla, la cifra vigente llegaría a los <strong>61 días</strong> y dejaría de significar nada. <strong>Lánzala desde una sesión interactiva</strong>, donde alguien pueda aprobar el acceso al libro.</div>
+
+  <h2>Las 5 noticias que mueven los precios</h2>
+
+  <div class="news">
+    <div class="nhead"><span class="nnum">01</span><div>
+      <h3>El bono a 30 años toca el 5,70 %, su nivel más alto desde 2002, y acciones, oro y bitcoin caen juntos</h3>
+      <div class="tags"><span class="tag t-bear">Bajista</span><span class="tag t-cat">Macro / Tasas</span></div>
+      <p>El rendimiento del bono estadounidense a <strong>30 años alcanzó el 5,70 %</strong>, máximo desde 2002, y el de <strong>10 años subió a la zona del 5,24–5,30 %</strong>. El Brent había superado los <strong>$101</strong> la semana pasada con los ataques a buques alrededor del estrecho de Ormuz. La combinación es la que lleva comprimiendo a los activos de riesgo desde principios de octubre.</p>
+      <p>La señal que importa es la <strong>correlación</strong>: acciones, oro y bitcoin cayeron a la vez. Eso descarta una historia propia del cripto y apunta a un movimiento macro — cuando el bono paga 5,7 % sin riesgo, el activo que no paga cupón pierde el argumento. El BTC venía de tocar <strong>$84.231</strong> por la mañana y cerró el día a <strong>$81.479</strong>, <strong>−2,70 %</strong>, prácticamente en el mínimo de la sesión.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv num">5,70 %</div><p class="fl">Bono EE. UU. 30 años, máx. desde 2002</p></div>
+        <div class="fact"><div class="fv num">5,24–5,30 %</div><p class="fl">Bono a 10 años</p></div>
+        <div class="fact"><div class="fv num">&gt;$101</div><p class="fl">Brent, por Ormuz</p></div>
+        <div class="fact"><div class="fv num down">−2,70 %</div><p class="fl">BTC, a $81.479</p></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><span class="nnum">02</span><div>
+      <h3>El apalancamiento se da la vuelta otra vez: $488,6 M liquidados y el 83 % fueron largos</h3>
+      <div class="tags"><span class="tag t-bear">Bajista</span><span class="tag t-cat">Liquidaciones / Apalancamiento</span></div>
+      <p>En las 24 h cerradas hacia las 19:30 ET se liquidaron <strong>$488,61 M</strong> repartidos entre <strong>118.142 operadores</strong>, de los cuales <strong>$406,48 M fueron largos (83,2 %)</strong> contra <strong>$82,14 M en cortos</strong>. Por activo: ETH <strong>$115,19 M</strong>, BTC <strong>$106,61 M</strong>, SOL <strong>$26,97 M</strong>. Binance concentró el <strong>52,3 %</strong> del total y la mayor liquidación individual fue un largo de <strong>$9,65 M en BTC ejecutado a $81.772</strong>.</p>
+      <p>El contraste con ayer es el dato operativo: entonces el <strong>66 % de las liquidaciones eran cortos</strong> y este informe lo leyó como un giro al alza. <strong>En 24 h se invirtió por completo.</strong> Dos inversiones del sesgo de apalancamiento en dos días es la firma de un mercado que empuja a los dos lados sin decidirse — no de una tendencia.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv num">$488,6 M</div><p class="fl">Liquidado en 24 h</p></div>
+        <div class="fact"><div class="fv num">83,2 %</div><p class="fl">Fueron largos ($406,5 M)</p></div>
+        <div class="fact"><div class="fv num">118.142</div><p class="fl">Operadores afectados</p></div>
+        <div class="fact"><div class="fv num">$9,65 M</div><p class="fl">Mayor largo, BTC a $81.772</p></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><span class="nnum">03</span><div>
+      <h3>El IPC del miércoles es el evento de la semana, y el mercado lo tiene a cara o cruz entre 3,6 % y 3,7 %</h3>
+      <div class="tags"><span class="tag t-mix">Mixta</span><span class="tag t-cat">Macro / Inflación</span></div>
+      <p>El miércoles 14 a las <strong>8:30 ET</strong> sale el IPC de septiembre. El consenso de calle está en <strong>3,7 % general</strong> frente al <strong>3,4 %</strong> de agosto — se descuenta una <em>aceleración</em>. El <em>nowcast</em> de la Fed de Cleveland del 7 de octubre apunta algo más bajo, <strong>3,60 % general y 2,39 % subyacente</strong>; el subyacente de agosto fue <strong>2,4 %</strong>.</p>
+      <p>Lo revelador es que <strong>Polymarket lo tiene a cara o cruz</strong>: <strong>44 % al 3,7 % y 43 % al 3,6 %</strong>, con el escenario de 3,8 % o más en torno al 9 %. Ese empate es precisamente por qué hoy nadie quiso cargar riesgo. Para el 28 de octubre los mercados dan <strong>82 % a mantener y 18 % a subir 25 pb</strong>.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv num">3,7 %</div><p class="fl">IPC general esperado (ago.: 3,4 %)</p></div>
+        <div class="fact"><div class="fv num">44 / 43 %</div><p class="fl">Polymarket: 3,7 % vs 3,6 %</p></div>
+        <div class="fact"><div class="fv num">2,39 %</div><p class="fl">Subyacente, nowcast Cleveland</p></div>
+        <div class="fact"><div class="fv num">18 %</div><p class="fl">Probabilidad de subida el 28 oct</p></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><span class="nnum">04</span><div>
+      <h3>Los ETF llevan una semana de $1.248 M en salidas y XRP es el único que sigue recibiendo dinero</h3>
+      <div class="tags"><span class="tag t-bear">Bajista</span><span class="tag t-cat">Flujos de ETF</span></div>
+      <p>En la semana del 5 al 9 de octubre el bitcoin al contado perdió <strong>$681,1 M</strong> — su peor semana desde la del 26 de junio —, el ether <strong>$542,1 M</strong> en <strong>nueve sesiones consecutivas</strong> de salidas y Solana <strong>$24,8 M</strong> con las cinco sesiones en negativo. XRP sumó <strong>+$11,3068 M</strong>, su <strong>decimotercera semana seguida</strong> de entradas, y acumula <strong>$1,80 MM</strong>.</p>
+      <p>La asimetría con el precio es lo interesante: <strong>XRP recibe dinero de ETF y hoy cayó un 5,50 %</strong>, perdiendo sus medias de 50 y 200 días. El flujo institucional y el precio spot llevan semanas desacoplados, y el peso relativo lo explica — los ETF de XRP gestionan <strong>$1,56 MM</strong>, el <strong>1,79 %</strong> de su capitalización, frente al <strong>6,38 %</strong> en el caso del bitcoin.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv num down">−$681,1 M</div><p class="fl">BTC, semana al 9 oct</p></div>
+        <div class="fact"><div class="fv num down">−$542,1 M</div><p class="fl">ETH, 9 sesiones seguidas</p></div>
+        <div class="fact"><div class="fv num up">+$11,3 M</div><p class="fl">XRP, 13.ª semana positiva</p></div>
+        <div class="fact"><div class="fv num">1,79 %</div><p class="fl">ETF XRP / capitalización (BTC: 6,38 %)</p></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><span class="nnum">05</span><div>
+      <h3>Tus alts cayeron el triple que el bitcoin: AVAX −8,5 % contra BTC −2,7 %, y seis cerraron en su mínimo</h3>
+      <div class="tags"><span class="tag t-bear">Bajista</span><span class="tag t-cat">Rotación / Microestructura</span></div>
+      <p>La mediana de tu universo fue <strong>−5,5 %</strong> con <strong>16 de 17 activos en rojo</strong>, mientras el bitcoin perdió <strong>2,70 %</strong>. La cola fue AVAX <strong>−8,5 %</strong>, AAVE <strong>−7,6 %</strong>, ADA <strong>−7,4 %</strong> y UNI <strong>−7,3 %</strong>: entre <strong>2,7 y 3,1 veces</strong> la caída del BTC. Solo TRX aguantó plano (<strong>−0,20 %</strong>).</p>
+      <p>El mecanismo es conocido y es exactamente lo que mide tu auditoría de capacidad: <strong>libros más finos, más apalancamiento minorista en los perpetuos de alts y rotación de capital hacia BTC y estables</strong>. Los tres activos que peor se midieron hoy (CRV, ALGO y FIL) son también de los de menor volumen. <strong>Nueve de los diecisiete cerraron pegados a su mínimo de 24 h</strong> — ALGO, DOT, UNI y XRP exactamente en él —, señal de un día sin rebote de cierre.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv num down">−5,5 %</div><p class="fl">Mediana de tu universo</p></div>
+        <div class="fact"><div class="fv num">16 / 17</div><p class="fl">Activos en rojo</p></div>
+        <div class="fact"><div class="fv num">3,1×</div><p class="fl">AVAX frente a BTC</p></div>
+        <div class="fact"><div class="fv num">9 / 17</div><p class="fl">Pegados a su mínimo de 24 h</p></div>
+      </div>
+    </div></div>
+  </div>
+
+  <h2>También en el radar</h2>
+  <ul class="radar">
+    <li><strong>Los índices de sentimiento se contradicen abiertamente</strong> y ya es noticia en sí: 68 «Codicia» en un rastreador, 56 «Neutral» en otro, 59 en CFGI y 48 en su variante de bitcoin, todos fechados hoy. TokenPost dedicó un artículo precisamente a que la ventana de medición, el sello y la zona horaria de las cifras que circulan «no están claros». Es el mismo problema de fondo que obliga a los controles de este informe.</li>
+    <li><strong>El vacío regulatorio sigue en manos de la SEC y la CFTC.</strong> El CLARITY Act cayó en el Senado por <strong>49-50</strong> el 15 de septiembre y las probabilidades de que pase se cotizan ya en <strong>7–9 %</strong>. La SEC avanza por su cuenta con la exención de innovación a cinco años para acciones tokenizadas. <span style="color:var(--amber)">⚠ Un despacho automatizado fechaba hoy esa votación: es un error de la fuente, la fecha verificada es el 15 de septiembre.</span></li>
+    <li><strong>Un año del 10/10.</strong> Se cumplió el aniversario del desplome de $19.000 M, en el que los largos liquidados fueron $16.780 M frente a $2.460 M en cortos. Los $488 M de hoy son el <strong>2,5 %</strong> de aquello.</li>
+    <li><strong>Las mesas de análisis no ven capitulación todavía</strong>, sino «estrés de mercado sin capitulación»: la métrica que vigilan es la liquidación como porcentaje del interés abierto — por encima del 2 % es estrés elevado, por encima del 5 % es cascada.</li>
+    <li><strong>El lunes fue festivo a medias en EE. UU.</strong> (Columbus Day): el mercado de bonos cerrado y el de acciones abierto. Menos profundidad de la normal, lo que amplifica los porcentajes de un día así.</li>
+  </ul>
+
+  <h2>Qué vigilar</h2>
+  <div class="cal">
+    <div class="calrow"><span class="cald">Mar 13 oct</span><span>Perspectivas Económicas Mundiales del FMI. Resultados antes de la apertura: <strong>JPMorgan, Goldman Sachs, Wells Fargo, Citigroup</strong>. Reuniones FMI–Banco Mundial en Bangkok (hasta el 18).</span></div>
+    <div class="calrow"><span class="cald hot">Mié 14 oct</span><span><strong class="hot">IPC de septiembre de EE. UU., 8:30 ET</strong> — el evento de la semana. Esperado 3,7 % general / ≈2,4 % subyacente, con Polymarket a cara o cruz entre 3,7 % y 3,6 %. Resultados de BofA, Morgan Stanley y BlackRock.</span></div>
+    <div class="calrow"><span class="cald">Jue 15 oct</span><span>PPI y ventas minoristas de EE. UU. <strong>Fin del programa de vesting de Filecoin</strong> — el catalizador de FIL se consume aquí. Desbloqueo de ≈92,65 M ARB.</span></div>
+    <div class="calrow"><span class="cald">Vie 16 oct</span><span>Vencimiento de opciones en Deribit: ≈$1.250 M en BTC y ≈$247 M en ETH. <strong>Cierre de la semana de flujos de ETF.</strong></span></div>
+    <div class="calrow"><span class="cald">Sáb–dom 17–18</span><span>EDCON 2026 en Kuala Lumpur.</span></div>
+    <div class="calrow"><span class="cald hot">Mar–mié 27–28</span><span><strong>Reunión del FOMC.</strong> El mercado da 82 % a mantener y 18 % a subir 25 pb. Rango actual 3,75–4,00 %.</span></div>
+    <div class="calrow"><span class="cald">Jue 29 oct</span><span>PCE y primera estimación del PIB del tercer trimestre.</span></div>
+    <div class="calrow"><span class="cald">Sáb 31 oct</span><span>Plazo de reembolso a acreedores de Mt. Gox.</span></div>
+    <div class="calrow"><span class="cald">Lun 9 nov</span><span>Vuelve el Senado — última ventana real para el CLARITY Act en este Congreso.</span></div>
+    <div class="calrow"><span class="cald hot">Dom 1 nov</span><span><strong class="hot">Bloque C · auditoría de capacidad.</strong> Si vuelve a fallar BingX, la cifra vigente cumpliría 61 días. Conviene lanzarla a mano desde una sesión interactiva.</span></div>
+  </div>
+
+  <footer>
+    <p><strong>Fuentes.</strong> Precios y volúmenes, activo por activo: <a href="https://www.coingecko.com/en/coins/bitcoin">CoinGecko</a>, con contraste de <a href="https://www.chaincatcher.com/en/article/2295583">ChainCatcher</a>, <a href="https://news.bitcoin.com/market-updates/bitcoin-price-falls-below-82k-as-406m-in-longs-get-liquidated/">Bitcoin.com</a>, <a href="https://kucoin.com/news/articles/crypto-daily-market-report-october-12-2026">KuCoin</a>, <a href="https://fortune.com/article/price-of-bitcoin-10-12-2026/">Fortune</a>, <a href="https://finance.yahoo.com/personal-finance/investing/article/bitcoin-and-ethereum-prices-today-monday-october-12-2026-how-bond-yields-threaten-crypto-prices-114018710.html">Yahoo Finance</a> y <a href="https://metamask.io/price/ethereum">MetaMask</a> (descartada por rancia).
+    Liquidaciones: Coinglass vía <a href="https://news.bitcoin.com/market-updates/bitcoin-price-falls-below-82k-as-406m-in-longs-get-liquidated/">Bitcoin.com</a>.
+    Macro y bonos: <a href="https://en.cryptonomist.ch/2026/10/12/bitcoin-price-volatility-october/">Cryptonomist</a>, <a href="https://www.tokenpost.com/news/investing/30605">TokenPost</a>, <a href="https://blockhead.co/2026/10/12/cracks-beneath-the-greed-why-cryptos-risk-on-rally-is-splintering">Blockhead</a>.
+    Sentimiento: <a href="https://www.chaincatcher.com/en/article/2295593">ChainCatcher</a>, <a href="https://cfgi.io/crypto-fear-greed-index/">CFGI.io</a>.
+    Tasas e IPC: <a href="https://defirate.com/prediction-markets/fed-decision-odds/">DeFi Rate</a> (Kalshi/Polymarket), <a href="https://rg.org/news/prediction-markets/polymarket-daily-fed-october-decision-cpi-bitcoin-90000-october-12-2026">Polymarket vía RG</a>, <a href="https://admiralmarkets.com/analytics/traders-blog/us-cpi-preview-september-2026-forecasts-and-the-core-cpi-outlook">Admiral Markets</a>.
+    Flujos de ETF: SoSoValue vía <a href="https://www.coingabbar.com/en/crypto-etf-news-today-btc-eth-sol-outflow-xrp-inflow-update">CoinGabbar</a> y <a href="https://fxstreet.com/cryptocurrencies/news/crypto-today-bitcoin-ethereum-and-xrp-face-recovery-headwinds-as-etf-outflows-weigh-202610121049">FXStreet</a>.
+    Regulación: <a href="https://www.cnbc.com/2026/09/15/senate-cloture-vote-on-clarity-act-fails-dealing-regulatory-setback-to-crypto-industry.html">CNBC</a>, <a href="https://defirate.com/clarity-act-fact-sheet/">DeFi Rate</a>.
+    Coste de ejecución: auditoría de capacidad propia del 1 de septiembre de 2026.</p>
+    <p style="margin-top:14px">Generado automáticamente el <strong>12 de octubre de 2026 a las 18:05 (America/Guatemala, UTC−6)</strong> · 00:05 UTC del 13 de octubre · <strong>ejecución 27 consecutiva sin acceso a la API de BingX</strong>. <strong>17 de 17 activos medidos</strong>, 13 con las dos aritméticas cuadrando a ≤1 pp y <strong>mediana de desvío de 0,18 pp</strong> — el mejor cuadre de la serie, con ETH exacto a 0,00 pp. Cuatro marcados ⚠ (FIL, CRV, ALGO, LTC). <strong>Vuelve la columna de coste de ejecución</strong> con las cifras del 1 de septiembre, y <strong>se publica una corrección</strong> sobre el festivo de ayer. Tres lecturas rancias descartadas (MetaMask en ETH, KuCoin en ADA) y un signo corregido (CoinGecko en LINK).</p>
+    <p class="disc">Este informe es material de observación de mercado para uso personal. No es asesoría financiera ni una recomendación de compra o venta. El bloque B describe el terreno, no genera señales. Las cifras de coste de ejecución tienen 42 días y los libros cambian; una sola foto del libro es una anécdota, no una estadística.</p>
+  </footer>
+
+</div>
+</body>
+</html>
+
+</body></html>
