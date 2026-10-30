@@ -1,0 +1,462 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Informe Cripto Diario</title>
+<style>
+  :root{
+    --surface:#fcfcfb; --raised:#ffffff; --ink:#0b0b0b; --ink2:#52514e; --ink3:#7d7c76;
+    --grid:#e1e0d9; --blue:#2a78d6; --red:#d03b3b; --green:#0a7d0a; --amber:#8a6000;
+    --amber-fill:#fab219; --amber-soft:#fdf4de; --red-soft:#fbeceb; --blue-soft:#eaf2fc;
+    --dead:#b4b3ab;
+    color-scheme:light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --surface:#1a1a19; --raised:#222221; --ink:#ffffff; --ink2:#c3c2b7; --ink3:#8f8e85;
+      --grid:#2c2c2a; --blue:#3987e5; --green:#0ca30c; --amber:#fab219; --amber-soft:#2e2611;
+      --red-soft:#2d1817; --blue-soft:#13213a; --dead:#55544e;
+    }
+  }
+  :root[data-theme="dark"]{
+    --surface:#1a1a19; --raised:#222221; --ink:#ffffff; --ink2:#c3c2b7; --ink3:#8f8e85;
+    --grid:#2c2c2a; --blue:#3987e5; --green:#0ca30c; --amber:#fab219; --amber-soft:#2e2611;
+    --red-soft:#2d1817; --blue-soft:#13213a; --dead:#55544e;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--surface); color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:15px; line-height:1.55; -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:40px 16px 72px}
+  h1,h2,h3{line-height:1.2; margin:0}
+  h1{font-size:29px; letter-spacing:-.022em; font-weight:650}
+  h2{font-size:13px; text-transform:uppercase; letter-spacing:.09em; color:var(--ink2); font-weight:650}
+  h3{font-size:17.5px; font-weight:620; letter-spacing:-.01em}
+  p{margin:0}
+  .num{font-variant-numeric:tabular-nums}
+  .eyebrow{font-size:12px; text-transform:uppercase; letter-spacing:.11em; color:var(--ink3); font-weight:600}
+  .sub{color:var(--ink2); font-size:13.5px}
+  section{margin-top:46px}
+  .sechead{display:flex; align-items:baseline; gap:12px; padding-bottom:10px; border-bottom:1px solid var(--grid); margin-bottom:20px; flex-wrap:wrap}
+  .lede{font-size:16.5px; color:var(--ink2); margin-top:13px; max-width:70ch}
+  .lede b{color:var(--ink); font-variant-numeric:tabular-nums}
+  .cut{margin-top:14px; font-size:12.5px; color:var(--ink3); font-variant-numeric:tabular-nums}
+
+  .method{background:var(--amber-soft); border:1px solid var(--grid); border-left:3px solid var(--amber-fill); border-radius:4px; padding:16px 18px; margin-top:26px}
+  .method .t{font-size:12px; text-transform:uppercase; letter-spacing:.09em; font-weight:700; color:var(--amber)}
+  .method ul{margin:10px 0 0; padding-left:18px; font-size:13.5px; color:var(--ink2)}
+  .method li{margin-bottom:7px}
+  .method li:last-child{margin-bottom:0}
+  .method b{color:var(--ink)}
+  .method code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px}
+  .okbox{background:var(--blue-soft); border:1px solid var(--grid); border-left:3px solid var(--blue); border-radius:4px; padding:16px 18px; margin-top:14px; font-size:13.5px; color:var(--ink2)}
+  .okbox .t{font-size:12px; text-transform:uppercase; letter-spacing:.09em; font-weight:700; color:var(--blue); margin-bottom:9px}
+  .okbox b{color:var(--ink); font-variant-numeric:tabular-nums}
+  .okbox p + p{margin-top:10px}
+
+  .tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:28px}
+  .tile{background:var(--raised); border:1px solid var(--grid); border-radius:6px; padding:16px 16px 18px}
+  .tile .lab{font-size:11.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink3); font-weight:600; min-height:28px}
+  .tile .big{font-size:28px; font-weight:650; letter-spacing:-.025em; font-variant-numeric:tabular-nums; margin-top:8px; line-height:1.05}
+  .tile .note{font-size:12.5px; color:var(--ink2); margin-top:8px; font-variant-numeric:tabular-nums; line-height:1.5}
+  .tile .note b{color:var(--ink)}
+  .dn{color:var(--red)} .up{color:var(--blue)} .fl{color:var(--ink2)}
+
+  table{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; font-size:13.5px}
+  th{text-align:right; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink3); font-weight:600; padding:0 0 8px 14px; border-bottom:1px solid var(--grid); white-space:nowrap}
+  td{padding:9px 0 9px 14px; border-bottom:1px solid var(--grid); text-align:right; white-space:nowrap}
+  th:first-child,td:first-child{text-align:left; padding-left:0}
+  tbody tr:last-child td{border-bottom:0}
+  .sym{font-weight:620}
+  .aname{color:var(--ink3); font-size:12px; font-weight:400; margin-left:6px}
+  .warn{color:var(--amber); font-weight:700}
+  .nm{color:var(--ink3); font-weight:500; font-size:11.5px}
+  .tscroll{overflow-x:auto; -webkit-overflow-scrolling:touch; min-width:0}
+  tr.muted td{color:var(--ink3)}
+
+  .dchart{margin-top:4px}
+  .drow{display:grid; grid-template-columns:74px 1fr 1fr 180px; align-items:center; height:26px}
+  .drow + .drow{margin-top:2px}
+  .dlab{font-size:13px; font-weight:620; padding-right:10px; white-space:nowrap}
+  .dneg{position:relative; height:100%; border-right:1px solid var(--ink3)}
+  .dpos{position:relative; height:100%}
+  .dneg .bar{position:absolute; right:0; top:5px; height:16px; background:var(--red); border-radius:4px 0 0 4px; margin-right:1px}
+  .dpos .bar{position:absolute; left:0; top:5px; height:16px; background:var(--blue); border-radius:0 4px 4px 0; margin-left:1px}
+  .dmeta{display:flex; gap:10px; justify-content:flex-end; align-items:baseline; padding-left:12px; white-space:nowrap}
+  .dval{font-size:13px; font-weight:620; min-width:62px; text-align:right}
+  .dvol{font-size:11.5px; color:var(--ink3); min-width:54px; text-align:right}
+  .dcost{font-size:11.5px; color:var(--ink3); min-width:26px; text-align:right}
+  .axis{display:grid; grid-template-columns:74px 1fr 1fr 180px; font-size:10.5px; color:var(--ink3); margin-top:8px; font-variant-numeric:tabular-nums}
+  .axis .c{text-align:center}
+  .legend{display:flex; gap:16px; font-size:12px; color:var(--ink2); margin-bottom:14px; flex-wrap:wrap; align-items:center}
+  .chip{display:inline-flex; align-items:center; gap:6px}
+  .swatch{width:11px; height:11px; border-radius:2px; display:inline-block}
+  .caption{font-size:12.5px; color:var(--ink3); margin-top:13px; line-height:1.6}
+  .caption b{color:var(--ink2)}
+
+  .frame{border:1px solid var(--grid); border-left:3px solid var(--blue); background:var(--blue-soft); border-radius:4px; padding:15px 18px; margin-bottom:22px}
+  .frame .t{font-size:12px; text-transform:uppercase; letter-spacing:.09em; font-weight:700; color:var(--blue)}
+  .frame p{font-size:13.5px; color:var(--ink2); margin-top:8px}
+  .frame b{color:var(--ink)}
+  .alarm{border:1px solid var(--grid); border-left:3px solid var(--red); background:var(--red-soft); border-radius:4px; padding:15px 18px; margin-bottom:22px}
+  .alarm .t{font-size:12px; text-transform:uppercase; letter-spacing:.09em; font-weight:700; color:var(--red)}
+  .alarm p{font-size:13.5px; color:var(--ink2); margin-top:8px}
+  .alarm b{color:var(--ink)}
+
+  .two{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .two > *{min-width:0}
+  .card{background:var(--raised); border:1px solid var(--grid); border-radius:6px; padding:18px}
+  .card .ct{font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink3); font-weight:650}
+  .gaugewrap{display:flex; flex-direction:column; align-items:center; margin-top:6px}
+  .gval{font-size:37px; font-weight:650; letter-spacing:-.03em; font-variant-numeric:tabular-nums; margin-top:6px; line-height:1}
+  .gcls{font-size:13px; color:var(--ink2); font-weight:600; text-align:center}
+  .fedrow{display:grid; grid-template-columns:120px 1fr 62px; align-items:center; gap:10px; height:24px; margin-top:7px}
+  .fedrow .n{font-size:12.5px; color:var(--ink2)}
+  .fedtrack{height:16px; background:var(--grid); border-radius:4px; position:relative}
+  .fedfill{height:100%; border-radius:4px; min-width:3px}
+  .fedrow .v{font-size:12.5px; text-align:right; font-weight:620; font-variant-numeric:tabular-nums; white-space:nowrap}
+
+  .news{border-top:1px solid var(--grid); padding-top:22px; margin-top:26px}
+  .news:first-of-type{border-top:0; padding-top:0; margin-top:0}
+  .nhead{display:flex; gap:12px; align-items:flex-start}
+  .nnum{font-size:13px; font-weight:700; color:var(--ink3); font-variant-numeric:tabular-nums; padding-top:3px; min-width:20px}
+  .nbox{flex:1 1 auto; min-width:0}
+  .tags{display:flex; gap:7px; margin-top:10px; flex-wrap:wrap}
+  .tag{font-size:11px; font-weight:650; letter-spacing:.03em; padding:3px 9px; border-radius:3px; border:1px solid var(--grid); color:var(--ink2); background:var(--raised); white-space:nowrap}
+  .tag.bear{color:var(--red); border-color:var(--red); background:var(--red-soft)}
+  .tag.bull{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+  .tag.mix{color:var(--amber); border-color:var(--amber-fill); background:var(--amber-soft)}
+  .nbody{font-size:14.5px; color:var(--ink2); margin-top:11px; max-width:72ch}
+  .nbody b{color:var(--ink); font-variant-numeric:tabular-nums}
+  .facts{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:14px}
+  .fact{border:1px solid var(--grid); border-radius:5px; padding:10px 11px; background:var(--raised)}
+  .fact .fv{font-size:17px; font-weight:650; letter-spacing:-.02em; font-variant-numeric:tabular-nums; line-height:1.15}
+  .fact .fl{font-size:10.5px; color:var(--ink3); text-transform:uppercase; letter-spacing:.05em; margin-top:5px; line-height:1.3; font-weight:600}
+
+  .radar{padding-left:20px; margin:0}
+  .radar li{font-size:14px; color:var(--ink2); margin-bottom:11px; line-height:1.55}
+  .radar li b{color:var(--ink); font-variant-numeric:tabular-nums}
+  .calrow{display:grid; grid-template-columns:150px 1fr; gap:14px; padding:11px 0; border-bottom:1px solid var(--grid); align-items:baseline}
+  .calrow:last-child{border-bottom:0}
+  .calwhen{font-size:12.5px; font-weight:650; color:var(--ink); font-variant-numeric:tabular-nums; text-transform:uppercase; letter-spacing:.04em}
+  .calwhat{font-size:13.5px; color:var(--ink2)}
+  .calwhat b{color:var(--ink)}
+
+  footer{margin-top:52px; padding-top:20px; border-top:1px solid var(--grid); font-size:12px; color:var(--ink3); line-height:1.6}
+  footer p + p{margin-top:10px}
+  footer .disc{margin-top:16px; padding:12px 14px; border:1px solid var(--grid); border-radius:4px; background:var(--raised); color:var(--ink2); font-size:11.5px}
+  footer b{color:var(--ink2)}
+
+  @media (max-width:760px){
+    .tiles{grid-template-columns:1fr}
+    .two{grid-template-columns:1fr}
+    .facts{grid-template-columns:repeat(2,1fr)}
+    h1{font-size:24px}
+    .drow,.axis{grid-template-columns:58px 1fr 1fr 134px}
+    .dcost{display:none}
+    .tscroll table{min-width:620px}
+    th{white-space:normal}
+    .calrow{grid-template-columns:1fr; gap:3px}
+    .method ul{padding-left:16px}
+    .radar{padding-left:17px}
+    .fedrow{grid-template-columns:108px 1fr 48px}
+  }
+</style>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Informe Cripto Diario · Julio</div>
+  <h1 style="margin-top:10px">Binance aparentemente hackeada por entre $2.000 y $5.800 millones a 3,7 horas del corte: retiros pausados, $629 M liquidados en una hora con 96 % de largos, y la foto de precios partida en dos</h1>
+  <p class="lede">Hoy el informe tiene dos noticias, y la segunda es sobre el informe mismo. <b>Uno:</b> a las <b>20:24 UTC</b> una cartera caliente de Binance fue vaciada —las estimaciones van de <b>$2.000 M</b> a <b>$5.800 M</b>— Binance <b>pausó los retiros</b> en varias redes y el mercado se partió: <b>$629 M liquidados en una sola hora</b>, de los que <b>$607 M eran largos</b>, el <b>96 %</b>. <b>Dos:</b> tu universo cae con una amplitud que no se había medido nunca — mediana <b>−6,34 %</b>, <b>1 arriba y 10 abajo</b>, dispersión de <b>19,3 puntos</b> entre <b>TRX +6,73 %</b> y <b>UNI −12,52 %</b>. <b>Tres, y es la advertencia que manda sobre todo lo demás:</b> el hackeo cayó dentro de la ventana de medición y los agregadores se quedaron partidos activo por activo. CoinGecko sirvió <b>BTC a $81.766</b> cuando el precio real era <b>$78.880</b>, y CoinMarketCap coincidió con él dentro del <b>0,79 %</b> estando <b>las dos equivocadas</b>. <b>6 de los 17 quedan «no medidos»</b>. No uses el bloque B de hoy como terreno limpio.</p>
+  <p class="cut">Corte de datos: jueves 29 de octubre de 2026, 18:05 (America/Guatemala, UTC−6) · 30 oct 00:05 UTC · lecturas verificadas de la ventana 22:52–23:27 UTC</p>
+</header>
+
+<div class="method">
+  <div class="t">⚠ Nota de método — hoy es el bloque más importante del informe</div>
+  <ul>
+    <li><b>El <i>ticker</i> de BingX vuelve a fallar, y van 44.</b> <code>open-api.bingx.com/openApi/swap/v2/quote/ticker</code> devolvió <code>PROVENANCE_REQUIRED</code> en el primer símbolo (BTC) y se abandonó ahí. Es un <b>fallo de permiso, no de caché</b>: en ejecución programada nadie puede conceder la aprobación, así que reintentar cambiando <code>limit</code> no sirve y no se gastó. <code>api.coinbase.com</code> no se intentó por el mismo motivo documentado.</li>
+    <li><b>EL HALLAZGO DE MÉTODO: la foto de CoinGecko es UNA SOLA instantánea PREVIA al hackeo, y se demostró con un control.</b> Tras verificar el hackeo se volvieron a pedir los mismos activos. CoinGecko devolvió <b>BTC $81.766,13 byte a byte idéntico</b>, con el mismo rango y el mismo <b>+1,50 %</b>. Una lectura que no se mueve en media hora durante una caída del 3 % <b>no es una lectura, es una caché</b>. No hubo forma de refrescarla en esta corrida.</li>
+    <li><b>Y la instantánea está podrida POR ACTIVO, no en bloque.</b> Contra los precios verificados, CoinGecko falla en seis y acierta en cinco: <b>BTC +3,66 %</b>, <b>ETH +3,95 %</b>, <b>SOL +3,86 %</b>, y mucho peor en los tres que el atacante estaba vendiendo en cadena — <b>AAVE +13,51 %</b>, <b>UNI +11,13 %</b>, <b>LINK +10,77 %</b>. En cambio <b>BNB (−0,00 %)</b>, <b>XRP (+0,27 %)</b>, <b>TRX (−0,17 %)</b>, <b>ADA (+0,50 %)</b> y <b>DOGE (+0,28 %)</b> coinciden con lo verificado. Es exactamente el fallo catalogado: <b>la página sella por activo y acierta o falla por activo</b>.</li>
+    <li><span class="warn">⚠</span> <b>La regla de «dos fuentes contra una» FALLÓ hoy, y conviene verlo con el número.</b> CoinMarketCap daba <b>BTC $81.123,56</b> y CoinGecko <b>$81.766,13</b>: divergen solo <b>0,79 %</b>, muy por debajo del umbral del 2 %, y <b>las dos estaban equivocadas en un 3 %</b> — el precio real era <b>$78.880</b>. Dos rezagados concordantes se validan el uno al otro. <b>Lo que sí funcionó fue la prueba estructural:</b> el precio de Decrypt (<b>$78.893</b>) caía <b>fuera del rango de 24 h</b> que publicaba CoinGecko ($79.635–$81.726), y además el precio de CoinGecko estaba <b>por encima de su propio máximo de 24 h</b>. Las dos señales dicen podredumbre sin necesidad de saber quién tiene razón.</li>
+    <li><b>En TRX el rezagado fue CoinMarketCap, no CoinGecko — así que la marca de la fuente no sirve de nada.</b> CMC daba <b>$0,3312 (−0,15 %)</b> y CoinGecko <b>$0,3514 (+6,6 %)</b>: divergen <b>6,1 %</b>. El ticker de Cointelegraph a las 23:24 UTC da <b>$0,3526</b>, que confirma a CoinGecko. <b>TRX subió de verdad.</b> El mismo proveedor que mintió en BTC acertó en TRX y el que acertó en BTC mintió en TRX.</li>
+    <li><b>Lo que se publica como medido: 11 de 17, todos con precio verificado en la ventana 22:52–23:27 UTC.</b> Las fuentes son <b>Coinpedia (23:13)</b>, <b>Decrypt (22:57)</b>, <b>Coin360 vía Digital Today (23:00)</b> y el <b>ticker de Cointelegraph (23:24)</b>. Concuerdan muy fino: <b>BTC 0,29 %</b> entre cuatro lecturas, <b>ETH 0,40 %</b> entre cuatro, <b>BNB 0,57 %</b> entre cuatro, <b>XRP 0,81 %</b> entre tres. La variación se calcula <b>de corte a corte</b> contra la base verificada de ayer, que es aritmética independiente de la ventana de 24 h de cualquier proveedor.</li>
+    <li><span class="warn">⚠</span> <b>Seis activos quedan NO MEDIDOS: LTC, AVAX, DOT, FIL, CRV y ALGO.</b> De ninguno se consiguió una lectura posterior al hackeo, y la única que hay viene de la instantánea cuya podredumbre quedó demostrada en seis de once activos. <b>No se interpola, no se arrastra la cifra de ayer y no se publica como cierre.</b> La lectura sin verificar se muestra aparte y en gris, solo para que sepas de dónde partía cada uno antes del golpe.</li>
+    <li><span class="warn">⚠</span> <b>LINK va marcado: dos lecturas post-hackeo que divergen 3,70 %.</b> Coinpedia da <b>$10,92</b> a las 23:13 y Cointelegraph <b>$10,53</b> a las 23:24. Son once minutos en los que el atacante estaba vendiendo <b>2,575 millones de LINK</b> en cadena, así que lo más probable es que ambas sean correctas y describan una caída en curso. Se publica el punto medio, <b>$10,73 (−9,80 %)</b>, con banda de <b>−11,4 % a −8,2 %</b>.</li>
+    <li><span class="warn">⚠</span> <b>AAVE y UNI van con fuente única</b> (Coinpedia, 23:13). La dirección está corroborada por un hecho independiente y muy fuerte: el atacante <b>pidió prestados 19.762 ETH en Aave</b> contra unos $60 M en USDT, <b>Aave congeló sus mercados V3 en Ethereum</b>, y Lookonchain lo vio <b>vendiendo UNI y AAVE</b> en cadena. La magnitud, no.</li>
+    <li><b>Los flujos de ETF son de la sesión del martes 28 y por tanto PREVIOS al hackeo.</b> No describen la reacción de hoy. BTC verificado en dos fuentes, ETH en dos, SOL en una, <b>XRP no medido</b>.</li>
+    <li><span class="warn">⚠</span> <b>Todas las lecturas de Fear &amp; Greed son anteriores al hackeo por 8 horas o más</b>, así que el índice de hoy <b>no contiene el evento</b>. La más tardía es de las <b>12:30 UTC</b> y el vaciado fue a las <b>20:24</b>. Publicarlo como el ánimo «de hoy» sería falso; se publica con la hora pegada.</li>
+    <li><b>La columna de coste son las cifras de la auditoría del 1 de septiembre</b>, que hoy cumple <b>59 días</b>: orden de magnitud, no medida de hoy. BTC va como «n/d» porque no consta en aquel desglose. <b>La próxima auditoría toca el 1 de noviembre</b>, pasado mañana — y llega en el mejor momento posible, porque un hackeo del mayor centro de liquidez del mercado es justo lo que cambia un libro de órdenes.</li>
+    <li><b>Hoy es 29: el bloque C no corresponde.</b> La auditoría de capacidad y admisión se corre solo el día 1 de cada mes.</li>
+  </ul>
+</div>
+
+<div class="okbox">
+  <div class="t">✓ Lo que cuadra, lo que no, y qué significa para tu pase de las 18:00</div>
+  <p><b>1) La secuencia del día está documentada hora a hora y es corta.</b> A las <b>20:15 UTC</b> BNB valía <b>$738,90</b> y el mercado estaba tranquilo. A las <b>20:24</b> se vació la cartera. A las <b>20:34</b> el atacante movía <b>20.940 ETH</b>. A las <b>20:45</b> BTC imprimía un mínimo de vela de <b>$78.297,05</b> en Binance. A las <b>20:50</b> BNB tocaba <b>$692,32</b>, un <b>−6,3 % en 35 minutos</b>. A las <b>20:58</b> CoinGlass contaba <b>$629 M liquidados en la última hora</b>. A las <b>21:24</b> Binance reconocía «reportes de un posible problema de seguridad». Entre las <b>22:52 y las 23:27</b> cuatro fuentes independientes fijan el mercado donde sigue al corte.</p>
+  <p><b>2) El dato que de verdad te sirve es QUIÉN cayó, porque el reparto no es aleatorio: siguió la cartera del atacante.</b> Los tres peores de tu universo son <b>UNI −12,52 %</b>, <b>LINK −9,80 %</b> y <b>AAVE −9,03 %</b>, y los tres aparecen por nombre en los informes en cadena: Lookonchain vio al atacante cambiando <b>PEPE, UNI y LINK por ETH</b>, Coinpedia inventaría <b>6,19 M de UNI</b> y <b>2,26 M de LINK</b> entre lo drenado, y <b>Aave congeló sus mercados V3</b> porque el atacante pedía prestado allí. <b>Esto no es una caída de régimen: es presión de venta identificable sobre activos concretos.</b> Para tu clasificación la diferencia es enorme — un activo que cae porque alguien está liquidando una bolsa robada no está diciendo lo mismo sobre su estructura que uno que cae por flujo.</p>
+  <p><b>3) El único verde es TRX, y tiene una explicación mecánica que vale registrar.</b> Sube <b>+6,73 %</b> con el volumen <b>triplicado</b> (de $391 M a $1.238 M, <b>+217 %</b>) el mismo día en que <b>Tether congeló ~$1.560 M de USDT</b> y Circle <b>~$800 M de USDC</b>. Tron es la red donde vive la mayor parte del USDT en circulación, y un episodio que empuja a la gente a mover <i>stablecoins</i> empuja a la red que las mueve. <b>No es una señal de entrada</b> —es la segunda vez en la serie que TRX encabeza por un motivo que no tiene nada que ver con su estructura— pero sí explica por qué el único verde del día es el que es.</p>
+  <p><b>4) Y el contraste con la víspera cierra el arco de dos días.</b> Ayer el titular fue que el bitcoin recibió el catalizador que pedía —la Fed— y <b>devolvió el salto entero</b>, cerrando al 12,5 % de su rango. Hoy se sabe hacia dónde se resolvió: <b>−2,04 % hasta $78.880</b>. Pero fíjate en el orden: el bitcoin es el <b>2.º mejor de los 11 medidos</b>, solo detrás de TRX, y cae <b>tres veces menos que la mediana</b>. <b>La macro de ayer y el accidente de hoy empujan en la misma dirección y el bitcoin la está aguantando mejor que todo lo demás.</b> Eso es información de clasificación, no de entrada.</p>
+</div>
+
+<div class="tiles">
+  <div class="tile">
+    <div class="lab">Bitcoin al corte</div>
+    <div class="big dn">$78.880 <span style="font-size:16px">−2,04 %</span></div>
+    <div class="note">Verificado en <b>4 fuentes</b>, divergencia <b>0,29 %</b><br>Mínimo de vela <b>$78.297</b> a las 20:45 UTC<br><b>2.º mejor</b> de los 11 medidos</div>
+  </div>
+  <div class="tile">
+    <div class="lab">Tu universo · mediana 24 h</div>
+    <div class="big dn">−6,34 %</div>
+    <div class="note"><b>1 arriba · 10 abajo · 6 no medidos</b><br>Dispersión <b>19,3 pp</b>, récord de la serie<br>De <b>TRX +6,73 %</b> a <b>UNI −12,52 %</b></div>
+  </div>
+  <div class="tile">
+    <div class="lab">Liquidado en una sola hora</div>
+    <div class="big dn">$629 M</div>
+    <div class="note"><b>$607 M largos</b> · $21,7 M cortos — el <b>96 %</b><br>BTC <b>$190 M</b> · ETH <b>$157 M</b> · SOL <b>$46,8 M</b><br>CoinGlass, 20:58 UTC</div>
+  </div>
+</div>
+
+<section>
+  <div class="sechead"><h2>Precios al contado</h2><span class="sub">post-hackeo, ventana 22:52–23:27 UTC · variación de corte a corte contra la base verificada de ayer</span></div>
+  <div class="tscroll">
+  <table>
+    <thead><tr><th>Activo</th><th>Precio (USD)</th><th>Corte a corte</th><th>Base de ayer</th><th>Fuentes</th><th>Divergencia</th><th>Lecturas</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sym">BTC</span><span class="aname">Bitcoin</span></td><td>78.880</td><td class="dn">−2,04 %</td><td>80.518,72</td><td>4</td><td>0,29 %</td><td class="nm">78.674 · 78.852 · 78.893 · 78.906</td></tr>
+      <tr><td><span class="sym">ETH</span><span class="aname">Ethereum</span></td><td>2.270</td><td class="dn">−4,37 %</td><td>2.373,62</td><td>4</td><td>0,40 %</td><td class="nm">2.263 · 2.268 · 2.271,8 · 2.272</td></tr>
+      <tr><td><span class="sym">SOL</span><span class="aname">Solana</span></td><td>96,59</td><td class="dn">−6,34 %</td><td>103,13</td><td>2</td><td>0,85 %</td><td class="nm">96,18 · 97,00</td></tr>
+      <tr><td><span class="sym">XRP</span><span class="aname">XRP</span></td><td>1,2367</td><td class="dn">−7,02 %</td><td>1,33</td><td>3</td><td>0,81 %</td><td class="nm">1,23 · 1,24 · 1,24</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="caption"><b>Ninguna celda va marcada y el cuadre es el mejor de toda la serie, precisamente porque hoy no se usó ningún agregador.</b> Las cuatro filas salen de prensa con sello de hora explícito, y las divergencias quedan entre <b>0,29 % y 0,85 %</b> — con <b>cuatro</b> lecturas independientes en BTC y ETH, no dos. <b>La lección es incómoda y conviene dejarla escrita:</b> hoy las páginas de precio de CoinGecko y CoinMarketCap, que son la receta habitual de este informe, habrían dado <b>BTC $81.766</b> y <b>$81.123</b> — las dos mal, las dos de acuerdo entre sí, y las dos con un rango de 24 h que delataba la podredumbre si se leía con atención.<br><b>El reparto de la caída dice algo sobre la naturaleza del golpe.</b> El orden es <b>BTC −2,04 %</b>, <b>ETH −4,37 %</b>, <b>SOL −6,34 %</b>, <b>XRP −7,02 %</b>: monótono en el tamaño, y exactamente lo que se espera de un susto de <b>riesgo de contraparte</b> más que de un giro macro — cuanto más lejos del activo que nadie tiene que custodiar por ti, más duele. El éter carga además un peso propio: lo drenado era mayoritariamente <b>ETH y tokens ERC-20</b>, y <b>ETH es el único que ningún emisor puede congelar</b>, así que es el que el atacante puede vender de verdad. <b>Unos 253.000 ETH</b> (~$570 M) seguían quietos en dos carteras a las 22:07 UTC: oferta pendiente, aún no vendida.</p>
+</section>
+
+<section>
+  <div class="sechead"><h2>Flujos netos de ETF al contado</h2><span class="sub">sesión del martes 28 oct — PREVIA al hackeo · BTC y ETH en dos fuentes · SOL <span class="warn">⚠</span> fuente única · XRP no medido · Farside vía blockchain.news; Lookonchain vía TechFlow; ChainCatcher</span></div>
+  <div class="legend">
+    <span class="chip"><span class="swatch" style="background:var(--red)"></span>Salidas netas</span>
+    <span class="chip"><span class="swatch" style="background:var(--blue)"></span>Entradas netas</span>
+    <span class="chip"><span class="warn">⚠</span>una sola fuente para esta celda</span>
+    <span style="margin-left:auto">Millones de USD · una sola sesión · escala única</span>
+  </div>
+  <div class="dchart">
+    <div class="drow" title="BTC: +137,3 M USD de entrada neta en la sesion del 28 de octubre. Tercera sesion consecutiva de entradas. IBIT de BlackRock aporto 136 M y BITB 1,3 M; ningun otro fondo movio neto. Verificado en dos fuentes: Farside via blockchain.news (137,3 M) y Lookonchain via TechFlow (1.684 BTC, unos 135 M)."><div class="dlab">BTC</div><div class="dneg"></div><div class="dpos"><div class="bar" style="width:98.1%"></div></div><div class="dmeta"><span class="dval up">+137,3 M</span></div></div>
+    <div class="drow" title="ETH: -21,1 M USD de salida neta en la sesion del 28 de octubre, equivalente a 9.081 ETH. Tercera sesion consecutiva de salidas. Verificado en dos fuentes: Lookonchain via TechFlow y CryptoBriefing."><div class="dlab">ETH</div><div class="dneg"><div class="bar" style="width:15.1%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−21,1 M</span></div></div>
+    <div class="drow" title="SOL: -5,66 M USD en la sesion del 28 de octubre, todo de BSOL de Bitwise; ningun otro fondo movio neto. Acumulado historico de la categoria: +1.507 M. Fuente unica: ChainCatcher."><div class="dlab">SOL <span class="warn">⚠</span></div><div class="dneg"><div class="bar" style="width:4.0%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−5,7 M</span></div></div>
+    <div class="drow" title="XRP: no se encontro ninguna cifra verificable para la sesion del 28 de octubre. No se interpola ni se arrastra el dato previo. Farside no cubre XRP."><div class="dlab">XRP <span class="warn">⚠</span></div><div class="dneg"></div><div class="dpos"></div><div class="dmeta"><span class="dval nm">no medido</span></div></div>
+    <div class="axis"><div></div><div class="c">−140 M &nbsp;←&nbsp; 0</div><div class="c">0 &nbsp;→&nbsp; +140 M</div><div></div></div>
+  </div>
+  <p class="caption"><b>La divergencia entre bitcoin y éter cumple tres sesiones, y hay que decir enseguida que todas son anteriores al hackeo.</b> El martes entraron <b>$137,3 M</b> en los ETF de bitcoin, de los que <b>IBIT de BlackRock puso $136 M</b> —el <b>99 %</b>— y BITB <b>$1,3 M</b>; ningún otro fondo movió neto, una concentración todavía mayor que el 86 % del lunes. Con los <b>$110,3 M</b> y los <b>$176,0 M</b> de las dos sesiones previas, el acumulado de tres días es <b>+$423,6 M</b>. En éter salieron <b>$21,1 M</b> (<b>9.081 ETH</b>), tercera sesión seguida en negativo, aunque es la más suave de las tres frente a los <b>−$60,2 M</b> del martes. <b>SOL va marcado</b> con <b>−$5,66 M</b>, todo de BSOL de Bitwise, y <b>XRP se queda sin medir</b> por tercera sesión: Farside no cubre XRP y no apareció ninguna cifra verificable.<br><b>Lo que estas barras NO dicen:</b> nada sobre la reacción al hackeo. La sesión del miércoles 29 —la del vaciado— se publica mañana, y es la cifra que de verdad importará. <b>Tres días de entradas en bitcoin terminaron el mismo día en que el mayor centro de liquidez del mercado pausó los retiros</b>, así que el dato de mañana separa el susto de la salida.</p>
+</section>
+
+<section>
+  <div class="sechead"><h2>Sentimiento y tasas</h2><span class="sub">todas las lecturas de sentimiento son PREVIAS al hackeo</span></div>
+  <div class="two">
+    <div class="card">
+      <div class="ct">Fear &amp; Greed cripto <span class="warn">⚠</span></div>
+      <div class="gaugewrap">
+        <svg viewBox="0 0 260 152" width="100%" style="max-width:260px" role="img" aria-label="Medidor Fear and Greed en 50, zona neutral, exactamente en el punto medio de la escala; lectura anterior al hackeo">
+          <path d="M 35.0 130.0 A 95 95 0 0 1 62.82 62.82" fill="none" stroke="#d03b3b" stroke-width="19"/>
+          <path d="M 64.9 60.9 A 95 95 0 0 1 113.1 36.4" fill="none" stroke="#d03b3b" stroke-width="19" opacity=".48"/>
+          <path d="M 115.8 36.1 A 95 95 0 0 1 144.2 36.1" fill="none" stroke="#7d7c76" stroke-width="19" opacity=".7"/>
+          <path d="M 146.9 36.4 A 95 95 0 0 1 195.1 60.9" fill="none" stroke="#2a78d6" stroke-width="19" opacity=".48"/>
+          <path d="M 197.18 62.82 A 95 95 0 0 1 225.0 130.0" fill="none" stroke="#2a78d6" stroke-width="19"/>
+          <line x1="130" y1="130" x2="130" y2="42.0" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="130" cy="130" r="5.5" fill="var(--ink)"/>
+          <text x="40" y="148" fill="var(--ink3)" font-size="10" text-anchor="middle" font-family="system-ui">0 · miedo</text>
+          <text x="220" y="148" fill="var(--ink3)" font-size="10" text-anchor="middle" font-family="system-ui">codicia · 100</text>
+        </svg>
+        <div class="gval">50</div>
+        <div class="gcls">Neutral · sin cambio desde <span class="num">50</span><br><span style="font-weight:400; color:var(--ink3); font-size:12px">ChainCatcher/Coinglass, <b>12:30 UTC</b> — ocho horas antes del hackeo</span></div>
+      </div>
+      <p class="caption" style="margin-top:14px"><b>Esta cifra describe un mercado que ya no existe, y por eso va marcada en lugar de omitida.</b> La lectura más tardía que se consiguió es de las <b>12:30 UTC</b> y el vaciado de la cartera fue a las <b>20:24</b>: el índice de hoy <b>no contiene el evento del día</b>. Da <b>50 desde 50</b> —literalmente sin movimiento— y KuCoin da <b>51 desde 51</b> con datos sellados a las <b>00:00 UTC</b>, aún más viejos. <b>Un tercer rastreador ya recogía algo:</b> una lectura de las 06:44 UTC daba <b>44 desde 46</b>, bajando. cfgi.io da <b>48</b> para el bitcoin. <b>El encuadre, hoy más que nunca:</b> «Neutral» no es señal de nada y describe ánimo, no liquidez — y además es ánimo de ayer por la tarde. CoinMarketCap y KuCoin como índice propio <b>no son comparables</b>: otra metodología. <b>La lectura que servirá es la de mañana</b>, que será la primera que incluya el hackeo.</p>
+    </div>
+    <div class="card">
+      <div class="ct">Fed — el PCE empujó diciembre</div>
+      <div style="margin-top:14px">
+        <div class="eyebrow" style="font-size:10.5px">29 oct — PCE de septiembre, publicado un día después de la Fed</div>
+        <div class="fedrow"><div class="n">PCE general a/a</div><div class="fedtrack"><div class="fedfill" style="width:72%;background:var(--red)"></div></div><div class="v">3,6 %</div></div>
+        <div class="fedrow"><div class="n">PCE subyacente</div><div class="fedtrack"><div class="fedfill" style="width:62%;background:var(--red)"></div></div><div class="v">3,1 %</div></div>
+        <div class="eyebrow" style="font-size:10.5px; margin-top:16px">Subida de 25 pb — 9 de diciembre <span class="warn">⚠</span></div>
+        <div class="fedrow"><div class="n">Tras el PCE, 29 oct</div><div class="fedtrack"><div class="fedfill" style="width:80%;background:var(--red)"></div></div><div class="v">~80 %</div></div>
+        <div class="fedrow"><div class="n">Tras la Fed, 28 oct <span class="warn">⚠</span></div><div class="fedtrack"><div class="fedfill" style="width:83.7%;background:var(--red)"></div></div><div class="v">81–86 %</div></div>
+        <div class="eyebrow" style="font-size:10.5px; margin-top:16px">La misma probabilidad, días antes</div>
+        <div class="fedrow"><div class="n">27 oct</div><div class="fedtrack"><div class="fedfill" style="width:78%;background:var(--ink3)"></div></div><div class="v">75–78 %</div></div>
+        <div class="fedrow"><div class="n">26 oct</div><div class="fedtrack"><div class="fedfill" style="width:73%;background:var(--ink3)"></div></div><div class="v">73 %</div></div>
+      </div>
+      <p class="caption" style="margin-top:14px"><b>El dato de hoy confirma por qué ayer dos gobernadores disintieron pidiendo SUBIR: el PCE subyacente volvió a alejarse del objetivo.</b> Se publicó en <b>3,1 %</b> interanual, y el general en <b>3,6 %</b>, en línea con lo esperado pero <b>al alza</b> — y llegó <b>un día después</b> de que el comité mantuviera en <b>3,75–4,00 %</b> con un <b>10-2</b> en el que <b>Cook y Hammack</b> votaron por un alza de 25 pb. El PIB, además, <b>superó lo esperado</b>. <b>La reacción fue inmediata y amplia:</b> el <b>Nasdaq cerró −1,38 %</b>, el oro cayó hacia <b>$4.000</b> y las apuestas de alza en diciembre se afianzaron en torno al <b>80 %</b>. <span class="warn">⚠</span> <b>La celda del 28 va marcada</b>: dos fuentes citaban el mismo instrumento con <b>86 %</b> y <b>81,4 %</b>, así que se mantiene el rango. <b>Lo relevante para encuadrar hoy:</b> la macro ya estaba empujando a la baja <b>antes</b> del hackeo — Warsh dijo que la Fed está en modo <i>«wait and see»</i> y que <b>«todavía no hemos alcanzado la estabilidad de precios»</b>. El accidente de Binance cayó sobre un mercado que ya venía de rojo, no sobre uno tranquilo.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><h2>Bloque B · Rotación de tu universo</h2><span class="sub">11 de 17 medidos con precio verificado post-hackeo · 6 no medidos</span></div>
+  <div class="alarm">
+    <div class="t">⚠ Antes de leer estas barras</div>
+    <p><b>Este bloque es el TERRENO con el que llegas a tu clasificación de las 18:00. No es una señal ni una recomendación de entrada.</b> Y hoy lleva una reserva adicional que pesa más que el encuadre habitual: <b>un tercio del universo no se pudo medir</b>, y de los que sí, los tres peores cayeron por <b>presión de venta identificable de una cartera robada</b>, no por su estructura. <b>Un activo que se desploma porque alguien está liquidando un botín no está diciendo lo mismo sobre su régimen que uno que se desploma por flujo.</b> Trátalo como lo que es: la foto de una noche accidentada, no la fotografía del terreno. Deliberadamente <b>no</b> aparecen aquí las mayores subidas o caídas del mercado general ni listas de «criptos prometedoras»: ese ranking selecciona por iliquidez por construcción y es un generador de FOMO.</p>
+  </div>
+  <div class="legend">
+    <span class="chip"><span class="swatch" style="background:var(--blue)"></span>Al alza</span>
+    <span class="chip"><span class="swatch" style="background:var(--red)"></span>A la baja</span>
+    <span class="chip"><span class="warn">⚠</span>celda con reserva, ver pie</span>
+    <span class="chip"><span class="warn">◆</span>sin holgura (auditoría 1-sep)</span>
+    <span style="margin-left:auto">Δ de corte a corte · volumen M USD · coste I/V en % de R</span>
+  </div>
+  <div class="dchart">
+    <div class="drow" title="TRX +6,73% · unico verde del universo · volumen 1.238 M USD, triplicado (+217%), el mayor salto de la serie · Tron es la red donde vive la mayor parte del USDT y Tether congelo 1.560 M el mismo dia · verificado en 2 fuentes, divergencia 0,34%"><div class="dlab">TRX</div><div class="dneg"></div><div class="dpos"><div class="bar" style="width:51.8%"></div></div><div class="dmeta"><span class="dval up">+6,73 %</span><span class="dvol">$1.238</span><span class="dcost">0,2</span></div></div>
+    <div class="drow" title="BTC -2,04% · el mejor de los que caen y tres veces menos que la mediana · minimo de vela 78.297 USD a las 20:45 UTC · volumen 30.163 M USD (+30%) · verificado en 4 fuentes, divergencia 0,29%"><div class="dlab">BTC</div><div class="dneg"><div class="bar" style="width:15.7%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−2,04 %</span><span class="dvol">$30.163</span><span class="dcost">n/d</span></div></div>
+    <div class="drow" title="ETH -4,37% · lo drenado era mayoritariamente ETH y tokens ERC-20, y ETH es el unico que ningun emisor puede congelar · 253.000 ETH (~570 M USD) seguian quietos a las 22:07 UTC · volumen 11.896 M USD (+29%) · verificado en 4 fuentes, divergencia 0,40%"><div class="dlab">ETH</div><div class="dneg"><div class="bar" style="width:33.6%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−4,37 %</span><span class="dvol">$11.896</span><span class="dcost">0,1</span></div></div>
+    <div class="drow" title="DOGE -4,88% · volumen 653 M USD (+16%) · verificado en 2 fuentes, divergencia 0,56%"><div class="dlab">DOGE</div><div class="dneg"><div class="bar" style="width:37.5%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−4,88 %</span><span class="dvol">$653</span><span class="dcost">0,7</span></div></div>
+    <div class="drow" title="ADA -5,40% · volumen 411 M USD, casi duplicado (+97%) · verificado en 2 fuentes, divergencia 1,00% · peor coste auditado del universo, 4,5% de R"><div class="dlab">ADA</div><div class="dneg"><div class="bar" style="width:41.5%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−5,40 %</span><span class="dvol">$411</span><span class="dcost">4,5</span></div></div>
+    <div class="drow" title="SOL -6,34% · exactamente la mediana del universo · Kamino pauso su mercado SOL/BTC por precaucion · 46,8 M USD de liquidaciones en la hora del golpe · volumen 2.885 M USD (+15%) · verificado en 2 fuentes, divergencia 0,85%"><div class="dlab">SOL</div><div class="dneg"><div class="bar" style="width:48.8%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−6,34 %</span><span class="dvol">$2.885</span><span class="dcost">0,3</span></div></div>
+    <div class="drow" title="XRP -7,02% · Ripple congelo unos 200 M USD en RLUSD del atacante · volumen 2.709 M USD (+41%) · verificado en 3 fuentes, divergencia 0,81% · sin cifra de ETF por tercera sesion"><div class="dlab">XRP</div><div class="dneg"><div class="bar" style="width:54.0%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−7,02 %</span><span class="dvol">$2.709</span><span class="dcost">0,7</span></div></div>
+    <div class="drow" title="BNB -7,23% · el token de la casa afectada · cayo de 738,90 a 692,32 USD en 35 minutos · volumen 2.849 M USD, triplicado (+202%) · verificado en 4 fuentes, divergencia 0,57%"><div class="dlab">BNB</div><div class="dneg"><div class="bar" style="width:55.6%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−7,23 %</span><span class="dvol">$2.849</span><span class="dcost">0,1</span></div></div>
+    <div class="drow" title="AAVE -9,03% · el atacante pidio prestados 19.762 ETH en Aave contra unos 60 M USD en USDT y Aave congelo sus mercados V3 en Ethereum · Lookonchain lo vio vendiendo 128.000 AAVE · FUENTE UNICA, magnitud sin verificar"><div class="dlab">AAVE <span class="warn">⚠</span></div><div class="dneg"><div class="bar" style="width:69.5%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−9,03 %</span><span class="dvol">$242</span><span class="dcost">1,0</span></div></div>
+    <div class="drow" title="LINK -9,80% · el atacante estaba vendiendo 2,575 millones de LINK por ETH en cadena · dos lecturas post-hackeo que divergen 3,70%: 10,92 USD a las 23:13 y 10,53 a las 23:24 · se publica el punto medio con banda de -11,4% a -8,2%"><div class="dlab">LINK <span class="warn">⚠</span></div><div class="dneg"><div class="bar" style="width:75.4%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−9,80 %</span><span class="dvol">$311</span><span class="dcost">0,8</span></div></div>
+    <div class="drow" title="UNI -12,52% · el peor del universo · entre lo drenado figuran 6,19 millones de UNI y el atacante los estaba cambiando por ETH en cadena · FUENTE UNICA, magnitud sin verificar"><div class="dlab">UNI <span class="warn">⚠</span></div><div class="dneg"><div class="bar" style="width:96.3%"></div></div><div class="dpos"></div><div class="dmeta"><span class="dval dn">−12,52 %</span><span class="dvol">$310</span><span class="dcost">1,8</span></div></div>
+    <div class="axis"><div></div><div class="c">−13 % &nbsp;←&nbsp; 0</div><div class="c">0 &nbsp;→&nbsp; +13 %</div><div></div></div>
+  </div>
+  <p class="caption"><b>Tres lecturas, y la tercera es la que debería cambiar cómo lees las otras dos.</b><br><b>Uno. Es la sesión más amplia que ha medido este informe, por mucho.</b> La dispersión llega a <b>19,3 puntos</b> entre <b>TRX +6,73 %</b> y <b>UNI −12,52 %</b>, frente a los 5,8 pp de ayer y los 5,6 de anteayer — más del triple. La mediana se hunde a <b>−6,34 %</b> desde <b>+1,20 %</b>, el mayor giro de un día a otro de la serie, y el recuento pasa de <b>11 arriba / 1 plano / 5 abajo</b> a <b>1 arriba / 10 abajo</b> entre los medidos.<br><b>Dos. El volumen explotó y eso sí es terreno limpio, porque no depende de ningún precio.</b> Los tres mayores saltos son <b>TRX +217 %</b>, <b>BNB +202 %</b> y <b>ADA +97 %</b>, y el volumen global del mercado subió <b>casi 29 % hasta $89.400 M</b>. <b>La concentración bajó a 77,0 %</b> en BTC+ETH desde el 80,2 % de ayer: hubo mucho más libro fuera de los dos grandes del que es habitual, que es lo que pasa cuando todo el mundo opera a la vez.<br><b>Tres, y es lo que de verdad importa para tu pase: el orden de estas barras no es un ranking de debilidad estructural.</b> Los tres últimos —<b>UNI</b>, <b>LINK</b>, <b>AAVE</b>— son tres de los activos que el atacante tenía y estaba vendiendo en cadena, y <b>BNB</b> es el token de la casa afectada. Cuatro de los cinco peores tienen una causa <b>idiosincrática y fechada</b>. <b>Los que informan sobre régimen son los otros:</b> ETH, SOL, XRP, DOGE, ADA y BTC cayeron por el susto general, y ahí el orden sí es legible — monótono por tamaño, con el bitcoin aguantando tres veces mejor que la mediana.<br><span class="warn">⚠</span> <b>La columna de coste viene de la auditoría del 1 de septiembre y hoy cumple 59 días.</b> Es orden de magnitud, no medida de hoy, y <b>la próxima auditoría es el 1 de noviembre</b>, pasado mañana. <b>Llega en el momento idóneo:</b> si Binance mantiene los retiros pausados, los libros de todo el mercado se habrán reconfigurado, y medir el deslizamiento el domingo contra estas cifras de septiembre será la lectura más útil de la serie. <b>ALGO</b> y <b>CRV</b> siguen etiquetados <b>◆ sin holgura</b> de aquella corrida, y hoy los dos están entre los no medidos.</p>
+
+  <div class="tscroll" style="margin-top:26px">
+  <table>
+    <thead><tr><th>Activo</th><th>Precio (USD)</th><th>Corte a corte</th><th>Base de ayer</th><th>Fuentes</th><th>Diverg.</th><th>Vol. M</th><th>Vol. Δ</th><th>Coste % R</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sym">TRX</span></td><td>0,3520</td><td class="up">+6,73 %</td><td>0,3298</td><td>2</td><td>0,34 %</td><td>1.238</td><td class="up">+217 %</td><td>0,2</td></tr>
+      <tr><td><span class="sym">BTC</span></td><td>78.880</td><td class="dn">−2,04 %</td><td>80.518,72</td><td>4</td><td>0,29 %</td><td>30.163</td><td class="up">+30 %</td><td>n/d</td></tr>
+      <tr><td><span class="sym">ETH</span></td><td>2.270</td><td class="dn">−4,37 %</td><td>2.373,62</td><td>4</td><td>0,40 %</td><td>11.896</td><td class="up">+29 %</td><td>0,1</td></tr>
+      <tr><td><span class="sym">DOGE</span></td><td>0,07584</td><td class="dn">−4,88 %</td><td>0,07973</td><td>2</td><td>0,56 %</td><td>653</td><td class="up">+16 %</td><td>0,7</td></tr>
+      <tr><td><span class="sym">ADA</span></td><td>0,19185</td><td class="dn">−5,40 %</td><td>0,2028</td><td>2</td><td>1,00 %</td><td>411</td><td class="up">+97 %</td><td>4,5</td></tr>
+      <tr><td><span class="sym">SOL</span></td><td>96,59</td><td class="dn">−6,34 %</td><td>103,13</td><td>2</td><td>0,85 %</td><td>2.885</td><td class="up">+15 %</td><td>0,3</td></tr>
+      <tr><td><span class="sym">XRP</span></td><td>1,2367</td><td class="dn">−7,02 %</td><td>1,33</td><td>3</td><td>0,81 %</td><td>2.709</td><td class="up">+41 %</td><td>0,7</td></tr>
+      <tr><td><span class="sym">BNB</span></td><td>702,89</td><td class="dn">−7,23 %</td><td>757,67</td><td>4</td><td>0,57 %</td><td>2.849</td><td class="up">+202 %</td><td>0,1</td></tr>
+      <tr><td><span class="sym">AAVE</span> <span class="warn">⚠</span></td><td>120,64</td><td class="dn">−9,03 %</td><td>132,61</td><td>1</td><td class="nm">n/d</td><td>242</td><td class="up">+14 %</td><td>1,0</td></tr>
+      <tr><td><span class="sym">LINK</span> <span class="warn">⚠</span></td><td>10,73</td><td class="dn">−9,80 %</td><td>11,89</td><td>2</td><td class="warn">3,70 %</td><td>311</td><td class="up">+5 %</td><td>0,8</td></tr>
+      <tr><td><span class="sym">UNI</span> <span class="warn">⚠</span></td><td>6,29</td><td class="dn">−12,52 %</td><td>7,19</td><td>1</td><td class="nm">n/d</td><td>310</td><td class="up">+11 %</td><td>1,8</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 style="margin-top:34px; font-size:15px">Los 6 no medidos</h3>
+  <p class="caption" style="margin-top:6px"><b>De ninguno de estos seis se consiguió una lectura posterior al hackeo.</b> La columna de la derecha es la instantánea <b>previa</b> al golpe, cuya podredumbre quedó demostrada en seis de once activos — se muestra en gris únicamente para que sepas de dónde partía cada uno a las ~20:00 UTC. <b>No es el cierre de hoy y no debe usarse como tal.</b> Para estos seis, el pase de las 18:00 se hace sobre tu propio gráfico.</p>
+  <div class="tscroll" style="margin-top:14px">
+  <table>
+    <thead><tr><th>Activo</th><th>Estado al corte</th><th>Base de ayer</th><th class="nm">Lectura pre-hackeo, sin verificar</th><th>Coste % R</th></tr></thead>
+    <tbody>
+      <tr class="muted"><td><span class="sym">LTC</span></td><td class="nm">no medido</td><td>57,56</td><td class="nm">57,92 · +0,30 %</td><td>1,8</td></tr>
+      <tr class="muted"><td><span class="sym">AVAX</span></td><td class="nm">no medido</td><td>9,00</td><td class="nm">8,91 · +0,90 %</td><td>1,3</td></tr>
+      <tr class="muted"><td><span class="sym">DOT</span></td><td class="nm">no medido</td><td>1,01</td><td class="nm">0,9185 · −9,10 %</td><td>1,1</td></tr>
+      <tr class="muted"><td><span class="sym">FIL</span></td><td class="nm">no medido</td><td>0,8807</td><td class="nm">0,8802 · −3,60 %</td><td>0,8</td></tr>
+      <tr class="muted"><td><span class="sym">CRV</span> <span class="warn">◆</span></td><td class="nm">no medido</td><td>0,3376</td><td class="nm">0,3268 · −3,30 %</td><td>3,1</td></tr>
+      <tr class="muted"><td><span class="sym">ALGO</span> <span class="warn">◆</span></td><td class="nm">no medido</td><td>0,1020</td><td class="nm">0,1000 · −3,30 %</td><td>3,2</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><h2>Las 5 noticias que mueven el precio</h2><span class="sub">últimas 24–48 h · cada cifra verificada en dos fuentes o marcada</span></div>
+
+  <div class="news">
+    <div class="nhead"><div class="nnum">1</div><div class="nbox">
+      <h3>Una cartera caliente de Binance es vaciada de entre $2.000 y $5.800 millones, el exchange pausa los retiros y CZ dice que «parece un hackeo»</h3>
+      <div class="tags"><span class="tag bear">Bajista</span><span class="tag">Riesgo de contraparte</span><span class="tag">Evento de un activo grande</span></div>
+      <p class="nbody">A las <b>20:24 UTC</b> una cartera etiquetada «Binance 14» perdió, según datos en cadena, unos <b>167.464 ETH</b> y <b>63 tokens</b> más. Las estimaciones del total <b>no convergen y hay que decirlo así</b>: Blockaid marcó <b>~$3.300 M</b> en transferencias sospechosas, Arkham rastreó <b>~$5.840 M</b> en carteras etiquetadas «binance-hacker-1029», TechCrunch recoge un suelo de <b>«al menos $2.000 M»</b> y un techo de <b>$5.700 M</b>, y Unchained habla de <b>~$3.500 M</b> a una sola dirección. <b>Ninguna cifra está confirmada como robo</b>. Binance <b>«suspendió temporalmente los retiros en varias redes»</b> por precaución y dijo que <b>«los fondos de los usuarios están completamente a salvo»</b>, sin confirmar el hackeo; <b>CZ</b>, que ya no gestiona Binance.com, escribió que <b>«parece un hackeo a Binance»</b> y que espera que los fondos estén cubiertos. La comparación con FTX, que el mercado hizo de inmediato, <b>no aguanta la aritmética</b>: las carteras públicas de Binance tienen unos <b>$144.000 M</b> en activos de clientes según DefiLlama, así que lo drenado es <b>algo menos del 2 %</b> — y, a diferencia de FTX, no hay un token propio sirviendo de colateral del balance.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">20:24 UTC</div><div class="fl">Hora del vaciado</div></div>
+        <div class="fact"><div class="fv">$2,0–5,8 mM</div><div class="fl">Rango de estimaciones, sin confirmar</div></div>
+        <div class="fact"><div class="fv">−7,23 %</div><div class="fl">BNB al corte, 4 fuentes</div></div>
+        <div class="fact"><div class="fv">&lt;2 %</div><div class="fl">De los ~$144 mM en carteras públicas</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><div class="nnum">2</div><div class="nbox">
+      <h3>El PCE subyacente de septiembre sube al 3,1 % un día después de que la Fed mantuviera con dos disidencias que pedían subir, y diciembre se afianza en el 80 %</h3>
+      <div class="tags"><span class="tag bear">Bajista</span><span class="tag">Macro EE. UU.</span></div>
+      <p class="nbody">El <b>PCE subyacente</b> se publicó en <b>3,1 %</b> interanual y el <b>general en 3,6 %</b>, en línea con lo esperado pero <b>alejándose del objetivo</b>, y el <b>PIB adelantado superó</b> las previsiones. La secuencia es lo que da el golpe: <b>el día anterior</b> el FOMC había mantenido en <b>3,75–4,00 %</b> con un voto de <b>10-2</b> en el que <b>Cook y Hammack disintieron pidiendo un alza de 25 pb</b> —no un recorte— y <b>Warsh</b> declaró que la Fed está en modo <b>«wait and see»</b> y que <b>«todavía no hemos alcanzado la estabilidad de precios»</b>. Con el dato de hoy encima, las apuestas de <b>alza en diciembre</b> se consolidan en torno al <b>80 %</b>, desde el <b>73 %</b> del 26 de octubre. <b>El castigo no se quedó en cripto:</b> el <b>Nasdaq cerró −1,38 %</b> y el oro cayó hacia <b>$4.000</b>. <b>Lo que esto significa para encuadrar el día:</b> el mercado ya venía rojo por motivos macro <b>antes</b> de las 20:24 — el hackeo no inició la caída, la aceleró.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">3,1 %</div><div class="fl">PCE subyacente a/a, septiembre</div></div>
+        <div class="fact"><div class="fv">10-2</div><div class="fl">Voto FOMC; disidencias pidiendo SUBIR</div></div>
+        <div class="fact"><div class="fv">~80 %</div><div class="fl">Alza de 25 pb el 9 de diciembre</div></div>
+        <div class="fact"><div class="fv">−1,38 %</div><div class="fl">Cierre del Nasdaq</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><div class="nnum">3</div><div class="nbox">
+      <h3>$629 millones liquidados en una sola hora, de los que el 96 % eran largos: el apalancamiento se barrió en un lado solo</h3>
+      <div class="tags"><span class="tag bear">Bajista</span><span class="tag">Liquidaciones y apalancamiento</span></div>
+      <p class="nbody">CoinGlass contó <b>$629 M</b> de contratos liquidados <b>en los sesenta minutos</b> siguientes al vaciado: <b>$607 M en largos</b> contra <b>$21,7 M en cortos</b>, es decir el <b>96 %</b> en una sola pata. Por activo, <b>BTC ~$190 M</b>, <b>ETH ~$157 M</b> y <b>SOL ~$46,8 M</b>, y la mayor posición individual fue de <b>~$11,1 M</b> en el par <b>BTCUSDT de Binance</b>. <b>El contraste con la ventana de 24 h es la cifra que conviene retener:</b> antes del golpe, a las 15:36 UTC, el total de las 24 horas previas era de <b>$379 M</b> —con <b>$208 M</b> en largos y <b>$171 M</b> en cortos, reparto casi equilibrado—. Es decir, <b>una sola hora liquidó más que el día entero que la precedía, y lo hizo con un sesgo de 28 a 1</b>. El interés abierto en derivados cayó un <b>7,35 % hasta $318.600 M</b> y las tasas de financiación se desplomaron un <b>37 %</b>. <b>Para tu operativa esto es lo relevante:</b> un barrido así vacía el libro de un lado, y los primeros minutos después son los de peor deslizamiento del mes.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">$629 M</div><div class="fl">Liquidado en una hora</div></div>
+        <div class="fact"><div class="fv">96 %</div><div class="fl">Largos: $607 M de $629 M</div></div>
+        <div class="fact"><div class="fv">$379 M</div><div class="fl">Las 24 h previas, casi equilibradas</div></div>
+        <div class="fact"><div class="fv">−7,35 %</div><div class="fl">Interés abierto, a $318,6 mM</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><div class="nnum">4</div><div class="nbox">
+      <h3>Tether, Circle y Ripple congelan más de $2.300 millones del atacante, y Aave y Kamino cierran mercados: la infraestructura responde en horas</h3>
+      <div class="tags"><span class="tag mix">Mixta</span><span class="tag">Infraestructura y regulación</span></div>
+      <p class="nbody">La respuesta coordinada fue rápida y es la razón por la que el daño final será menor que el titular. <b>Tether congeló ~$1.560 M en USDT</b>, <b>Circle más de $800 M en USDC</b> y <b>Ripple ~$200 M en RLUSD</b> según la co-consejera delegada de Binance, Yi He: en total <b>más de $2.300 M</b> inmovilizados, lo que deja <b>~$3.500 M</b> potencialmente irrecuperables según Coinpedia. <b>El detalle que explica las caídas del bloque B:</b> el atacante <b>pidió prestados 19.762 ETH en Aave</b> contra unos $60 M en USDT, y <b>Aave congeló sus mercados V3 en Ethereum</b> —bloqueando nuevos depósitos y préstamos—, mientras <b>Kamino pausó su mercado SOL/BTC</b> en Solana por precaución, declarándose no afectado. <b>La lectura de doble filo:</b> que los emisores puedan congelar $2.300 M en horas limita el robo, y a la vez es la demostración más clara del año de que esos activos <b>no son resistentes a la censura</b>. <b>Los ~253.000 ETH</b> (~$570 M) que seguían quietos a las 22:07 UTC son la parte que <b>nadie puede congelar</b>: oferta pendiente sobre el éter.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">$2,3 mM+</div><div class="fl">Congelado por Tether, Circle y Ripple</div></div>
+        <div class="fact"><div class="fv">19.762 ETH</div><div class="fl">Prestados en Aave por el atacante</div></div>
+        <div class="fact"><div class="fv">253.000 ETH</div><div class="fl">~$570 M quietos, imposibles de congelar</div></div>
+        <div class="fact"><div class="fv">V3 Ethereum</div><div class="fl">Mercados de Aave congelados</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="news">
+    <div class="nhead"><div class="nnum">5</div><div class="nbox">
+      <h3>Los ETF de bitcoin encadenaron tres sesiones de entradas —$423,6 M— justo hasta la víspera del hackeo, con IBIT poniendo el 99 %</h3>
+      <div class="tags"><span class="tag mix">Mixta</span><span class="tag">Flujos de ETF al contado</span></div>
+      <p class="nbody">En la sesión del <b>martes 28</b> entraron <b>$137,3 M</b> netos en los ETF de bitcoin al contado, tercera sesión consecutiva en positivo tras <b>$110,3 M</b> y <b>$176,0 M</b>: <b>+$423,6 M</b> en tres días. <b>La concentración es extrema y va a más:</b> <b>IBIT de BlackRock aportó $136 M</b>, el <b>99 %</b> del total, y BITB <b>$1,3 M</b>; <b>ningún otro fondo movió neto</b>, frente al 86 % de IBIT el lunes. En <b>éter</b> salieron <b>$21,1 M</b> (<b>9.081 ETH</b>), tercera sesión seguida en negativo pero la más suave de las tres. <b>SOL</b> perdió <b>$5,66 M</b>, todo de BSOL de Bitwise, y <b>XRP se queda sin medir</b> por tercera sesión porque Farside no cubre el activo. <b>Por qué esto es mixto y no alcista:</b> todas estas cifras son <b>previas al vaciado</b>. Tres días de dinero institucional entrando en bitcoin terminaron <b>el mismo día</b> en que el mayor centro de liquidez del mercado pausó los retiros, así que <b>la cifra de mañana —la sesión del 29— es la que dirá si esto fue un susto o una salida</b>.</p>
+      <div class="facts">
+        <div class="fact"><div class="fv">+$137,3 M</div><div class="fl">ETF de BTC, sesión del 28</div></div>
+        <div class="fact"><div class="fv">99 %</div><div class="fl">Aportado solo por IBIT</div></div>
+        <div class="fact"><div class="fv">+$423,6 M</div><div class="fl">Acumulado de tres sesiones</div></div>
+        <div class="fact"><div class="fv">−$21,1 M</div><div class="fl">ETF de ETH, 3.ª sesión negativa</div></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead"><h2>También en el radar</h2></div>
+  <ul class="radar">
+    <li><b>Alphabet se desplomó un 12 %</b> tras presentar un BPA de <b>$2,12 contra $3,01 esperados</b>, borrando cerca de <b>$400.000 M</b> de capitalización y arrastrando al Nasdaq. Es el segundo frente de riesgo del día y no tiene nada que ver con cripto — pero la correlación con el Nasdaq sí llega a estas barras.</li>
+    <li><b>El atacante empezó a convertir su botín en éter.</b> Lookonchain lo vio cambiando <b>PEPE, UNI y LINK por ETH</b> en cadena, con posiciones de <b>~217 M de ENA</b> ($39,5 M), <b>7,58 billones de PEPE</b> ($34,4 M), <b>2,575 M de LINK</b> ($28,1 M), <b>128.000 AAVE</b> ($15,9 M) y <b>1,94 M de UNI</b> ($12,6 M). Es la hoja de ruta de la presión de venta de los próximos días.</li>
+    <li><b>La capitalización total del mercado cayó entre un 3,13 % y un 3,3 %</b>, hasta <b>$2,63–2,73 billones</b> según la fuente — las dos lecturas divergen y se publican ambas. El volumen global subió <b>casi 29 % hasta $89.400 M</b>.</li>
+    <li><b>Polymarket sufrió su propia brecha</b> a través de un proveedor, con hasta <b>$2,7 M</b> drenados. En un día así pasa casi desapercibido, pero es el segundo incidente de seguridad de la jornada.</li>
+    <li><b>Moody's calificó RLUSD, la <i>stablecoin</i> de Ripple, con A2</b>, y Strategy obtuvo aprobación para dividendos diarios. Noticias de fontanería institucional que en cualquier otro día habrían sido el titular.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="sechead"><h2>Qué vigilar</h2></div>
+  <div class="calrow"><div class="calwhen">Primera hora</div><div class="calwhat"><b>Si Binance reanuda los retiros y en qué redes.</b> Es la variable que decide si esto fue un accidente operativo o algo más: mientras sigan pausados, los libros de todo el mercado operan con un centro de liquidez amputado y el deslizamiento será anómalo en todas partes.</div></div>
+  <div class="calrow"><div class="calwhen">Viernes 30 oct</div><div class="calwhat"><b>Flujos de ETF de la sesión del 29</b>, la primera que contiene el hackeo. Tres días de entradas en bitcoin venían acumulando $423,6 M; esta cifra separa el susto de la salida.</div></div>
+  <div class="calrow"><div class="calwhen">Viernes 30 oct</div><div class="calwhat"><b>La primera lectura de Fear &amp; Greed que incluya el evento.</b> La de hoy es de las 12:30 UTC y no lo contiene; publicó <b>50 desde 50</b>, sin moverse.</div></div>
+  <div class="calrow"><div class="calwhen">Fin de semana</div><div class="calwhat"><b>Los ~253.000 ETH que el atacante no puede ver congelados.</b> Oferta pendiente de unos $570 M sobre el éter, más lo que siga convirtiendo de PEPE, UNI, LINK y AAVE.</div></div>
+  <div class="calrow"><div class="calwhen">Domingo 1 nov</div><div class="calwhat"><b>Bloque C: auditoría de capacidad y admisión.</b> La vigente es del 1 de septiembre y cumple 59 días. Llega en el mejor momento posible de toda la serie: si la liquidez se ha reconfigurado, el deslizamiento medido el domingo contra las cifras de septiembre será la lectura más informativa que haya dado este bloque.<br><b>Y por eso toca repetir el aviso, que ya va por la tercera vez:</b> el libro de órdenes (<code>/quote/depth</code>) vive en el mismo dominio de BingX que el <i>ticker</i> que lleva <b>44 corridas</b> sin responder, así que <b>va a fallar igual</b>. La auditoría del 1 de octubre ya se perdió así. Si la del domingo también falla, la cifra vigente llegaría a los <b>61 días</b> y dejaría de significar nada — y con ella se cae la columna de coste del bloque B. <b>Lánzala tú desde una sesión interactiva</b>, donde puedas aprobar el acceso en el momento: es la única pieza de esta rutina que no se puede hacer sin ti, y este año el libro de órdenes importa más que nunca.</div></div>
+  <div class="calrow"><div class="calwhen">Martes 3 nov</div><div class="calwhat"><b>Elecciones legislativas de EE. UU.</b> Warsh insistió en que la política «no jugó ningún papel» en la decisión del 28.</div></div>
+  <div class="calrow"><div class="calwhen">Miércoles 9 dic</div><div class="calwhat"><b>Decisión del FOMC.</b> La probabilidad de <b>alza</b> de 25 pb se afianza en torno al <b>80 %</b> tras el PCE, desde el 73 % del 26 de octubre. Warsh avisó de que no habrá <i>forward guidance</i> que amortigüe.</div></div>
+</section>
+
+<footer>
+  <p><b>Fuentes del contado y del bloque B (post-hackeo, 22:52–23:27 UTC):</b> Coinpedia (23:13), Decrypt (22:57), Coin360 vía Digital Today (23:00), ticker de Cointelegraph (23:24). <b>Volumen:</b> CoinGecko por activo. <b>El evento:</b> TechCrunch, Decrypt, Cointelegraph, CryptoTicker, Coinpedia, Cyber Daily, AP. <b>Liquidaciones:</b> CoinGlass vía PANews y TokenPost. <b>ETF:</b> Farside vía blockchain.news, Lookonchain vía TechFlow, CryptoBriefing, ChainCatcher. <b>Fear &amp; Greed:</b> Coinglass vía ChainCatcher (12:30 UTC), KuCoin, cfgi.io. <b>Macro:</b> Advisor Perspectives, Morningstar, FXStreet, Kiplinger, Reuters vía CaptainAltcoin. <b>Flujos en cadena:</b> Lookonchain, Arkham, Blockaid, DefiLlama.</p>
+  <p><b>Sustituciones y fallos declarados:</b> <b>BingX</b> (<code>open-api.bingx.com</code>) devolvió <code>PROVENANCE_REQUIRED</code> — 44ª corrida programada consecutiva sin <i>ticker</i>. <b>CoinGecko y CoinMarketCap quedaron descartados como fuente de precio al corte</b> tras demostrarse que servían una instantánea previa al hackeo: el control de re-consulta devolvió BTC $81.766,13 byte a byte idéntico media hora después, y las dos coincidían entre sí dentro del 0,79 % estando ambas un 3 % equivocadas. <b>No medidos:</b> LTC, AVAX, DOT, FIL, CRV y ALGO en el bloque B; XRP en flujos de ETF. <b>Marcados:</b> LINK (3,70 % de divergencia entre dos lecturas post-hackeo), AAVE y UNI (fuente única), capitalización total (dos lecturas divergentes), probabilidad del 28 de octubre (dos lecturas del mismo instrumento).</p>
+  <p>Los precios son del <b>contado</b>, no del perpetuo <code>-USDT</code> de BingX, y el volumen es el agregado global de cada activo, <b>no el de tu libro</b>. La variación se calcula de corte a corte contra la base verificada del informe anterior. Las cifras de ETF corresponden a la sesión del <b>28 de octubre</b> y las de sentimiento a la mañana del <b>29</b>: ninguna contiene el hackeo.</p>
+  <p class="disc"><b>Esto no es asesoría financiera.</b> Es un informe de datos construido para alimentar tu propia clasificación de las 18:00. El bloque B es terreno, no señal: no identifica oportunidades ni recomienda entradas, y hoy lleva además la reserva de que un tercio del universo no se pudo medir y de que las mayores caídas tienen causa idiosincrática y fechada. Las estimaciones del importe drenado de Binance <b>no están confirmadas</b> y varían entre $2.000 M y $5.800 M según el rastreador. Las decisiones de operar son tuyas y el riesgo también.</p>
+</footer>
+
+</div>
+
+</body></html>
